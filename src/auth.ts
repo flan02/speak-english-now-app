@@ -37,9 +37,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         // ! MODIFY THIS BECAUSE EVERY USER CAN ACCESS TO OUR APP
         // ! BUT ADMINS WILL BE REDIRECT TO OTHER ADMIN ROUTE
-        if (userFound.role == "ADMIN") return true
-
-        return false
+        //if (userFound.role == "ADMIN") return true
+        //return false
+        return true
       } catch (error) {
         console.error("We found the following error: ", error)
         return false
