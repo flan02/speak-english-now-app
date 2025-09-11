@@ -24,10 +24,10 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s - CVAI",
-    absolute: "CVAI"
+    template: "%s - HablaInglesYa",
+    absolute: "HablaInglesYa"
   },
-  description: "CVAI es la forma mas faacil de crear un curriculum profesional que te ayudara a conseguir el trabajo ideal para ti",
+  description: "",
   authors: [
     {
       name: "Dan Chanivet",
