@@ -6,21 +6,20 @@ import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/reutilizable/Footer";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const geistMono = Geist({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
 const roboto = Roboto({
-  weight: ["100", "400", "700"],
-  variable: "--font-roboto",
-  subsets: ["latin"],
+  variable: '--font-roboto',
+  subsets: ['latin'],
+  weight: ['400', '700'], // Add the weights you need
 });
-
 
 export const metadata: Metadata = {
   title: {
@@ -42,13 +41,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`} >
+
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+
           {children}
+
           <Footer />
           <Toaster />
         </ThemeProvider>

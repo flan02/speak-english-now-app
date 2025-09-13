@@ -67,9 +67,9 @@ const socialMediaUrl: string[] = [
 ]
 
 const Footer = (props: Props) => {
-  const siteUrl = 'https://www.cvai.online'
+  const siteUrl = 'https://www.cvai.online' // Reemplaza con la URL de tu sitio web
   return (
-    <footer className="relative py-20 flex flex-col items-center bg-yellow-50/50 dark:bg-gray-900/50 overflow-hidden md:py-40">
+    <footer className="relative py-20 flex flex-col items-center bg-yellow-100/50 bg-footer overflow-hidden md:py-40">
       <div className="relative z-[1] m-auto px-6 md:px-12 lg:px-0">
 
         <div className="m-auto md:w-10/12 lg:w-9/12 xl:w-full">
@@ -109,7 +109,7 @@ const Footer = (props: Props) => {
 
               <div className="flex items-center justify-center">
                 <BrainIcon fill="rgb(168 85 247 / 0.8)" className="pr-2 text-purple-500/70 size-8" />
-                <span className="block text-muted-foreground underline underline-offset-4 font-bold">CVAI &copy; {new Date().getFullYear()}</span>
+                <span className="block text-muted-foreground underline underline-offset-4 font-bold">HABLAINGLESYA &copy; {new Date().getFullYear()}</span>
               </div>
 
               <div className="flex flex-col justify-between text-white space-y-1">
