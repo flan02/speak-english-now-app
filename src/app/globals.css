@@ -32,7 +32,8 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
-  .dark :root {
+
+  :root.dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -60,28 +61,6 @@ body {
   }
 }
 
-@layer base {
-  .td {
-    @apply dark:text-yellow-50;
-  }
-}
-
-@media print {
-  #resumePreviewContent {
-    zoom: 1 !important;
-    padding: 0;
-  }
-}
-
-#resumePreviewContent {
-  font-family: Inter;
-}
-
-@page {
-  size: A4;
-  margin: 0.6cm;
-}
-
 /* Chrome styling for scrollbar */
 ::-webkit-scrollbar {
   width: 10px; /* Ancho del scroll */
@@ -96,4 +75,81 @@ body {
 /* track bar styling */
 ::-webkit-scrollbar-track {
   background-color: rgb(15, 23, 42);
+}
+
+.dark .bg-footer {
+  background-color: oklch(14.031% 0.02303 302.764);
+}
+
+.dark .bg-card:hover {
+  background-color: oklch(15% 0.03303 302.764);
+}
+
+.dark .bg-card {
+  background-color: oklch(14.031% 0.02303 302.764);
+}
+
+.dark .bg-marquee {
+  background-color: oklch(100% 0.00011 271.152);
+  color: black;
+}
+
+.dark .bg-thousand_points {
+  background: radial-gradient(#ffffff33 1px, #00091d 1px);
+}
+
+/* Fuentes personalizadas */
+.font-geist {
+  font-family: var(--font-geist-sans), sans-serif;
+}
+
+.font-geist-mono {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+.font-roboto {
+  font-family: var(--font-roboto), sans-serif;
+}
+
+@keyframes marqueeColors {
+  0% {
+    background-color: #ffffff; /* amarillo */
+    color: #1f2937; /* gris oscuro */
+  }
+  25% {
+    background-color: #f87171; /* rojo */
+    color: #ffffff; /* blanco */
+  }
+  50% {
+    background-color: #60a5fa; /* azul */
+    color: #000000; /* negro */
+  }
+  75% {
+    background-color: #34d399; /* verde */
+    color: #111827; /* gris muy oscuro */
+  }
+  100% {
+    background-color: #fef08a; /* amarillo de nuevo */
+    color: #1f2937;
+  }
+}
+
+.animate-marqueeColors {
+  animation: marqueeColors 4s infinite; /* 4 segundos en total, 1 cambio por segundo */
+}
+
+@keyframes flashColors {
+  0%,
+  100% {
+    background-color: #ffffff; /* blanco */
+    color: #000000; /* negro */
+  }
+  50% {
+    background-color: #000000; /* negro */
+    color: #ffffff; /* blanco */
+  }
+}
+
+.animate-flashColors {
+  animation: flashColors 2s infinite; /* 2s porque son 1s blanco + 1s negro */
 }

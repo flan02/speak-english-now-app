@@ -1,0 +1,42 @@
+"use client";
+
+import { ArrowBigUp } from "lucide-react";
+import { useState, useEffect } from "react";
+
+export default function ScrollToTop() {
+  const [show, setShow] = useState(false);
+
+  // Detecta cuando el usuario hace scroll hacia abajo
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShow(true);
+      } else {
+        setShow(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Función para scrollear al inicio suavemente
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  //if (!show) return null; // No mostrar el botón si está en la parte superior
+
+  return (
+    <button
+      onClick={scrollToTop}
+    // className="fixed bottom-8 right-8 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-foreground hover:text-primary transition"
+
+    >
+      <ArrowBigUp /> <span>volver al inicio</span>
+    </button>
+  );
+}
