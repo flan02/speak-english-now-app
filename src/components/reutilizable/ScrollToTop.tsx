@@ -31,12 +31,8 @@ export default function ScrollToTop() {
   //if (!show) return null; // No mostrar el botón si está en la parte superior
 
   return (
-    <button
-      onClick={scrollToTop}
-    // className="fixed bottom-8 right-8 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary-foreground hover:text-primary transition"
-
-    >
-      <ArrowBigUp /> <span>volver al inicio</span>
+    <button onClick={scrollToTop} className="z-50 my-4" >
+      <ArrowBigUp className="mx-auto" size={48} fill="white" /> <span className="text-[10px] uppercase" >volver al inicio</span>
     </button>
   );
 }

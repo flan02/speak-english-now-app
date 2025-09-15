@@ -89,13 +89,20 @@ body {
   background-color: oklch(14.031% 0.02303 302.764);
 }
 
+.dark .bg-card-main {
+  background-color: oklch(17.091% 0.0453 300.575);
+  border: 1px solid #2e1747;
+  color: rgb(63, 34, 143);
+}
+
 .dark .bg-marquee {
   background-color: oklch(100% 0.00011 271.152);
   color: black;
 }
 
 .dark .bg-thousand_points {
-  background: radial-gradient(#ffffff33 1px, #00091d 1px);
+  background: radial-gradient(rgba(255, 255, 255, 0.1) 1px, rgb(11, 7, 17) 1px);
+  background-size: 16px 16px; /* puntos más chiquitos en dark */
 }
 
 /* Fuentes personalizadas */

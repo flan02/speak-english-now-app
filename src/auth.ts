@@ -13,7 +13,15 @@ import { db } from './db'
 
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Github, Google],
+  providers: [Github, Google({
+    authorization: {
+      params: {
+        scope: "openid email profile https://www.googleapis.com/auth/calendar",
+        access_type: "offline",
+        prompt: "consent"
+      }
+    }
+  })],
   session: {
     maxAge: 86400, // 86400 = 1 day
     updateAge: 43200 //60 * 60, // Opcional: actualiza la sesión cada 1 hora
@@ -26,8 +34,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       try {
         const { name, email, image } = user as User
 
-        // console.log('User', user)
-
         const userFound = await loggedAsAdmin(email) // We need to know if the user is an admin or not
 
         if (!userFound) {
@@ -35,10 +41,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return false
         }
 
-        // ! MODIFY THIS BECAUSE EVERY USER CAN ACCESS TO OUR APP
-        // ! BUT ADMINS WILL BE REDIRECT TO OTHER ADMIN ROUTE
-        //if (userFound.role == "ADMIN") return true
-        //return false
         return true
       } catch (error) {
         console.error("We found the following error: ", error)
@@ -57,6 +59,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.iat = Math.floor(Date.now() / 1000)
           token.exp = Math.floor(Date.now() / 1000) + 86400
 
+          token.accessToken = account.access_token
+          token.refreshToken = account.refresh_token
           // const now = Math.floor(Date.now() / 1000);
           // const timeUntilExpiration = token.exp - now; // Si el token tiene menos de 5 minutos antes de expirar, renovarlo
           // if (timeUntilExpiration < 5 * 60) token.exp = now + 10 * 60; // Renovar el token estableciendo un nuevo tiempo de expiración
@@ -74,6 +78,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.jti = String(token.jti) // Unique identifier for the JWT
         session.user.iat = String(token.iat)
         session.user.exp = String(token.exp)
+
+        session.user.accessToken = token.accessToken
+        session.user.refreshToken = token.refreshToken
 
         //session.expires = new Date(token.exp! * 1000).toISOString();
       }

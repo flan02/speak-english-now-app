@@ -16,7 +16,7 @@ export default function Marquee({ time = 8, banners }: { time?: number, banners?
         }}
       >
         {banners && banners.map((banner, index) => (
-          <span key={index} className="mx-12">{banner}</span>
+          <span key={index} className="mx-12 pl-16">{banner}</span>
         ))}
       </motion.div>
     </div>

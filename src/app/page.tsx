@@ -1,11 +1,13 @@
 import { auth } from "@/auth";
 import { isSessionActive } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import Section2 from "@/components/home/Section2";
-import Section3 from "@/components/home/Section3";
 import ScrollToTop from "@/components/reutilizable/ScrollToTop";
 import Marquee from "@/components/reutilizable/Marquee";
 import Section1 from "@/components/home/Section1";
+import Section2 from "@/components/home/Section2";
+import Section3 from "@/components/home/Section3";
+import { marquee_banners } from "@/lib/types";
+import BackgroundMultiDots from "@/components/reutilizable/BackgroundMultiDots";
 
 
 
@@ -16,14 +18,12 @@ export default async function Home() {
     redirect("/resumes")
   }
 
-  const marquee_banners = ["🌟 El mejor precio/calidad garantizado  —", "📆 ¡Agenda tu clase en nuestro calendariograma!  —", "📞 Hablanos por whatsapp o nuestro website para mas info  —", "✉️ Suscribite a nuestro boletín para novedades!!!"]
+
   return (
     <main className="relative flex flex-col items-center justify-center gap-6 py-4 text-center">
 
-      <Marquee time={20} banners={marquee_banners} />
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] bg-thousand_points"></div>
-      </div>
+      <Marquee time={30} banners={marquee_banners} />
+      <BackgroundMultiDots />
       <Section1 />
 
       <Section2 />
