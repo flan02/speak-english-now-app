@@ -25,7 +25,7 @@ const Section1 = (props: Props) => {
             <h1 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent">YA</h1>
           </div>
         </div>
-        <h1 className="scroll-m-20 text-xl font-extrabold tracking-tight lg:text-4xl font-roboto leading-10">
+        <h1 className="scroll-m-20 text-xl font-extrabold tracking-tight lg:text-4xl font-roboto leading-12">
           Usamos el metodo de aprendizaje rápido{" "}
           <span className="inline-block bg-gradient-to-r from-purple-500 to-purple-300 bg-clip-text text-transparent font-roboto">
             Weak-Form
@@ -33,8 +33,9 @@ const Section1 = (props: Props) => {
           para que te comuniques en Inglés fluido
         </h1>
 
-        <p className="text-sm lg:text-lh text-gray-500 font-roboto"><span className="font-bold font-roboto">APOYO ESCOLAR GUIADO</span> nivel primario, secundario, universitario</p>
-        <p className="text-sm lg:text-xl text-gray-500 font-roboto"><span className="font-bold font-roboto uppercase dark:text-gray-500">Clases de conversación práctica</span> para ganar fluidez y confianza</p>
+        <p className="text-sm lg:text-lg text-gray-400 font-roboto"><span className="font-bold font-roboto">APOYO ESCOLAR GUIADO</span> nivel primario, secundario, universitario</p>
+        <p className="text-sm lg:text-lg text-gray-400 font-roboto"><span className="font-bold font-roboto uppercase dark:text-gray-500">Clases de conversación práctica</span> gana fluidez y confianza</p>
+        <p className="text-sm lg:text-lg text-gray-400 font-roboto"><span className="font-bold font-roboto uppercase">Entrevistas laborales</span> preparate para comunicarte</p>
 
         {/* HERE OPEN A MODAL COMPONENT GIVE SOME INFO ABOUT THE PROJECT */}
         {/* <Button asChild size="lg" variant="default" className="text-xs px-2 lg:px-4 lg:text-sm bg-gray-300 hover:bg-gray-300/80 dark:bg-blue-950/80 dark:hover:bg-blue-950 text-gray-500 dark:text-muted-foreground">

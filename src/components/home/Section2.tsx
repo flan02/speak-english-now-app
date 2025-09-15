@@ -7,7 +7,7 @@ const Section2 = (props: Props) => {
   return (
     <MaxWidthWrapper >
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-5xl font-bold mb-8 text-center">Cómo Enseñamos Inglés</h2>
+        <h2 className="text-5xl font-bold mb-8 text-center tracking-wider">Cómo Enseñamos Inglés</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <Card title="Enfoque Personalizado" description="Clases adaptadas a tu nivel, ritmo y objetivos para aprender de forma eficiente" />
           <Card title="Usamos la Forma Débil" description="Aprende estructuras del idioma de manera natural y práctica, sin memorizar reglas aisladas." />
@@ -15,10 +15,15 @@ const Section2 = (props: Props) => {
           <Card title="Dinámicas Interactivas" description="Clases virtuales con ejercicios, materiales personalizados y seguimiento de tu progreso." />
         </div>
       </div>
-      <article className='border border-red-500 max-w-xl mx-auto space-y-8'>
+      {/* <article className='border border-red-500 max-w-xl mx-auto space-y-8'>
         <h3 className='uppercase text-2xl font-bold'>acceso total y gratuito a nuestra plataforma de aprendizaje</h3>
         <h3 className='uppercase text-2xl font-bold'>luego de cada clase recibiras una tarea personalizada para reforzar lo aprendido</h3>
-      </article>
+      </article> */}
+      <div className="max-w-2xl mx-auto mt-8 px-6 py-10 rounded-2xl shadow-lg text-yellow-700 bg-yellow-100 bg-card-main border border-yellow-300 text-center">
+        <h2 className="text-lg font-bold tracking-wide">ACCESO TOTAL Y GRATUITO A NUESTRA PLATAFORMA DE APRENDIZAJE</h2>
+        <p className="mt-3 text-sm font-medium">LUEGO DE CADA CLASE RECIBIRÁS UNA TAREA PERSONALIZADA PARA REFORZAR LO APRENDIDO</p>
+      </div>
+
     </MaxWidthWrapper>
   )
 }
