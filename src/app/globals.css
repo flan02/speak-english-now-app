@@ -118,6 +118,76 @@ body {
   font-family: var(--font-roboto), sans-serif;
 }
 
+/* FULLCALENDAR CLASS */
+
+.dark .fc-daygrid-day {
+  border: 1px solid #262627 !important; /* borde del calendario */
+}
+
+.dark .fc-col-header-cell {
+  border: 1px solid #262627 !important; /* borde del calendario */
+}
+
+.dark .fc- {
+  background-color: #1e1546 !important; /* morado oscuro */
+  color: #ffffff !important; /* blanco */
+}
+
+.dark .fc-scrollgrid {
+  border: 1px solid #262627 !important; /* borde del calendario */
+}
+
+.dark .fc-toolbar-title,
+.fc-toolbar-title {
+  text-transform: capitalize;
+}
+
+.fc-daygrid-day-events {
+  /* max-height: 35px; controla altura disponible para eventos */
+  height: 90px;
+}
+
+.fc-day-sun {
+  background-color: #f0eee9; /* amarillo */
+}
+
+.dark .fc-day-sun {
+  background-color: #111 !important; /* morado oscuro */
+  opacity: 0.2;
+}
+
+.fc-day-today {
+  background-color: #f7f5b9 !important; /* rojo */
+}
+
+.dark .fc-day-today {
+  background-color: #160e36 !important; /* morado oscuro */
+}
+
+/* Fondo y borde del evento */
+.fc .fc-event {
+  background-color: #020c22; /* azul */
+  border: none; /* quita el borde por defecto */
+  border-radius: 0.375rem; /* esquinas suaves */
+  padding: 1.5px 2px;
+}
+
+.dark .fc .fc-event {
+  background-color: #ddd;
+  border: none; /* quita el borde por defecto */
+  border-radius: 0.375rem; /* esquinas suaves */
+  padding: 1.5px 2px;
+}
+
+/* Texto del evento */
+.fc .fc-event-title {
+  color: #fff !important; /* blanco */
+}
+
+.dark .fc .fc-event-title {
+  color: #000 !important; /* blanco */
+}
+
 @keyframes marqueeColors {
   0% {
     background-color: #ffffff; /* amarillo */

@@ -14,6 +14,8 @@ import { db } from './db'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Github, Google({
+    // clientId: process.env.AUTH_GOOGLE_ID,
+    // clientSecret: process.env.AUTH_GOOGLE_SECRET,
     authorization: {
       params: {
         scope: "openid email profile https://www.googleapis.com/auth/calendar",
@@ -33,12 +35,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, account, profile }) {
       try {
         const { name, email, image } = user as User
-
+        console.log('Trying to sign in user: ', email);
         const userFound = await loggedAsAdmin(email) // We need to know if the user is an admin or not
 
         if (!userFound) {
           await createUser(name, email, image)
-          return false
+          return true
         }
 
         return true
