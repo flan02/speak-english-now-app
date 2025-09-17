@@ -12,7 +12,7 @@ const Section4 = (props: Props) => {
       <div className='flex flex-col space-x-2'>
         <article className='w-full'>
           <Calendar />
-          {/* <ModalDayCalendar /> */}
+          <h6 className='py-4 text-sm text-gray-400'>** Para reservar tu clase debes primero iniciar sesion en la plataforma</h6>
         </article>
       </div>
     </MaxWidthWrapper>

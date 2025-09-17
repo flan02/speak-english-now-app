@@ -7,6 +7,8 @@ import Section1 from "@/components/home/Section1";
 import Section2 from "@/components/home/Section2";
 import Section3 from "@/components/home/Section3";
 import Section4 from "@/components/home/Section4";
+import Section5 from "@/components/home/Section5";
+import Section6 from "@/components/home/Section6";
 import { marquee_banners } from "@/lib/types";
 import BackgroundMultiDots from "@/components/reutilizable/BackgroundMultiDots";
 
@@ -31,8 +33,9 @@ export default async function Home() {
       <Section3 />
       <Section4 />
 
-      <section>SECTION 5: Sobre mi, links a mis redes, sitio web</section>
-      <section>SECTION 6: consultas, suscribirse, solicitar cupon descuento</section>
+      <Section5 />
+      <Section6 />
+
       <ScrollToTop />
 
 

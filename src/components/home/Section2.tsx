@@ -20,8 +20,14 @@ const Section2 = (props: Props) => {
       <div className="max-w-2xl mx-auto mt-8 px-6 py-10 rounded-2xl shadow-lg text-yellow-700 bg-yellow-100 bg-card-main border border-yellow-300 text-center">
         <h2 className="text-lg font-bold tracking-wide">ACCESO TOTAL Y GRATUITO A NUESTRA PLATAFORMA DE APRENDIZAJE</h2>
         <p className="mt-3 text-sm font-medium">LUEGO DE CADA CLASE RECIBIRÁS UNA TAREA PERSONALIZADA PARA REFORZAR LO APRENDIDO</p>
-      </div>
 
+
+      </div>
+      <div className='space-y-1'>
+        <p className='font-extrabold'>MÉTODOS DE PAGO ACEPTADOS</p>
+        <span className='text-orange-400'>MERCADO PAGO | UALA | BRUBANK | TARJETA NARANJA | TRANSFERENCIA BANCARIA | CRIPTOMONEDAS (USDT, BTC, ETH)</span>
+
+      </div>
     </MaxWidthWrapper>
   )
 }
