@@ -69,7 +69,7 @@ const Calendar = () => {
           cellDate.setHours(0, 0, 0, 0);
 
           if (cellDate < today) {
-            return ["bg-gray-200/60 bg-previous-day", "pointer-events-none"]; // gris y deshabilitado
+            return ["bg-gray-600/10 bg-previous-day", "pointer-events-none"]; // gris y deshabilitado
           }
           return [];
         }}

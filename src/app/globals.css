@@ -115,7 +115,11 @@ body {
 }
 
 .font-roboto {
-  font-family: var(--font-roboto), sans-serif;
+  font-family: var(--font-roboto);
+}
+
+.font-orbitron {
+  font-family: var(--font-orbitron);
 }
 
 /* FULLCALENDAR CLASS */
@@ -161,7 +165,7 @@ body {
 }
 
 .dark .fc-day-today {
-  background-color: #0c081b !important; /* morado oscuro */
+  background-color: #110b24 !important; /* morado oscuro */
 }
 
 /* Fondo y borde del evento */
@@ -211,7 +215,7 @@ body {
 }
 
 .dark .bg-previous-day {
-  background-color: #222; /* gris claro */
+  background-color: rgb(14, 7, 26); /* gris claro */
   opacity: 0.5;
 }
 
