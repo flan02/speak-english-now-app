@@ -1,6 +1,7 @@
 import React from 'react'
 import MaxWidthWrapper from '../reutilizable/MaxWidthWrapper'
 import Calendar from '../reutilizable/Calendar'
+import { ModalDayCalendar } from '../reutilizable/ModalDayCalendar'
 
 type Props = {}
 
@@ -11,6 +12,7 @@ const Section4 = (props: Props) => {
       <div className='flex flex-col space-x-2'>
         <article className='w-full'>
           <Calendar />
+          {/* <ModalDayCalendar /> */}
         </article>
       </div>
     </MaxWidthWrapper>
@@ -18,3 +20,5 @@ const Section4 = (props: Props) => {
 }
 
 export default Section4
+
+

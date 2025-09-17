@@ -17,7 +17,7 @@ export type ResumeServerData = Prisma.ResumeGetPayload<{
 
 export const marquee_banners = [
   "🌟 El mejor precio/calidad garantizado  —",
-  "💲 $12,000$/hora para 1 o 2 personas cada uno y 10,000$/hora para 3 o 4 personas cada uno —",
+  "💲 $9,000$/hora hasta 2 personas cada uno y 8,000$/hora hasta 5 personas cada uno —",
   "📆 ¡Agenda tu clase en nuestro calendariograma!  —",
   "📞 Hablanos por whatsapp o website para mas info  —",
   "✉️ Suscribite a nuestro boletín para novedades!!!"
