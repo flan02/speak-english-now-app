@@ -9,6 +9,6 @@ export function ModalidadCard({ image, paragraph, order }: { image: StaticImageD
         ))
       }
     </div>
-    <Image src={image} alt="Aula Virtual" className={`w-[45%] h-[300px] rounded-md`} />
+    <Image src={image} alt="Aula Virtual" className={`w-[45%] h-[280px] rounded-md`} />
   </article>)
 }

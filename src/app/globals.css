@@ -16,6 +16,7 @@ body {
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
+    --metodopago: 70.5% 0.213 47.604;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%;
@@ -44,6 +45,8 @@ body {
     --primary-foreground: 240 5.9% 10%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
+    --metodopago: 43.8% 0.218 303.724;
+    --purple-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
     --accent: 240 3.7% 15.9%;
@@ -77,6 +80,9 @@ body {
   background-color: rgb(15, 23, 42);
 }
 
+.text-metodopago {
+  color: oklch(var(--metodopago));
+}
 .dark .bg-footer {
   background-color: oklch(14.031% 0.02303 302.764);
 }

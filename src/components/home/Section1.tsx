@@ -33,9 +33,9 @@ const Section1 = (props: Props) => {
           para que te comuniques en Inglés fluido
         </h1>
 
-        <p className="text-sm lg:text-lg text-gray-400 font-roboto"><span className="font-bold font-roboto">APOYO ESCOLAR GUIADO</span> nivel primario, secundario, universitario</p>
-        <p className="text-sm lg:text-lg text-gray-400 font-roboto"><span className="font-bold font-roboto uppercase dark:text-gray-500">Clases de conversación práctica</span> gana fluidez y confianza</p>
-        <p className="text-sm lg:text-lg text-gray-400 font-roboto"><span className="font-bold font-roboto uppercase">Entrevistas laborales</span> preparate para comunicarte</p>
+        <p className="text-sm lg:text-lg text-gray-400 font-orbitron"><span className="font-bold font-orbitron">APOYO ESCOLAR GUIADO</span> nivel primario, secundario, universitario</p>
+        <p className="text-sm lg:text-lg text-gray-400 font-orbitron"><span className="font-bold font-orbitron uppercase dark:text-gray-500">Clases de conversación práctica</span> gana fluidez y confianza</p>
+        <p className="text-sm lg:text-lg text-gray-400 font-orbitron"><span className="font-bold font-orbitron uppercase">Entrevistas laborales</span> preparate para comunicarte</p>
 
         {/* HERE OPEN A MODAL COMPONENT GIVE SOME INFO ABOUT THE PROJECT */}
         {/* <Button asChild size="lg" variant="default" className="text-xs px-2 lg:px-4 lg:text-sm bg-gray-300 hover:bg-gray-300/80 dark:bg-blue-950/80 dark:hover:bg-blue-950 text-gray-500 dark:text-muted-foreground">
