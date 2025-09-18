@@ -4,7 +4,8 @@
 import { QRCodeCanvas } from "qrcode.react"
 import React from 'react'
 import { Icons } from './Icons'
-import { ArrowRight, BrainIcon, Heart, Linkedin, MapPinCheckInsideIcon, Twitch } from 'lucide-react'
+import { ArrowRight, BrainIcon, Globe, Heart, LanguagesIcon, Linkedin, MapPinCheckInsideIcon, Twitch } from 'lucide-react'
+import { socialMediaUrl, socialMediaUrlHablaIngles } from "@/lib/types"
 
 type Props = {}
 
@@ -48,28 +49,17 @@ const links = [
 
 const groupIcons: { [key: string]: React.ReactNode } = {
   github: <Icons.github key={0} />,
-  twitter: <Icons.twitter key={1} />,
-  youtube: <Icons.youtube key={2} />,
-  facebook: <Icons.facebook key={3} />,
-  linkedin: <Linkedin key={4} size={20} />,
-  twitch: <Twitch key={5} />,
-  curriculum: <MapPinCheckInsideIcon />
+  youtube: <Icons.youtube key={1} />,
+  linkedin: <Linkedin key={2} size={20} />,
+  website: <Globe key={3} />
 }
 
-const socialMediaUrl: string[] = [
-  "https://www.github.com/flan02",
-  "https://www.twitter.com/flano2",
-  "https://www.youtube.com/@flan_02",
-  "https://www.facebook.com/dan.chanivet/",
-  "https://www.linkedin.com/in/dan-chanivet-574084b2/",
-  "https://www.twitch.tv/flano2",
-  "https://danchanivet.me",
-]
+
 
 const Footer = (props: Props) => {
   const siteUrl = 'https://www.cvai.online' // Reemplaza con la URL de tu sitio web
   return (
-    <footer className="relative py-20 flex flex-col items-center bg-yellow-100/50 bg-footer overflow-hidden md:py-40">
+    <footer className="relative py-20 flex flex-col items-center bg-yellow-50 bg-footer overflow-hidden md:py-40">
       <div className="relative z-[1] m-auto px-6 md:px-12 lg:px-0">
 
         <div className="m-auto md:w-10/12 lg:w-9/12 xl:w-full">
@@ -89,7 +79,7 @@ const Footer = (props: Props) => {
               <ul role="list" className="space-y-8 dark:text-zinc-700">
                 {
                   Object.keys(groupIcons).map((key, index) => (
-                    <LiIcons key={key} component={groupIcons[key]} icon_name={key} socialMediaUrl={socialMediaUrl[index]} />
+                    <LiIcons key={key} component={groupIcons[key]} icon_name={key} socialMediaUrl={socialMediaUrlHablaIngles[index]} />
                   ))
                 }
 
@@ -108,14 +98,14 @@ const Footer = (props: Props) => {
               </div>
 
               <div className="flex items-center justify-center">
-                <BrainIcon fill="rgb(168 85 247 / 0.8)" className="pr-2 text-purple-500/70 size-8" />
+                <LanguagesIcon fill="" className="pr-2 size-8" />
                 <span className="block text-muted-foreground underline underline-offset-4 font-bold">HABLAINGLESYA &copy; {new Date().getFullYear()}</span>
               </div>
 
-              <div className="flex flex-col justify-between text-white space-y-1">
+              <div className="flex flex-col justify-between space-y-1">
                 <a href="/tos" className="font-mono underline underline-offset-4 dark:text-zinc-700">Términos de uso</a>
                 <a href="#" className="font-mono underline underline-offset-4 dark:text-zinc-700">Políticas de privacidad</a>
-                <a href="#" className="font-mono underline underline-offset-4 text-white dark:text-zinc-700">Contáctanos</a>
+
               </div>
             </div>
           </div>

@@ -34,3 +34,29 @@ export const paragraph2 = ["- Las clases tambien se dictan en grupos reducidos d
   "- Al abonar la reserva tus compañeros estarán asociados a tu codigo de referencia",
   "- Todos los integrantes del grupo recibirán la tarea personalizada, en la 2da hora de clase"
 ]
+
+export const metodos_pago = [
+  'MERCADO PAGO',
+  'UALA',
+  'BRUBANK',
+  'TARJETA NARANJA',
+  'TRANSF. BANCARIA',
+  'CRIPTO (USDT, BTC, ETH)'
+]
+
+export const socialMediaUrl: string[] = [
+  "https://www.github.com/flan02",
+  "https://www.twitter.com/flano2",
+  "https://www.youtube.com/@flan_02",
+  "https://www.facebook.com/dan.chanivet/",
+  "https://www.linkedin.com/in/dan-chanivet-574084b2/",
+  "https://www.twitch.tv/flano2",
+  "https://danchanivet.me",
+]
+
+export const socialMediaUrlHablaIngles: string[] = [
+  "https://www.github.com/flan02",
+  "https://www.youtube.com/@flan_02",
+  "https://www.linkedin.com/in/dan-chanivet-574084b2/",
+  "https://curriculumvitae-woad.vercel.app/"
+]

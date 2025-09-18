@@ -50,6 +50,18 @@ const scheduleClass = ({ info, setOpen, setSelectedDate }: { info: { date: Date 
   setOpen(true);
 }
 
+const removePastDays = (arg: any) => {
+  const cellDate = new Date(arg.date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  cellDate.setHours(0, 0, 0, 0);
+
+  if (cellDate < today) {
+    return ["bg-gray-600/10 bg-previous-day", "pointer-events-none"]; // gris y deshabilitado
+  }
+  return [];
+}
+
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
@@ -62,17 +74,7 @@ const Calendar = () => {
         businessHours={{ startTime: '17:00', endTime: '21:00', daysOfWeek: [1, 2, 3, 4, 5, 6] }}
         dayMaxEventRows={4}
         dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
-        dayCellClassNames={(arg) => {
-          const cellDate = new Date(arg.date);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-          cellDate.setHours(0, 0, 0, 0);
-
-          if (cellDate < today) {
-            return ["bg-gray-600/10 bg-previous-day", "pointer-events-none"]; // gris y deshabilitado
-          }
-          return [];
-        }}
+        dayCellClassNames={removePastDays}
         events={test_events}
         height={700}
         initialView="dayGridMonth"

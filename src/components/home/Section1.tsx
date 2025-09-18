@@ -4,7 +4,9 @@ import { LanguagesIcon } from 'lucide-react'
 import SignIn from '../reutilizable/sign-in'
 import Image from 'next/image'
 import people_talking from "../../../public/people-talking.png";
-import VideoPlayer from '../reutilizable/VideoPlayer'
+import HeroImage from '../../../public/hablainglesya.png'
+
+
 type Props = {}
 
 const Section1 = (props: Props) => {
@@ -48,8 +50,8 @@ const Section1 = (props: Props) => {
       </div>
       <div className="hidden lg:block">
         <Image
-          src={people_talking}
-          alt="people talking"
+          src={HeroImage}
+          alt="Hero Image"
           width={600}
           className="shadow-md rounded-md border-gray-900" // lg:rotate-[1.5deg]
           priority

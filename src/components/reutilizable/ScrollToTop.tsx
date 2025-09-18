@@ -32,7 +32,7 @@ export default function ScrollToTop() {
 
   return (
     <button onClick={scrollToTop} className="z-50 my-4" >
-      <ArrowBigUp className="mx-auto" size={48} fill="white" /> <span className="text-[10px] uppercase" >volver al inicio</span>
+      <ArrowBigUp className="mx-auto" size={48} fill="" /> <span className="text-[10px] uppercase" >volver al inicio</span>
     </button>
   );
 }

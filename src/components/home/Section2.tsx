@@ -1,5 +1,7 @@
 import React from 'react'
 import MaxWidthWrapper from '../reutilizable/MaxWidthWrapper'
+import { MetodoDePagoBadge } from '../reutilizable/MetodoDePagoBadge'
+import { metodos_pago } from '@/lib/types'
 
 type Props = {}
 
@@ -23,11 +25,7 @@ const Section2 = (props: Props) => {
 
 
       </div>
-      <div className='space-y-1'>
-        <p className='font-extrabold'>MÉTODOS DE PAGO ACEPTADOS</p>
-        <span className='text-metodopago'>MERCADO PAGO | UALA | BRUBANK | TARJETA NARANJA | TRANSFERENCIA BANCARIA | CRIPTOMONEDAS (USDT, BTC, ETH)</span>
-
-      </div>
+      <MetodoDePagoBadge title={metodos_pago} color="metodopago text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" />
     </MaxWidthWrapper>
   )
 }

@@ -20,7 +20,7 @@ export function GitHubButton() {
       href="https://github.com/flan02" // 🔗 reemplaza con tu perfil
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center justify-center gap-2 px-6 py-2 rounded-xl bg-[#111] text-white hover:bg-black transition-colors duration-300 shadow-md"
+      className="flex items-center justify-center gap-2 px-6 py-2 border rounded-xl bg-[#111] text-white hover:bg-black transition-colors duration-300 shadow-md"
     >
       <Github className="w-5 h-5 -ml-4" />
       <span className="text-lg mt-1 font-bold">GitHub</span>
