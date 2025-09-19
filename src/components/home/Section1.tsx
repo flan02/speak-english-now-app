@@ -3,17 +3,17 @@ import ThemeToggle from '../reutilizable/ThemeToggle'
 import { LanguagesIcon } from 'lucide-react'
 import SignIn from '../reutilizable/sign-in'
 import Image from 'next/image'
-import people_talking from "../../../public/people-talking.png";
-import HeroImage from '../../../public/hablainglesya.png'
+
+import HeroImage from '../../../public/hablainglesya3.png'
 
 
 type Props = {}
 
 const Section1 = (props: Props) => {
   return (
-    <section className="gap-6 px-5 py-40 text-center md:text-left md:flex justify-center items-center lg:gap-12">
+    <section className="gap-6 lg:px-5 lg:py-40 min-w-[350px] py-16 text-center md:text-left md:flex justify-center items-center lg:gap-12">
 
-      <div className="absolute right-3 top-2 space-x-2 z-50 mt-10">
+      <div className="absolute right-3 top-2 space-x-2 mt-10 z-30">
         <span className="font-bold uppercase text-xs">cambiar tema</span>
         <ThemeToggle />
       </div>
@@ -27,7 +27,7 @@ const Section1 = (props: Props) => {
             <h1 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-yellow-300 to-yellow-400 bg-clip-text text-transparent">YA</h1>
           </div>
         </div>
-        <h1 className="scroll-m-20 text-xl font-extrabold tracking-tight lg:text-4xl font-roboto leading-12">
+        <h1 className="px-4 lg:px-0 scroll-m-20 text-xl font-extrabold tracking-tight lg:text-4xl font-roboto leading-6 lg:leading-12">
           Usamos el metodo de aprendizaje rápido{" "}
           <span className="inline-block bg-gradient-to-r from-purple-500 to-purple-300 bg-clip-text text-transparent font-roboto">
             Weak-Form
@@ -35,14 +35,9 @@ const Section1 = (props: Props) => {
           para que te comuniques en Inglés fluido
         </h1>
 
-        <p className="text-sm lg:text-lg text-gray-400 font-orbitron"><span className="font-bold font-orbitron">APOYO ESCOLAR GUIADO</span> nivel primario, secundario, universitario</p>
-        <p className="text-sm lg:text-lg text-gray-400 font-orbitron"><span className="font-bold font-orbitron uppercase dark:text-gray-500">Clases de conversación práctica</span> gana fluidez y confianza</p>
-        <p className="text-sm lg:text-lg text-gray-400 font-orbitron"><span className="font-bold font-orbitron uppercase">Entrevistas laborales</span> preparate para comunicarte</p>
-
-        {/* HERE OPEN A MODAL COMPONENT GIVE SOME INFO ABOUT THE PROJECT */}
-        {/* <Button asChild size="lg" variant="default" className="text-xs px-2 lg:px-4 lg:text-sm bg-gray-300 hover:bg-gray-300/80 dark:bg-blue-950/80 dark:hover:bg-blue-950 text-gray-500 dark:text-muted-foreground">
-            <Link href="/resumes">Conoce más ...</Link>
-          </Button> */}
+        <p className="text-[10px] xl:text-lg lg:text-base text-gray-400 font-orbitron"><span className="font-bold font-orbitron">APOYO ESCOLAR GUIADO</span> nivel primario, secundario, universitario</p>
+        <p className="text-[10px] xl:text-lg lg:text-base text-gray-400 font-orbitron"><span className="font-bold font-orbitron uppercase dark:text-gray-500">Clases de conversación práctica</span> gana fluidez y confianza</p>
+        <p className="text-[10px] xl:text-lg lg:text-base text-gray-400 font-orbitron"><span className="font-bold font-orbitron uppercase">Entrevistas laborales</span> preparate para comunicarte</p>
 
         <div>
           <SignIn />
@@ -52,11 +47,10 @@ const Section1 = (props: Props) => {
         <Image
           src={HeroImage}
           alt="Hero Image"
-          width={600}
-          className="shadow-md rounded-md border-gray-900" // lg:rotate-[1.5deg]
+          className="shadow-md rounded-md border-gray-900 w-[550px] h-[400px] object-fill"
           priority
         />
-        {/* <VideoPlayer src="/gifs/sprite-stars.webm" alt="Sprite Stars" className="fixed top-[0.1] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-auto z-10 rounded-md" /> */}
+
       </div>
     </section>
   )

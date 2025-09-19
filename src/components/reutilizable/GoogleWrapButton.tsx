@@ -6,9 +6,10 @@ const GoogleWrapButton = () => {
   return (
 
     <GoogleButton
+
       onClick={() => signIn('google', { callbackUrl: '/resumes' })}
-      style={{ width: "max-width", fontSize: "1rem" }}
-      label="Inicia Sesion con Google"
+      style={{ width: "max-width", fontSize: "0.9rem" }}
+      label="Inicia Sesion"
     />
 
   )

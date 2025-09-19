@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function Marquee({ time = 8, banners }: { time?: number, banners?: string[] }) {
   return (
-    <div className="overflow-hidden sticky top-0 z-50 whitespace-nowrap bg-black bg-marquee w-full py-2 -mt-4 animate-flashColors">
+    <div className="overflow-hidden min-w-[350px] sticky top-0 z-50 whitespace-nowrap bg-black bg-marquee w-full py-2 -mt-4 animate-flashColors">
       <motion.div
         className="inline-block text-base uppercase font-roboto relative z-0"
         animate={{ x: ["0%", "-100%"] }} // va de derecha a izquierda

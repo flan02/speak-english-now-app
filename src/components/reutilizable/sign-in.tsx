@@ -6,7 +6,7 @@ import GoogleWrapButton from "./GoogleWrapButton"
 export default function SignIn() {
   return (
 
-    <div className="mx-auto w-[250px]">
+    <div className="mx-auto w-[200px] lg:w-[250px]">
       <GoogleWrapButton />
       <form
         action={async () => {

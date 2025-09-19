@@ -66,7 +66,7 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  console.log(selectedDate);
+  //console.log(selectedDate);
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", fontSize: "12px", fontFamily: "cursive" }}>
       <FullCalendar
