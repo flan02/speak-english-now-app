@@ -37,10 +37,10 @@ export const paragraph2 = ["- Las clases tambien se dictan en grupos reducidos d
 
 export const metodos_pago = [
   'MERCADO PAGO',
+  'TRANSF. BANCARIA',
   'UALA',
   'BRUBANK',
-  'TARJETA NARANJA',
-  'TRANSF. BANCARIA',
+  'NARANJA',
   'CRIPTO (USDT, BTC, ETH)'
 ]
 
