@@ -66,6 +66,13 @@ body {
   }
 }
 
+.logo-theme {
+  content: url("../../public/light-heroimage.png");
+}
+
+.dark .logo-theme {
+  content: url("../../public/dark-heroimage.png");
+}
 .dark .btn-send {
   background-color: oklch(14.031% 0.02303 302.764);
   color: rgb(63, 34, 143);
@@ -128,6 +135,15 @@ body {
 
 /* ! FULLCALENDAR CLASS */
 
+.fc {
+  min-width: 350px;
+  min-height: 450px;
+}
+/* 
+.fc-daygrid-day {
+  min-width: 200px;
+} */
+
 .dark .fc-daygrid-day {
   border: 1px solid #262627 !important; /* borde del calendario */
 }
@@ -174,6 +190,7 @@ body {
 
 /* Fondo y borde del evento */
 .fc .fc-event {
+  display: block;
   background-color: #ccc; /* azul */
   border: none; /* quita el borde por defecto */
   border-radius: 0.375rem; /* esquinas suaves */
@@ -233,6 +250,35 @@ body {
 .dark .fc-timegrid-col-events,
 .dark .fc-timegrid-event-harness {
   border-color: #222 !important; /* poné el color que quieras */
+}
+
+@media (max-width: 768px) {
+  .fc .fc-event {
+    display: none;
+  }
+
+  .bg-modal {
+    width: 340px !important;
+    height: 300px !important;
+    margin-left: -5px;
+  }
+
+  .fc-toolbar-title {
+    font-size: 1.1rem !important; /* Ajusta el tamaño de fuente según sea necesario */
+    font-family: var(--font-roboto) !important;
+    text-transform: capitalize;
+  }
+
+  .fc-timegrid {
+    color: #444;
+    font-size: 12px;
+    width: 330px !important;
+    height: 120px !important;
+  }
+
+  .fc-daygrid-day-events {
+    height: 20px !important;
+  }
 }
 
 /* ! Chrome styling for scrollbar */

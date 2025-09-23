@@ -27,9 +27,6 @@ const test_events = [                        // Lista de eventos
   { title: '20hs-21hs', date: '2025-09-19' }
 ]
 
-// const show_info = () => {
-//   alert("Info y estado de la clase aqui, codigo de referencia al usuario")
-// }
 
 const scheduleClass = ({ info, setOpen, setSelectedDate }: { info: { date: Date }, setOpen: React.Dispatch<React.SetStateAction<boolean>>, setSelectedDate: React.Dispatch<React.SetStateAction<string | null>> }) => {
   const clicked = info.date; // es un objeto Date de FullCalendar
@@ -67,8 +64,10 @@ const Calendar = () => {
   const [open, setOpen] = useState(false);
 
   //console.log(selectedDate);
+
+  // <div style={{ maxWidth: "800px", margin: "0 auto", fontSize: "12px", fontFamily: "cursive" }}></div>
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", fontSize: "12px", fontFamily: "cursive" }}>
+    <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs" >
       <FullCalendar
         aspectRatio={1.5}
         businessHours={{ startTime: '17:00', endTime: '21:00', daysOfWeek: [1, 2, 3, 4, 5, 6] }}
@@ -76,7 +75,7 @@ const Calendar = () => {
         dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
         dayCellClassNames={removePastDays}
         events={test_events}
-        height={700}
+
         initialView="dayGridMonth"
         googleCalendarApiKey={process.env.NEXT_PUBLIC_AUTH_GOOGLE_ID}
         locale={esLocale}
@@ -92,6 +91,7 @@ export default Calendar;
 
 
 //BUNCH OF CALENDAR PROPS
+// contentHeight="auto"
 // eventClick={show_info}
 // headerToolbar={{
 //   left: "prev,next today",
