@@ -20,8 +20,8 @@ const Section2 = (props: Props) => {
       </div>
 
       <div className="max-w-2xl mx-auto mt-8 px-6 py-6 lg:py-10 rounded-2xl shadow-lg text-yellow-700 bg-yellow-100 bg-card-main border border-yellow-300 text-center">
-        <h2 className="text-lg font-bold tracking-wide">ACCESO TOTAL Y GRATUITO A NUESTRA PLATAFORMA DE APRENDIZAJE</h2>
-        <p className="mt-3 text-xs lg:text-sm font-medium">LUEGO DE CADA CLASE RECIBIRÁS UNA TAREA PERSONALIZADA PARA REFORZAR LO APRENDIDO</p>
+        <h2 className="lg:text-lg font-bold lg:tracking-wide">ACCESO TOTAL Y GRATUITO A NUESTRA PLATAFORMA DE APRENDIZAJE</h2>
+        <p className="mt-3 text-[10px] lg:text-sm font-medium">LUEGO DE CADA CLASE RECIBIRÁS UNA TAREA PERSONALIZADA PARA REFORZAR LO APRENDIDO</p>
 
 
       </div>

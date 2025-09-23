@@ -44,13 +44,7 @@ const Section1 = (props: Props) => {
         </div>
       </div>
       <div className="hidden lg:block">
-        <Image
-          src={HeroImage}
-          alt="Hero Image"
-          className="shadow-md rounded-md border-gray-900 w-[550px] h-[400px] object-fill"
-          priority
-        />
-
+        <img className='logo-theme' alt="logo" />
       </div>
     </section>
   )
