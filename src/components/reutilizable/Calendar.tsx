@@ -8,6 +8,16 @@ import interactionPlugin from "@fullcalendar/interaction";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import esLocale from '@fullcalendar/core/locales/es';
 import { ModalDayCalendar } from "./ModalDayCalendar";
+import useCalendar from "@/hooks/useCalendar";
+
+
+type FullCalendarProps = {
+  title: string;
+  start: string;
+  end: string;
+  color?: string;
+}
+
 
 // * https://fullcalendar.io/docs/react
 /* 
@@ -15,17 +25,7 @@ import { ModalDayCalendar } from "./ModalDayCalendar";
   events={{ googleCalendarId: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_ID }}
 */
 
-const test_events = [                        // Lista de eventos
-  { title: '17hs-18hs', date: '2025-09-12' },
-  { title: '18hs-19hs', date: '2025-09-12' },
-  { title: '19hs-20hs', date: '2025-09-12' },
-  { title: '20hs-21hs', date: '2025-09-12' },
-  { title: '18hs-19hs', date: '2025-09-15' },
-  { title: '17hs-18hs', date: '2025-09-19' },
-  { title: '18hs-19hs', date: '2025-09-19' },
-  { title: '19hs-20hs', date: '2025-09-19' },
-  { title: '20hs-21hs', date: '2025-09-19' }
-]
+
 
 
 const scheduleClass = ({ info, setOpen, setSelectedDate }: { info: { date: Date }, setOpen: React.Dispatch<React.SetStateAction<boolean>>, setSelectedDate: React.Dispatch<React.SetStateAction<string | null>> }) => {
@@ -63,7 +63,17 @@ const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
-  //console.log(selectedDate);
+
+  const { events, isLoading, refetch } = useCalendar()
+
+  //console.log(events);
+
+  const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
+    title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
+    start: slot.start.dateTime,
+    end: slot.end.dateTime,
+    color: slot.status === 'confirmed' ? 'green' : 'red',
+  }))
 
   // <div style={{ maxWidth: "800px", margin: "0 auto", fontSize: "12px", fontFamily: "cursive" }}></div>
   return (
@@ -74,10 +84,9 @@ const Calendar = () => {
         dayMaxEventRows={4}
         dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
         dayCellClassNames={removePastDays}
-        events={test_events}
+        events={fullCalendarEvents}
 
         initialView="dayGridMonth"
-        googleCalendarApiKey={process.env.NEXT_PUBLIC_AUTH_GOOGLE_ID}
         locale={esLocale}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin]}
 
@@ -94,6 +103,7 @@ export default Calendar;
 // contentHeight="auto"
 // eventClick={show_info}
 // headerToolbar={{
+//  googleCalendarApiKey={process.env.NEXT_PUBLIC_AUTH_GOOGLE_ID}
 //   left: "prev,next today",
 //   center: "title",
 //   right: "dayGridMonth,timeGridWeek,timeGridDay",
@@ -112,3 +122,17 @@ export default Calendar;
 //   console.log(info)
 //   alert("selected " + info.startStr + " to " + info.endStr);
 // }}
+
+/* 
+const test_events = [                        // Lista de eventos
+  { title: '17hs-18hs', date: '2025-09-12' },
+  { title: '18hs-19hs', date: '2025-09-12' },
+  { title: '19hs-20hs', date: '2025-09-12' },
+  { title: '20hs-21hs', date: '2025-09-12' },
+  { title: '18hs-19hs', date: '2025-09-15' },
+  { title: '17hs-18hs', date: '2025-09-19' },
+  { title: '18hs-19hs', date: '2025-09-19' },
+  { title: '19hs-20hs', date: '2025-09-19' },
+  { title: '20hs-21hs', date: '2025-09-19' }
+]
+*/

@@ -1,11 +1,14 @@
 import React from 'react'
 import MaxWidthWrapper from '../reutilizable/MaxWidthWrapper'
 import Calendar from '../reutilizable/Calendar'
-import { ModalDayCalendar } from '../reutilizable/ModalDayCalendar'
+
 
 type Props = {}
 
 const Section4 = (props: Props) => {
+
+
+
   return (
     <MaxWidthWrapper className='lg:space-y-16'>
       <h2 className="mb-0 text-3xl py-16 lg:text-5xl font-bold lg:mb-16 lg:py-0 text-center tracking-wider">Cronograma de Reservas</h2>

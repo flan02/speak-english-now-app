@@ -68,10 +68,12 @@ body {
 
 .logo-theme {
   content: url("../../public/light-heroimage.png");
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .dark .logo-theme {
   content: url("../../public/dark-heroimage.png");
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .dark .btn-send {
   background-color: oklch(14.031% 0.02303 302.764);
