@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { KY, Method } from '@/services/api'
 import { calendarEvent } from "@/lib/types";
-import { start } from "repl";
-import { Calendar } from "@fullcalendar/core/index.js";
+
 
 export async function GET() {
   const calendarId = process.env.CALENDAR_ID!;

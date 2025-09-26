@@ -71,3 +71,10 @@ export interface calendarEvent {
   end: DateString
   status: 'confirmed'
 }
+
+export type FullCalendarProps = {
+  title: string;
+  start: string;
+  end: string;
+  color?: string;
+}
