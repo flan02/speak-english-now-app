@@ -9,14 +9,10 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import esLocale from '@fullcalendar/core/locales/es';
 import { ModalDayCalendar } from "./ModalDayCalendar";
 import useCalendar from "@/hooks/useCalendar";
+import { FullCalendarProps } from "@/lib/types";
 
 
-type FullCalendarProps = {
-  title: string;
-  start: string;
-  end: string;
-  color?: string;
-}
+
 
 
 // * https://fullcalendar.io/docs/react
@@ -75,23 +71,46 @@ const Calendar = () => {
     color: slot.status === 'confirmed' ? 'green' : 'red',
   }))
 
+  console.log(fullCalendarEvents);
+
   // <div style={{ maxWidth: "800px", margin: "0 auto", fontSize: "12px", fontFamily: "cursive" }}></div>
   return (
     <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs" >
       <FullCalendar
         aspectRatio={1.5}
         businessHours={{ startTime: '17:00', endTime: '21:00', daysOfWeek: [1, 2, 3, 4, 5, 6] }}
-        dayMaxEventRows={4}
+        dayMaxEventRows={3}
         dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
         dayCellClassNames={removePastDays}
         events={fullCalendarEvents}
+        eventContent={(arg) => {
+          const start = arg.event.start;
+          const end = arg.event.end;
+          const formatHour = (date: Date | null) => {
+            if (!date) return "";
+            return date.getHours().toString().padStart(2, "0") + "hs";
+          };
 
+          const horario = `${formatHour(start)}-${formatHour(end)}`;
+          return (
+            <div className="w-full text-center text-xs font-semibold rounded-md px-1 py-0.5 bg-slate-600 text-white">
+              {horario}
+            </div>
+          );
+        }}
         initialView="dayGridMonth"
+        moreLinkClick={(arg) => {
+          // Evitar que se abra el pop-up por defecto
+          arg.jsEvent.preventDefault();
+          // Abrir el modal para la fecha específica
+          setSelectedDate(arg.date.toISOString().slice(0, 10));
+          setOpen(true);
+        }}
         locale={esLocale}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin]}
 
       />
-      <ModalDayCalendar setSelectedDate={setSelectedDate} setOpen={setOpen} selectedDate={selectedDate} open={open} />
+      <ModalDayCalendar setSelectedDate={setSelectedDate} setOpen={setOpen} selectedDate={selectedDate} open={open} events={fullCalendarEvents} />
     </div>
   );
 };
