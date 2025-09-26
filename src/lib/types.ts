@@ -60,3 +60,14 @@ export const socialMediaUrlHablaIngles: string[] = [
   "https://www.linkedin.com/in/dan-chanivet-574084b2/",
   "https://curriculumvitae-woad.vercel.app/"
 ]
+
+
+type DateString = {
+  dateTime: string
+  timeZone: string
+}
+export interface calendarEvent {
+  start: DateString
+  end: DateString
+  status: 'confirmed'
+}
