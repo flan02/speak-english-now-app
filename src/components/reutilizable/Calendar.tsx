@@ -11,19 +11,6 @@ import { ModalDayCalendar } from "./ModalDayCalendar";
 import useCalendar from "@/hooks/useCalendar";
 import { FullCalendarProps } from "@/lib/types";
 
-
-
-
-
-// * https://fullcalendar.io/docs/react
-/* 
-  googleCalendarApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
-  events={{ googleCalendarId: process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_ID }}
-*/
-
-
-
-
 const scheduleClass = ({ info, setOpen, setSelectedDate }: { info: { date: Date }, setOpen: React.Dispatch<React.SetStateAction<boolean>>, setSelectedDate: React.Dispatch<React.SetStateAction<string | null>> }) => {
   const clicked = info.date; // es un objeto Date de FullCalendar
   const today = new Date();
@@ -62,7 +49,7 @@ const Calendar = () => {
 
   const { events, isLoading, refetch } = useCalendar()
 
-  //console.log(events);
+
 
   const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
@@ -73,7 +60,7 @@ const Calendar = () => {
 
   console.log(fullCalendarEvents);
 
-  // <div style={{ maxWidth: "800px", margin: "0 auto", fontSize: "12px", fontFamily: "cursive" }}></div>
+
   return (
     <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs" >
       <FullCalendar
@@ -100,9 +87,9 @@ const Calendar = () => {
         }}
         initialView="dayGridMonth"
         moreLinkClick={(arg) => {
-          // Evitar que se abra el pop-up por defecto
+
           arg.jsEvent.preventDefault();
-          // Abrir el modal para la fecha específica
+
           setSelectedDate(arg.date.toISOString().slice(0, 10));
           setOpen(true);
         }}
@@ -118,40 +105,5 @@ const Calendar = () => {
 export default Calendar;
 
 
-//BUNCH OF CALENDAR PROPS
-// contentHeight="auto"
-// eventClick={show_info}
-// headerToolbar={{
-//  googleCalendarApiKey={process.env.NEXT_PUBLIC_AUTH_GOOGLE_ID}
-//   left: "prev,next today",
-//   center: "title",
-//   right: "dayGridMonth,timeGridWeek,timeGridDay",
-// }}
-// events={{ googleCalendarId: process.env.NEXT_PUBLIC_AUTH_GOOGLE_SECRET }}
-// weekends={false}
-// eventClick={(info) => {
-//   window.open(info.event.url, "_blank");
-// }}
-// dateClick={(info) => {
-//   alert("Clicked on: " + info.dateStr);
-//   console.log(info)
-//   alert("Coordinates: " + info.jsEvent.pageX + "," + info.jsEvent.pageY);
-// }}
-// select={(info) => {
-//   console.log(info)
-//   alert("selected " + info.startStr + " to " + info.endStr);
-// }}
 
-/* 
-const test_events = [                        // Lista de eventos
-  { title: '17hs-18hs', date: '2025-09-12' },
-  { title: '18hs-19hs', date: '2025-09-12' },
-  { title: '19hs-20hs', date: '2025-09-12' },
-  { title: '20hs-21hs', date: '2025-09-12' },
-  { title: '18hs-19hs', date: '2025-09-15' },
-  { title: '17hs-18hs', date: '2025-09-19' },
-  { title: '18hs-19hs', date: '2025-09-19' },
-  { title: '19hs-20hs', date: '2025-09-19' },
-  { title: '20hs-21hs', date: '2025-09-19' }
-]
-*/
+

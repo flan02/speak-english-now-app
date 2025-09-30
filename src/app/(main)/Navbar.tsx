@@ -13,8 +13,8 @@ export default function Navbar() {
 
   return (
     <header className="shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-end justify-between gap-3 p-3">
-        <Link href="/resumes" className="flex items-center gap-2 dark:td">
+      <div className="mx-auto flex max-w-7xl items-end justify-between gap-3 p-2 mt-3">
+        <Link href="/inicio" className="flex items-center gap-2 dark:td">
           {/* <Image
             src={logo}
             alt="Logo"

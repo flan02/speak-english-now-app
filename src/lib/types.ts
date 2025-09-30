@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { ResumeValues } from "./validation";
-
+import { Calendar, DollarSign, Home, Inbox, Search, Settings } from "lucide-react"
 export interface EditorFormProps {
   resumeData: ResumeValues;
   setResumeData: (data: ResumeValues) => void
@@ -18,7 +18,7 @@ export type ResumeServerData = Prisma.ResumeGetPayload<{
 export const marquee_banners = [
   "🌟 La clase dura 2hs, la primera es virtual y la segunda una evaluación integradora —",
   "💲 $12,000$ hasta 2 personas (cada uno) y 10,000$ hasta 5 personas (cada uno) —",
-  "📆 ¡Agenda tu clase en nuestro calendariograma!  —",
+  "📆 ¡Agenda tu clase en nuestro calendario!  —",
   "📞 Hablanos por whatsapp o website para mas info  —",
   "✉️ Suscribite a nuestro boletín para novedades!!!"
 ]
@@ -78,3 +78,38 @@ export type FullCalendarProps = {
   end: string;
   color?: string;
 }
+
+
+export // Menu items.
+  const items = [
+    {
+      title: "Principal",
+      url: "/inicio/principal",
+      icon: Home,
+    },
+    {
+      title: "Mis Clases",
+      url: "/inicio/mis-clases",
+      icon: Inbox,
+    },
+    {
+      title: "Calendario",
+      url: "/inicio/calendario",
+      icon: Calendar,
+    },
+    {
+      title: "Reservas",
+      url: "/inicio/reservas",
+      icon: Search,
+    },
+    {
+      title: "Pagos",
+      url: "/inicio/pagos",
+      icon: DollarSign,
+    },
+    {
+      title: "Configuración",
+      url: "/inicio/configuracion",
+      icon: Settings,
+    }
+  ]
