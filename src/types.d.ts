@@ -6,3 +6,5 @@ declare module 'types' {
     image: string
   }
 }
+
+declare module '*.css';

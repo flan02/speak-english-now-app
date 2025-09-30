@@ -1,14 +1,16 @@
-import PremiumModal from "@/components/premium/PremiumModal";
-import { getUserSubscriptionLevel } from "@/lib/subscription";
+import BackgroundMultiDots from "@/components/reutilizable/BackgroundMultiDots";
 
 import Navbar from "./Navbar";
-
-// TODO: It will make subscription level available to all components
-import SubscriptionLevelProvider from "./SubscriptionLevelProvider"
-
 import { auth } from "@/auth";
 import SignIn from "@/components/reutilizable/sign-in";
-//import SessionInfo from "@/components/reutilizable/SessionInfo";
+import Marquee from "@/components/reutilizable/Marquee";
+import { marquee_banners } from "@/lib/types";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/ui/app-sidebar";
+import MaxWidthWrapper from "@/components/reutilizable/MaxWidthWrapper";
+import { Card } from "@/components/ui/card";
+
+
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -17,20 +19,30 @@ export default async function Layout({ children }: { children: React.ReactNode }
     return <SignIn />
   }
 
-  const userSubscriptionLevel = await getUserSubscriptionLevel(session.user?.id)
-
   return (
-    <SubscriptionLevelProvider userSubscriptionLevel={userSubscriptionLevel}>
-      <>
-        {
-          session.user.name && <div className="flex min-h-screen flex-col">
-            <Navbar />
-            {children} {/* You can use ssr components even though these are wrapped into the children props of a client component. They can still be ssr components */}
-            <PremiumModal />
-            {/* <SessionInfo session={session} /> */}
-          </div>
-        }
-      </>
-    </SubscriptionLevelProvider>
+
+    <>
+      {
+        session.user.name &&
+        <>
+          <Marquee time={30} banners={marquee_banners} />
+          <Navbar />
+          {/* <BackgroundMultiDots /> */}
+          <SidebarProvider className="">
+            <AppSidebar />
+            <MaxWidthWrapper className="max-w-7xl md:px-0 lg:py-2">
+              <SidebarTrigger className="lg:hidden fixed right-2" />
+              <Card className="dark:bg-[#111] min-h-[calc(100vh-130px)] p-8 border border-gray-200 dark:border dark:border-gray-600/30">
+                {children}
+              </Card>
+            </MaxWidthWrapper>
+
+          </SidebarProvider>
+        </>
+      }
+    </>
+
   )
 }
+
+

@@ -35,7 +35,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async signIn({ user, account, profile }) {
       try {
         const { name, email, image } = user as User
+
+        // ! REMOVE THE LINE BELOW ON PRODUCTION
         console.log('Trying to sign in user: ', email);
+
         const userFound = await loggedAsAdmin(email) // We need to know if the user is an admin or not
 
         if (!userFound) {
@@ -90,11 +93,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async redirect({ url, baseUrl }: { url: string; baseUrl: string }) {
       if (url?.startsWith(baseUrl)) return url
-      return '/resumes'
+      return '/inicio'
     },
   },
   pages: {
-    signIn: '/resumes',
+    signIn: '/inicio',
     signOut: '',
     error: '/'
   }
