@@ -18,7 +18,7 @@ import { items } from "@/lib/types"
 export function AppSidebar() {
 
   return (
-    <Sidebar className="lg:absolute lg:top-2 lg:left-0 lg:h-[768px] lg:w-[250px] lg:z-50 lg:mt-24 border-r border-r-gray-200 dark:border-r dark:border-r-gray-600/30">
+    <Sidebar className="lg:absolute lg:top-2 lg:left-0 lg:h-[768px] lg:w-[250px] lg:z-30 lg:mt-24 border-r border-r-gray-200 dark:border-r dark:border-r-gray-600/30">
       <SidebarContent className="min-w-[340px]">
         <SidebarGroup>
           <SidebarGroupLabel>
