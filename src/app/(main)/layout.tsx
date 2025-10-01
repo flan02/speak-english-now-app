@@ -8,8 +8,6 @@ import { marquee_banners } from "@/lib/types";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import MaxWidthWrapper from "@/components/reutilizable/MaxWidthWrapper";
-import { Card } from "@/components/ui/card";
-
 
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -32,9 +30,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
             <AppSidebar />
             <MaxWidthWrapper className="max-w-7xl md:px-0 lg:py-2">
               <SidebarTrigger className="lg:hidden fixed right-2" />
-              <Card className="dark:bg-[#111] min-h-[calc(100vh-130px)] p-8 border border-gray-200 dark:border dark:border-gray-600/30">
+              <MaxWidthWrapper className="lg:px-4 lg:py-12">
                 {children}
-              </Card>
+              </MaxWidthWrapper>
+
             </MaxWidthWrapper>
 
           </SidebarProvider>

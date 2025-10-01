@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { ResumeValues } from "./validation";
-import { Calendar, DollarSign, Home, Inbox, Search, Settings } from "lucide-react"
+import { Book, BookAIcon, Calendar, Computer, DollarSign, Home, Inbox, NotebookIcon, PenBox, Search, Settings } from "lucide-react"
 export interface EditorFormProps {
   resumeData: ResumeValues;
   setResumeData: (data: ResumeValues) => void
@@ -88,9 +88,14 @@ export // Menu items.
       icon: Home,
     },
     {
-      title: "Mis Clases",
-      url: "/inicio/mis-clases",
-      icon: Inbox,
+      title: "Mis Clases Virtuales",
+      url: "/inicio/mis-clases-virtuales",
+      icon: Computer
+    },
+    {
+      title: "Mis Actividades",
+      url: "/inicio/mis-actividades",
+      icon: PenBox
     },
     {
       title: "Calendario",
@@ -100,12 +105,7 @@ export // Menu items.
     {
       title: "Reservas",
       url: "/inicio/reservas",
-      icon: Search,
-    },
-    {
-      title: "Pagos",
-      url: "/inicio/pagos",
-      icon: DollarSign,
+      icon: BookAIcon,
     },
     {
       title: "Configuración",
