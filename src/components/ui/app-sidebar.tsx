@@ -11,12 +11,25 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { items } from "@/lib/types"
+import { Card, CardContent, CardTitle } from "./card"
+import SignIn from "../reutilizable/sign-in"
+import { auth } from "@/auth"
+import SignOut from "../reutilizable/sign-out"
+import Image from "next/image"
+import { userAgent } from "next/server"
 
 
 
 
-export function AppSidebar() {
+export async function AppSidebar() {
+  const session = await auth()
+  const image = session?.user?.image! || null
 
+  console.log('user image sidebar:', image);
+  //console.log(session?.user.id)
+  if (!session?.user?.name) {
+    return <SignIn />
+  }
   return (
     <Sidebar className="lg:absolute lg:top-2 lg:left-0 lg:h-[768px] lg:w-[250px] lg:z-30 lg:mt-24 border-r border-r-gray-200 dark:border-r dark:border-r-gray-600/30">
       <SidebarContent className="min-w-[340px]">
@@ -42,6 +55,18 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <section>
+        <Card className="border-card px-1 py-2 mx-1">
+
+          <CardContent className="flex items-center">
+            <Image src={session.user.image!} alt={session.user.name} width={32} height={32} className="rounded-full mr-2 border-2 border-black" />
+            <p className="font-orbitron font-bold">{session.user.name}</p>
+          </CardContent>
+
+          <SignOut />
+
+        </Card>
+      </section>
     </Sidebar>
   )
 }

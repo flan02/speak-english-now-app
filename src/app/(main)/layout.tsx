@@ -28,9 +28,10 @@ export default async function Layout({ children }: { children: React.ReactNode }
           {/* <BackgroundMultiDots /> */}
           <SidebarProvider className="">
             <AppSidebar />
+
             <MaxWidthWrapper className="max-w-7xl md:px-0 lg:py-2">
               <SidebarTrigger className="lg:hidden fixed right-2" />
-              <MaxWidthWrapper className="lg:px-4 lg:py-12">
+              <MaxWidthWrapper className="lg:px-4 lg:py-12 space-y-8">
                 {children}
               </MaxWidthWrapper>
 

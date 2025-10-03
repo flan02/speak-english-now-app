@@ -16,7 +16,7 @@ const Reservas = (props: Props) => {
         {/* <!-- Google Calendar Appointment Scheduling begin --> */}
         <iframe
           className='w-full h-[700px] lg:h-[800px] mt-4 border-0'
-          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0ybLtExUnUsoF8DycRpmUmsUcey89fMi8lCMOiiQWsOSaTx5quGEfFokrCpv5dqeUjx926Gj_V?gv=true" ></iframe>
+          src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0ybLtExUnUsoF8DycRpmUmsUcey89fMi8lCMOiiQWsOSaTx5quGEfFokrCpv5dqeUjx926Gj_V?gv=true"></iframe>
         {/* <!-- end Google Calendar Appointment Scheduling --> */}
       </section>
     </>

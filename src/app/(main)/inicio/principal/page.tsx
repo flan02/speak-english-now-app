@@ -1,4 +1,5 @@
 import H1 from '@/components/html/h1'
+import { Button } from '@/components/ui/button'
 import { Home } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
@@ -16,7 +17,13 @@ const Principal = (props: Props) => {
       <p>proximas clases en (fecha)</p>
       <p>link para unirse a la proxima clase</p>
       <p>codigo de referencia para clase grupal</p>
-      <Link href='/inicio/historial' className='underline'>Ver historial</Link>
+
+      <p>AGREGAR EN EL SIDEBAR LA FOTO DEL USUARIO EL NOMBRE, ESTADO EN LINEA Y EL BOTON DE CERRAR SESION !</p>
+      <Button asChild variant='default' className='w-full lg:w-auto bg-black text-white btn-dark'>
+        <Link href='/inicio/historial'>
+          ver historial
+        </Link>
+      </Button>
     </>
 
   )
