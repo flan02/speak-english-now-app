@@ -13,7 +13,7 @@ export default function Navbar() {
 
   return (
     <header className="shadow-sm">
-      <div className="mx-auto flex max-w-7xl items-end justify-between gap-3 p-2 mt-3">
+      <div className="mx-auto flex max-w-7xl items-end justify-between gap-3 py-2 mt-4">
         <Link href="/inicio" className="flex items-center gap-2 dark:td">
           {/* <Image
             src={logo}
@@ -32,8 +32,8 @@ export default function Navbar() {
 
         </Link>
         <div className="flex items-center space-x-6">
-          <SignOut />
-          <ThemeToggle />
+          {/* <SignOut /> */}
+          {/* <ThemeToggle /> */}
         </div>
       </div>
     </header>

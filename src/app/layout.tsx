@@ -36,11 +36,10 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Dan Chanivet",
-      url: "https://danchanivet.tech"
+      url: "https://danchanivet.tech" // * reemplaza con tu URL
     }
   ]
 }
-
 
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
