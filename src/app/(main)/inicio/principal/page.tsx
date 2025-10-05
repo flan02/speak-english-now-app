@@ -18,7 +18,7 @@ const Principal = (props: Props) => {
       <p>link para unirse a la proxima clase</p>
       <p>codigo de referencia para clase grupal</p>
 
-      <p>AGREGAR EN EL SIDEBAR LA FOTO DEL USUARIO EL NOMBRE, ESTADO EN LINEA Y EL BOTON DE CERRAR SESION !</p>
+
       <Button asChild variant='default' className='w-full lg:w-auto bg-black text-white btn-dark'>
         <Link href='/inicio/historial'>
           ver historial

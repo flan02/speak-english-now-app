@@ -1,3 +1,4 @@
+
 import ky from 'ky'
 
 export enum Method {
@@ -24,3 +25,5 @@ export async function KY(method: Method, url: string, data?: any) {
   }
 
 }
+
+

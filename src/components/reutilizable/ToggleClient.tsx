@@ -19,19 +19,19 @@ export default function ToggleClient() {
   }, [])
 
   return (
-    <div className="flex space-x-1 items-center">
-      <p className="font-roboto">modo oscuro:</p>
+    <div className="flex space-x-1 items-center -mt-2">
+      <p className="font-roboto underline font-bold uppercase text-xs">modo oscuro:</p>
       <div>
         {
           mounted && theme !== 'light' ?
             <Button onClick={() => setTheme("light")} variant="ghost" size="icon" className="">
               {/* <Sun className="size-[1rem] text-white rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" /> */}
-              <ToggleRightIcon className="size-8 mt-2" />
+              <ToggleRightIcon className="size-6 mt-1" />
             </Button>
             :
             <Button onClick={() => setTheme("dark")} variant="ghost" size="icon" className="">
               {/* <Moon className="absolute size-[1rem] text-gray-800 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" /> */}
-              <ToggleLeftIcon className="size-8 mt-2" />
+              <ToggleLeftIcon className="size-6 mt-1" />
             </Button>
         }
       </div>
