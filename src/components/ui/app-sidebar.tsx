@@ -17,6 +17,7 @@ import { auth } from "@/auth"
 import SignOut from "../reutilizable/sign-out"
 import Image from "next/image"
 import { userAgent } from "next/server"
+import { Dot } from "lucide-react"
 
 
 
@@ -58,7 +59,8 @@ export async function AppSidebar() {
       <section>
         <Card className="border-card px-1 py-2 mx-1">
 
-          <CardContent className="flex items-center">
+          <CardContent className="flex items-center relative">
+            <Dot color="green" size={52} fill="" className="absolute top-1 left-0" />
             <Image src={session.user.image!} alt={session.user.name} width={32} height={32} className="rounded-full mr-2 border-2 border-black" />
             <p className="font-orbitron font-bold">{session.user.name}</p>
           </CardContent>

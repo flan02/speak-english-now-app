@@ -25,42 +25,31 @@ enum PaymentStatus {
   failed
 }
 
-model User {
-  id          String              @id @default(auto()) @map("_id") @db.ObjectId
-  email       String              @unique
-  name        String
-  image       String?
-  role        Role                @default(USER)
-  resume      Resume[]
-  stripe      billingStripe?
-  mercadoPago billingMercadoPago?
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+enum NivelIngles {
+  inicial
+  basico
+  intermedio
+  avanzado
 }
 
-model Resume {
-  id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  user            User             @relation(fields: [userId], references: [id])
-  userId          String           @db.ObjectId
-  title           String?
-  description     String?
-  photoUrl        String           @default("/avatar.png")
-  colorHex        String           @default("#000000")
-  borderStyle     String           @default("squircle")
-  summary         String?
-  firstName       String?
-  lastName        String?
-  email           String?
-  jobTitle        String?
-  city            String?
-  country         String?
-  phone           String?
-  workExperiences WorkExperience[]
-  educations      Education[]
-  skills          String[]
-  //languages       String
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
+enum Estado {
+  true
+  false
+}
+
+model User {
+  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+  email              String              @unique
+  name               String
+  image              String?
+  role               Role                @default(USER)
+  localidad          String?
+  telefono           Int?
+  nivel              NivelIngles         @default(inicial)
+  status             Estado              @default(true)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  billingMercadoPago billingMercadoPago?
 }
 
 model WorkExperience {
@@ -71,38 +60,8 @@ model WorkExperience {
   endDate     DateTime?
   description String?
   resumeId    String    @db.ObjectId
-  resume      Resume    @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-}
-
-model Education {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  degree    String?
-  school    String?
-  startDate DateTime?
-  endDate   DateTime?
-  resumeId  String    @db.ObjectId
-  resume    Resume    @relation(fields: [resumeId], references: [id], onDelete: Cascade)
-  createAt  DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
-}
-
-model billingStripe {
-  id                      String         @id @default(auto()) @map("_id") @db.ObjectId
-  userId                  String         @unique @db.ObjectId
-  user                    User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stripeCustomerId        String         @unique
-  stripeSubscriptionId    String         @unique
-  stripePriceId           String
-  stripeCurrentPeriodEnd  DateTime
-  stripeCancelAtPeriodEnd Boolean        @default(false)
-  stripePaymentId         String?        @unique
-  amount                  Float?
-  currency                String?
-  status                  PaymentStatus?
-  createdAt               DateTime       @default(now())
-  updatedAt               DateTime       @updatedAt
 }
 
 model billingMercadoPago {
