@@ -4,28 +4,45 @@ import ToggleClient from '../reutilizable/ToggleClient'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { KY, Method } from '@/services/api'
-import { set } from 'date-fns'
+import { NivelIngles } from '@prisma/client'
+import { Skeleton } from '../ui/skeleton'
 
 type Props = {}
 
+interface formUserData {
+  status: boolean
+  localidad: string
+  nivel: NivelIngles | ''
+  telefono: number | null
+  newsletter: string
+}
+
 const EditUserInfo = (props: Props) => {
-  const [isEditing, setIsEditing] = React.useState({
+  const [formUpdated, setFormUpdated] = React.useState(false)
+
+  const [isEditing, setIsEditing] = React.useState<formUserData>({
     status: false,
     localidad: '',
-    nivelDeIngles: '',
-    telefonoDeContacto: ''
+    nivel: '',
+    telefono: null,
+    newsletter: ''
   })
 
-  const handleSaveBtn = async () => {
+  const handleSaveBtn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     const data = {
       localidad: isEditing.localidad,
-      nivelDeIngles: isEditing.nivelDeIngles,
-      telefonoDeContacto: isEditing.telefonoDeContacto
+      nivel: isEditing.nivel,
+      telefono: Number(isEditing.telefono),
+      newsletter: isEditing.newsletter
     }
 
     setIsEditing({ ...isEditing, status: false })
 
-    console.log('before send user data:', data);
+    setFormUpdated(true)
+    setTimeout(() => {
+      setFormUpdated(false)
+    }, 3000);
     try {
       const res = await KY(Method.POST, '/api/user-data', { json: data });
       console.log('response after send user data:', res);
@@ -34,23 +51,40 @@ const EditUserInfo = (props: Props) => {
     }
   }
 
-
-
-
-
   const handleEditButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('edit button clicked')
+    e.preventDefault()
     setIsEditing({ ...isEditing, status: true })
   }
 
 
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await KY(Method.GET, 'http://localhost:3000/api/user-data');
+        console.log('user data fetched:', res);
+        if (res) {
+          setIsEditing({
+            ...isEditing,
+            localidad: res.localidad || '',
+            nivel: res.nivel || '',
+            telefono: res.telefono || null,
+            newsletter: res.newsletter || ''
+          })
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
-    <form onSubmit={(e) => e.preventDefault()} className='space-y-3'>
+    <form onSubmit={handleSaveBtn} className='space-y-3'>
       <div className='flex space-x-2 items-end'>
         <p className='font-roboto underline font-bold uppercase text-xs'>localidad:</p>
         {
           !isEditing.status ?
-            <span className='!no-underline !lowercase text-xs font-roboto'>{isEditing.localidad || '-'}</span>
+            <div className='!no-underline !lowercase text-xs font-roboto'>{isEditing.localidad || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
             :
             <input
               type="text" className='input-text !px-1 !text-xs !h-5 border border-gray-400 border-card rounded-md'
@@ -64,22 +98,36 @@ const EditUserInfo = (props: Props) => {
         <p className='font-roboto underline font-bold uppercase text-xs'>nivel de ingles:</p>
         {
           !isEditing.status ?
-            <span className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.nivelDeIngles || '-'}</span>
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.nivel || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
             :
-            <input
-              pattern='^(?!\s*$)[A-Za-zÀ-ÿ\s]{1,40}$'
-              type="text" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' placeholder='ingresa tu nivel de ingles' value={isEditing.nivelDeIngles} onChange={(e) => setIsEditing({ ...isEditing, nivelDeIngles: e.target.value })} />
+            <select className='text-xs font-roboto border border-gray-400 border-card rounded-md !p-1' value={isEditing.nivel} onChange={(e) => setIsEditing({ ...isEditing, nivel: (e.target.value as NivelIngles) })}>
+              <option value="inicial" >inicial</option>
+              <option value="basico">basico</option>
+              <option value="intermedio">intermedio</option>
+              <option value="avanzado">avanzado</option>
+            </select>
         }
       </div>
       <div className='flex space-x-2 items-end'>
         <p className='font-roboto underline font-bold uppercase text-xs mt-2'>telefono de contacto:</p>
         {
           !isEditing.status ?
-            <span className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.telefonoDeContacto || '-'}</span>
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.telefono || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
             :
             <input
-              pattern='^(?!\s*$)[A-Za-zÀ-ÿ\s]{1,40}$'
-              type="number" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' placeholder='ingresa tu nro celular' value={isEditing.telefonoDeContacto} onChange={(e) => setIsEditing({ ...isEditing, telefonoDeContacto: e.target.value })} />
+              type="number" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' placeholder='ingresa tu nro celular' value={Number(isEditing.telefono)} onChange={(e) => setIsEditing({ ...isEditing, telefono: (e.target.value ? Number(e.target.value) : null) })}
+            />
+        }
+      </div>
+      <div className='flex space-x-2 items-end'>
+        <p className='font-roboto underline font-bold uppercase text-xs mt-2'>¿Recibir boletin?</p>
+        {
+          !isEditing.status ?
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.newsletter || <Skeleton className="h-4 w-[15px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
+            :
+            <input
+              type="checkbox" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' checked={isEditing.newsletter === 'si'} onChange={(e) => setIsEditing({ ...isEditing, newsletter: e.target.checked ? 'si' : 'no' })}
+            />
         }
       </div>
       <ToggleClient />
@@ -90,14 +138,20 @@ const EditUserInfo = (props: Props) => {
         </Link>
       </Button>
       <div className='w-full text-center space-x-2'>
-        <Button disabled={isEditing.status} onClick={handleEditButton} variant='destructive' className='w-full lg:w-auto btn-red text-xs bg-red-500 hover:bg-red-500/80'>
+        <Button onClick={handleEditButton} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto btn-red text-xs bg-red-500 hover:bg-red-500/80'>
           Editar
         </Button>
         {
           isEditing.status &&
-          <Button type="submit" onClick={handleSaveBtn} className='w-full lg:w-auto btn-green text-xs bg-green-600 hover:bg-green-600/80 mt-1 text-white'>
+          <Button type="submit" className='w-full lg:w-auto btn-green text-xs bg-green-600 hover:bg-green-600/80 mt-1 text-white'>
             Guardar
           </Button>
+        }
+
+      </div>
+      <div className='text-center h-5'>
+        {
+          formUpdated && <span className='font-roboto text-xs font-black'>configuracion actualizada correctamente!</span>
         }
       </div>
     </form>
@@ -105,3 +159,4 @@ const EditUserInfo = (props: Props) => {
 }
 
 export default EditUserInfo
+

@@ -11,7 +11,8 @@ export async function getUserData({ id }: { id: string }) {
         localidad: true,
         nivel: true,
         telefono: true,
-      },
+        newsletter: true
+      }
     })
     return response
   } catch (error) {
@@ -21,7 +22,7 @@ export async function getUserData({ id }: { id: string }) {
 }
 
 
-export async function updateUserData({ id, localidad, nivel, telefono }: { id: string, localidad: string, nivel: $Enums.NivelIngles, telefono: number }) {
+export async function updateUserData({ id, localidad, nivel, telefono, newsletter }: { id: string, localidad: string, nivel: $Enums.NivelIngles, telefono: number, newsletter: 'si' | 'no' }) {
   try {
     const response = await db.user.update({
       where: { id },
@@ -29,6 +30,7 @@ export async function updateUserData({ id, localidad, nivel, telefono }: { id: s
         localidad,
         nivel,
         telefono,
+        newsletter
       }
     })
     return response

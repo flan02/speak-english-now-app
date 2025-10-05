@@ -26,7 +26,7 @@ export async function AppSidebar() {
   const session = await auth()
   const image = session?.user?.image! || null
 
-  console.log('user image sidebar:', image);
+  //console.log('user image sidebar:', image);
   //console.log(session?.user.id)
   if (!session?.user?.name) {
     return <SignIn />

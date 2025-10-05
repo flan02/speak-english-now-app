@@ -32,11 +32,6 @@ enum NivelIngles {
   avanzado
 }
 
-enum Estado {
-  true
-  false
-}
-
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
@@ -46,10 +41,11 @@ model User {
   localidad          String?
   telefono           Int?
   nivel              NivelIngles         @default(inicial)
-  status             Estado              @default(true)
+  status             Boolean             @default(false)
+  newsletter         String              @default("no")
+  billingMercadoPago billingMercadoPago?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
-  billingMercadoPago billingMercadoPago?
 }
 
 model WorkExperience {

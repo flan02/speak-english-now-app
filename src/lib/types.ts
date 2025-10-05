@@ -6,15 +6,6 @@ export interface EditorFormProps {
   setResumeData: (data: ResumeValues) => void
 }
 
-export const resumeDataInclude = {
-  workExperiences: true,
-  educations: true,
-} satisfies Prisma.ResumeInclude;
-
-export type ResumeServerData = Prisma.ResumeGetPayload<{
-  include: typeof resumeDataInclude;
-}>;
-
 export const marquee_banners = [
   "🌟 La clase dura 2hs, la primera es virtual y la segunda una evaluación integradora —",
   "💲 $12,000$ hasta 2 personas (cada uno) y 10,000$ hasta 5 personas (cada uno) —",
@@ -108,8 +99,16 @@ export // Menu items.
       icon: BookAIcon,
     },
     {
-      title: "Configuración",
+      title: "Configuracion",
       url: "/inicio/configuracion",
       icon: Settings,
     }
   ]
+
+
+export const nivelIngles = [
+  "inicial",
+  "basico",
+  "intermedio",
+  "avanzado"
+]
