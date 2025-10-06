@@ -17,8 +17,8 @@ const Principal = (props: Props) => {
       <p>proximas clases en (fecha)</p>
       <p>link para unirse a la proxima clase</p>
       <p>codigo de referencia para clase grupal</p>
-
-
+      <p>crear una ruta solo para la clase virtual generada, deberia tener ruta dinamica... revisar</p>
+      <p>analizar si crear otra ruta en el side bar, para el acceso a la grabacion de las clases, se removeran en 7 dias </p>
       <Button asChild variant='default' className='w-full lg:w-auto bg-black text-white btn-dark'>
         <Link href='/inicio/historial'>
           ver historial
