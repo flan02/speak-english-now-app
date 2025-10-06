@@ -32,6 +32,7 @@ const Configuracion = async (props: Props) => {
         <Card className='w-full border border-card py-8 space-y-4'>
           {/* <CardTitle className='font-roboto px-6 text-sm'>MODO OSCURO:</CardTitle> */}
           <CardContent className='space-y-4'>
+            <ToggleClient />
             <div className='flex space-x-2'>
 
               <p className='font-roboto underline font-bold uppercase text-xs'>id de usuario:</p>

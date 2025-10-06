@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { ResumeValues } from "./validation";
-import { Book, BookAIcon, Calendar, Computer, DollarSign, Home, Inbox, NotebookIcon, PenBox, Search, Settings } from "lucide-react"
+import { Book, BookAIcon, Bot, Calendar, Computer, DollarSign, Home, Inbox, NotebookIcon, PenBox, Search, Settings } from "lucide-react"
 export interface EditorFormProps {
   resumeData: ResumeValues;
   setResumeData: (data: ResumeValues) => void
@@ -86,7 +86,7 @@ export // Menu items.
     {
       title: "Mis Actividades",
       url: "/inicio/mis-actividades",
-      icon: PenBox
+      icon: Bot
     },
     {
       title: "Calendario",
@@ -112,3 +112,9 @@ export const nivelIngles = [
   "intermedio",
   "avanzado"
 ]
+
+export type ScheduleClassProps = {
+  info: { date: Date },
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  setSelectedDate: React.Dispatch<React.SetStateAction<string | null>>
+}

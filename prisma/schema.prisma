@@ -38,8 +38,8 @@ model User {
   name               String
   image              String?
   role               Role                @default(USER)
-  localidad          String?
-  telefono           Int?
+  localidad          String?             @default("-")
+  telefono           Int?                @default(0)
   nivel              NivelIngles         @default(inicial)
   status             Boolean             @default(false)
   newsletter         String              @default("no")

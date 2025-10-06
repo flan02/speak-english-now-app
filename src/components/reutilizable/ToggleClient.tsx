@@ -19,7 +19,7 @@ export default function ToggleClient() {
   }, [])
 
   return (
-    <div className="flex space-x-1 items-center -mt-2">
+    <div className="flex space-x-1 items-center mb-1">
       <p className="font-roboto underline font-bold uppercase text-xs">modo oscuro:</p>
       <div>
         {

@@ -9,9 +9,11 @@ import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import esLocale from '@fullcalendar/core/locales/es';
 import { ModalDayCalendar } from "./ModalDayCalendar";
 import useCalendar from "@/hooks/useCalendar";
-import { FullCalendarProps } from "@/lib/types";
+import { FullCalendarProps, ScheduleClassProps } from "@/lib/types";
 
-const scheduleClass = ({ info, setOpen, setSelectedDate }: { info: { date: Date }, setOpen: React.Dispatch<React.SetStateAction<boolean>>, setSelectedDate: React.Dispatch<React.SetStateAction<string | null>> }) => {
+
+
+export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
   const clicked = info.date; // es un objeto Date de FullCalendar
   const today = new Date();
 
@@ -50,7 +52,6 @@ const Calendar = () => {
   const { events, isLoading, refetch } = useCalendar()
 
 
-
   const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
     start: slot.start.dateTime,
@@ -58,8 +59,23 @@ const Calendar = () => {
     color: slot.status === 'confirmed' ? 'green' : 'red',
   }))
 
-  console.log(fullCalendarEvents);
+  //console.log(fullCalendarEvents);
 
+  const fullCalendarContent = (arg: any) => {
+    const start = arg.event.start;
+    const end = arg.event.end;
+    const formatHour = (date: Date | null) => {
+      if (!date) return "";
+      return date.getHours().toString().padStart(2, "0") + "hs";
+    };
+
+    const horario = `${formatHour(start)}-${formatHour(end)}`;
+    return (
+      <div className="w-full text-center text-xs font-semibold rounded-md px-1 py-0.5 bg-slate-600 text-white">
+        {horario}
+      </div>
+    );
+  }
 
   return (
     <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs" >
@@ -70,21 +86,7 @@ const Calendar = () => {
         dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
         dayCellClassNames={removePastDays}
         events={fullCalendarEvents}
-        eventContent={(arg) => {
-          const start = arg.event.start;
-          const end = arg.event.end;
-          const formatHour = (date: Date | null) => {
-            if (!date) return "";
-            return date.getHours().toString().padStart(2, "0") + "hs";
-          };
-
-          const horario = `${formatHour(start)}-${formatHour(end)}`;
-          return (
-            <div className="w-full text-center text-xs font-semibold rounded-md px-1 py-0.5 bg-slate-600 text-white">
-              {horario}
-            </div>
-          );
-        }}
+        eventContent={(fullCalendarContent)}
         initialView="dayGridMonth"
         moreLinkClick={(arg) => {
 

@@ -1,6 +1,5 @@
 'use client'
 import React, { useEffect } from 'react'
-import ToggleClient from '../reutilizable/ToggleClient'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import { KY, Method } from '@/services/api'
@@ -13,20 +12,22 @@ interface formUserData {
   status: boolean
   localidad: string
   nivel: NivelIngles | ''
-  telefono: number | null
+  telefono: number | ''
   newsletter: string
 }
+
 
 const EditUserInfo = (props: Props) => {
   const [formUpdated, setFormUpdated] = React.useState(false)
 
-  const [isEditing, setIsEditing] = React.useState<formUserData>({
+  const initData: formUserData = {
     status: false,
     localidad: '',
     nivel: '',
-    telefono: null,
+    telefono: '',
     newsletter: ''
-  })
+  }
+  const [isEditing, setIsEditing] = React.useState<formUserData>(initData)
 
   const handleSaveBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -42,7 +43,7 @@ const EditUserInfo = (props: Props) => {
     setFormUpdated(true)
     setTimeout(() => {
       setFormUpdated(false)
-    }, 3000);
+    }, 2000);
     try {
       const res = await KY(Method.POST, '/api/user-data', { json: data });
       console.log('response after send user data:', res);
@@ -66,9 +67,9 @@ const EditUserInfo = (props: Props) => {
           setIsEditing({
             ...isEditing,
             localidad: res.localidad || '',
-            nivel: res.nivel || '',
-            telefono: res.telefono || null,
-            newsletter: res.newsletter || ''
+            nivel: res.nivel || 'inicial',
+            telefono: res.telefono,
+            newsletter: res.newsletter || 'no'
           })
         }
       } catch (error) {
@@ -77,6 +78,9 @@ const EditUserInfo = (props: Props) => {
     }
     fetchData();
   }, []);
+
+
+
 
   return (
     <form onSubmit={handleSaveBtn} className='space-y-3'>
@@ -112,10 +116,10 @@ const EditUserInfo = (props: Props) => {
         <p className='font-roboto underline font-bold uppercase text-xs mt-2'>telefono de contacto:</p>
         {
           !isEditing.status ?
-            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.telefono || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{String(isEditing.telefono) || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
             :
             <input
-              type="number" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' placeholder='ingresa tu nro celular' value={Number(isEditing.telefono)} onChange={(e) => setIsEditing({ ...isEditing, telefono: (e.target.value ? Number(e.target.value) : null) })}
+              type="number" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' placeholder='ingresa tu nro celular' value={Number(isEditing.telefono)} onChange={(e) => setIsEditing({ ...isEditing, telefono: Number(e.target.value) })}
             />
         }
       </div>
@@ -130,7 +134,7 @@ const EditUserInfo = (props: Props) => {
             />
         }
       </div>
-      <ToggleClient />
+
 
       <Button asChild variant='default' className='w-full lg:w-auto bg-black text-white btn-dark text-xs'>
         <Link href='/inicio/facturacion'>
