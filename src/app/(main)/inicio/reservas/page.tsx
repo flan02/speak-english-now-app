@@ -7,32 +7,38 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
 import { FullCalendarProps, metodos_pago, ScheduleClassProps } from '@/lib/types'
 import useCalendar from '@/hooks/useCalendar'
-import { ModalDayCalendar } from '@/components/reutilizable/ModalDayCalendar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { MetodoDePagoBadge } from '@/components/reutilizable/MetodoDePagoBadge'
 import { Button } from '@/components/ui/button'
+import ModalPayment from '@/components/reutilizable/ModalPayment'
+import { Card } from '@/components/ui/card'
 
 
 type Props = {}
 
 export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
-  const clicked = info.date; // es un objeto Date de FullCalendar
+  const clicked = info.date;
   const today = new Date();
 
-  // Comparamos solo año, mes y día
   const clickedYMD = clicked.getFullYear() * 10000 + (clicked.getMonth() + 1) * 100 + clicked.getDate();
   const todayYMD = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 
-  // Bloqueamos solo si es anterior a hoy
   if (clickedYMD < todayYMD) return;
-
-  // Bloquear domingos
   if (clicked.getDay() === 0) return;
+  if (clickedYMD === todayYMD && clicked.getTime() < today.getTime()) {
+    setSelectedDate(null);
+    return;
+  }
 
-  // Día válido → abrir modal
-  setSelectedDate(info.date.toISOString().slice(0, 10));
+  const formattedDate = clicked.toLocaleDateString('es-AR', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  });
+
+  setSelectedDate(formattedDate);
   setOpen(true);
-}
+};
 
 const removePastDays = (arg: any) => {
   const cellDate = new Date(arg.date);
@@ -50,9 +56,16 @@ const Reservas = (props: Props) => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [payment, setPayment] = useState(false);
   const [isCalendarReady, setIsCalendarReady] = useState(false);
+  const [isGroupClass, setIsGroupClass] = useState(false);
   const [scheduledTime, setScheduledTime] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
+  const [price, setPrice] = useState(12000)
+  const [studentsCount, setStudentsCount] = useState(12000);
+
+  // TODO: SEND THIS OBJECT VIA PROPS TO MODAL PAYMENT
+  const [classMetadata, setClassMetadata] = useState({})
+
   const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
     start: slot.start.dateTime,
@@ -91,6 +104,7 @@ const Reservas = (props: Props) => {
     return () => clearTimeout(timer);
   }, [events]);
 
+  //console.log("tipo de clase", isGroupClass);
   return (
     <>
       <div className='flex space-x-4 items-end'>
@@ -101,13 +115,16 @@ const Reservas = (props: Props) => {
         <MouseIcon />
         <h2 className='font-roboto uppercase font-bold text-xs'>Clickea sobre un horario disponible para iniciar el proceso de reserva...</h2>
       </article>
-      <section className="w-full max-w-6xl mx-auto p-4">
+      <section className="w-full max-w-6xl mx-auto px-4 py-2">
         {
           isCalendarReady
             ? <FullCalendar
-              plugins={[timeGridPlugin, interactionPlugin]}
-              initialView="timeGridWeek"
               allDaySlot={false} // ocultar el "All day"
+              businessHours={{
+                startTime: '17:00', // hora de inicio
+                endTime: '21:00', // hora de fin
+                daysOfWeek: [1, 2, 3, 4, 5, 6], // lunes a sabado
+              }}
               dayHeaderFormat={{ weekday: 'short', day: 'numeric' }} // formato tipo “F 3”, “Sat 4”, etc.
               dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
               dayCellClassNames={removePastDays}
@@ -117,9 +134,13 @@ const Reservas = (props: Props) => {
               eventContent={(fullCalendarContent)}
               expandRows={true}
               headerToolbar={false} // oculta los botones de navegación
-              height="250px"
+              height="200px"
+              // hiddenDays={[0, 1]}
+              initialView="timeGridWeek"
+              initialDate={new Date()}
               locale={"es"}
-              nowIndicator={false}
+              nowIndicator={true}
+              plugins={[timeGridPlugin, interactionPlugin]}
               slotMinTime="17:00:00" // hora mínima visible
               slotMaxTime="21:00:00" // hora máxima visible
               slotDuration="01:00:00" // bloques de 1 hora
@@ -142,36 +163,74 @@ const Reservas = (props: Props) => {
             : <Skeleton className="h-[450px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
         }
       </section>
-      {/* <ModalDayCalendar setSelectedDate={setSelectedDate} setOpen={setOpen} selectedDate={selectedDate} open={open} events={fullCalendarEvents} /> */}
 
       <section className='space-y-2'>
-        <div className='flex space-x-2'>
-          <PenBoxIcon />
-          <h3 className='font-roboto uppercase font-bold text-base'>Detalles de la reserva</h3>
-        </div>
-        <article className='flex items-center space-x-[200px]'>
-          <div className='min-w-[350px]'>
-            <p className='text-base font-roboto'>Fecha: {selectedDate}</p>
-            <p className='text-base font-roboto'>Horario: {scheduledTime.start && scheduledTime.end ? `${scheduledTime.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}` : "No hay horario seleccionado"}</p>
+        <Card className='w-full border border-card py-4 px-4'>
+          <div className='flex space-x-2'>
+            <PenBoxIcon />
+            <h3 className='font-roboto uppercase font-bold text-base'>Detalles de la reserva</h3>
           </div>
-          <div>
-            <Button disabled={!selectedDate || !scheduledTime.start || !scheduledTime.end} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
-          </div>
-        </article>
+          <article className='flex items-center space-x-[100px]'>
+            <div className='min-w-[350px] lg:min-w-[500px] space-y-1 font-roboto'>
+              <p className='text-base font-roboto'><span className='underline underline-offset-4'>Fecha</span>:  {selectedDate ? selectedDate : "no hay fecha seleccionada"}</p>
+              <p className='text-base font-roboto'><span className='underline underline-offset-4'>Horario</span>:  {selectedDate && (scheduledTime.start && scheduledTime.end) ? `${scheduledTime.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}` : "no hay horario seleccionado"}</p>
+              <div className='flex space-x-4 flex-col lg:flex-row space-y-2 lg:space-y-0'>
+                <div className='flex space-x-2'>
+                  <p className=''><span className='underline underline-offset-4'>Tipo de clase</span>:</p>
+                  <select
+                    name="tipo-clase"
+                    id="tipo-clase"
+                    className="bg-black px-2 border-card"
+                    onChange={(e) => setIsGroupClass(e.target.value === "grupal")}
+                  >
+                    <option value="individual">Individual</option>
+                    <option value="grupal">Grupal</option>
+                  </select>
+
+                </div>
+                {
+                  isGroupClass ? <div className='flex space-x-2'>
+                    <p className=''><span className='underline underline-offset-4'>Cantidad de alumnos</span>:</p>
+                    <select
+                      name="cantidad-alumnos"
+                      id="cantidad-alumnos"
+                      onChange={(e) => {
+                        if (e.target.value === "1") setIsGroupClass(false);
+                        setStudentsCount(parseInt(e.target.value))
+                      }}
+                      className='bg-black px-1 border-card'>
+                      <option value="12000"></option>
+                      <option value="24000">2</option>
+                      <option value="30000">3</option>
+                      <option value="40000">4</option>
+                      <option value="50000">5</option>
+                    </select>
+                  </div> : null
+                }
+              </div>
+              <p><span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${studentsCount ? studentsCount : price}</span> </p>
+            </div>
+            <div>
+              <Button disabled={!selectedDate || !scheduledTime.start || !scheduledTime.end} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
+            </div>
+          </article>
+        </Card>
       </section>
 
       <section className='mt-8'>
         <p className='text-sm italic'>* Luego de abonar la clase se crea el evento y recibirás un enlace a tu email para acceder a la misma en el horario que elegiste.</p>
-        <p className='text-sm italic'>* Si necesitas un horario especial o tienes alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o por email a chanivetdan@hotmail.com / +11-3057-7799</p>
+        <p className='text-sm italic'>* Si necesitas un horario especial o tienes alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o por email a chanivetdan@hotmail.com</p>
       </section>
 
       <br /><br /><br />
       <MetodoDePagoBadge title={metodos_pago} color="metodopago text-[9px] lg:text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" />
       <br /><br /><br />
 
-      <ModalDayCalendar setSelectedDate={setSelectedDate} setOpen={setPayment} selectedDate={selectedDate} open={payment} events={fullCalendarEvents} />
+
+      <ModalPayment setOpen={setPayment} open={payment} date={selectedDate} time={scheduledTime} />
     </>
-  )
+  );
 }
 
 export default Reservas
+
