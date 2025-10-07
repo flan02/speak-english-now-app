@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -10,6 +10,7 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { ModalDayCalendar } from "./ModalDayCalendar";
 import useCalendar from "@/hooks/useCalendar";
 import { FullCalendarProps, ScheduleClassProps } from "@/lib/types";
+import { Skeleton } from "../ui/skeleton";
 
 
 
@@ -47,8 +48,7 @@ const removePastDays = (arg: any) => {
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-
-
+  const [isCalendarReady, setIsCalendarReady] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
 
 
@@ -77,28 +77,39 @@ const Calendar = () => {
     );
   }
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCalendarReady(true);
+    }, 500); // espera 0.5s para evitar flicker visual
+    return () => clearTimeout(timer);
+  }, [events]);
+
   return (
     <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs" >
-      <FullCalendar
-        aspectRatio={1.5}
-        businessHours={{ startTime: '17:00', endTime: '21:00', daysOfWeek: [1, 2, 3, 4, 5, 6] }}
-        dayMaxEventRows={3}
-        dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
-        dayCellClassNames={removePastDays}
-        events={fullCalendarEvents}
-        eventContent={(fullCalendarContent)}
-        initialView="dayGridMonth"
-        moreLinkClick={(arg) => {
+      {
+        isCalendarReady ?
+          <FullCalendar
+            aspectRatio={1.5}
+            businessHours={{ startTime: '17:00', endTime: '21:00', daysOfWeek: [1, 2, 3, 4, 5, 6] }}
+            dayMaxEventRows={3}
+            dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
+            dayCellClassNames={removePastDays}
+            events={fullCalendarEvents}
+            eventContent={(fullCalendarContent)}
+            initialView="dayGridMonth"
+            moreLinkClick={(arg) => {
 
-          arg.jsEvent.preventDefault();
+              arg.jsEvent.preventDefault();
 
-          setSelectedDate(arg.date.toISOString().slice(0, 10));
-          setOpen(true);
-        }}
-        locale={esLocale}
-        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin]}
+              setSelectedDate(arg.date.toISOString().slice(0, 10));
+              setOpen(true);
+            }}
+            locale={esLocale}
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin]}
 
-      />
+          />
+          : <Skeleton className="h-[585px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+      }
       <ModalDayCalendar setSelectedDate={setSelectedDate} setOpen={setOpen} selectedDate={selectedDate} open={open} events={fullCalendarEvents} />
     </div>
   );
