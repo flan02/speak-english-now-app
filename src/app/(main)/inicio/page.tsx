@@ -20,14 +20,13 @@ export const metadata: Metadata = {
 export default async function Inicio() {
 
   const session = await auth()
-  //console.log(session)
 
   if (!session?.user?.id) {
     return <p>Error</p>
   }
 
 
-  console.log("session.user", session.user);
+  //console.log("session.user", session.user);
 
   return redirect("/inicio/principal");
 

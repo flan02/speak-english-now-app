@@ -46,6 +46,7 @@ const removePastDays = (arg: any) => {
 }
 
 const Calendar = () => {
+
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [isCalendarReady, setIsCalendarReady] = useState(false);
@@ -59,7 +60,6 @@ const Calendar = () => {
     color: slot.status === 'confirmed' ? 'green' : 'red',
   }))
 
-  //console.log(fullCalendarEvents);
 
   const fullCalendarContent = (arg: any) => {
     const start = arg.event.start;
