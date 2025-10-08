@@ -1,8 +1,10 @@
+'use react'
 import React from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { LanguagesIcon } from 'lucide-react';
 import { ClassMedatadataProps } from '@/lib/types';
 import { Button } from '../ui/button';
+import { KY, Method } from '@/services/api';
 
 type Props = {
   open: boolean;
@@ -12,7 +14,36 @@ type Props = {
   classMetadata: ClassMedatadataProps;
 }
 
+
+
 const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+
+  const handlePayments = async (classMetadata: ClassMedatadataProps) => {
+    //console.log('handle payments', classMetadata);
+    setIsLoading(true);
+
+    try {
+      const response = await KY(Method.POST, '/api/mercado-pago/create-preference', {
+        json: classMetadata
+      })
+
+      const data = await response.json();
+      console.log('response mercado pago', data);
+
+      if (data.id) {
+
+        console.log('Preference ID:', data.id);
+
+      } else {
+        console.error("No se recibió un ID de preferencia:", data);
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error);
+    }
+  }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="lg:max-w-2xl px-1 lg:p-12 py-8 bg-modal rounded-lg">
@@ -50,7 +81,7 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
               </div>
             }
           </article>
-          <Button className='w-full mt-8 bg-purple-700 hover:bg-purple-600 text-white tracking-wider text-base'>Procesar pago</Button>
+          <Button onClick={() => handlePayments(classMetadata)} disabled={isLoading} className='w-full mt-8 bg-purple-700 hover:bg-purple-600 text-white tracking-wider text-base'>Procesar pago</Button>
         </DialogHeader>
 
       </DialogContent>
