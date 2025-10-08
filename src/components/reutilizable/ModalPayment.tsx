@@ -1,18 +1,21 @@
 import React from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../ui/dialog';
 import { LanguagesIcon } from 'lucide-react';
+import { ClassMedatadataProps } from '@/lib/types';
+import { Button } from '../ui/button';
 
 type Props = {
   open: boolean;
   setOpen: (open: boolean) => void;
   date?: string | null;
   time?: { start: Date | null; end: Date | null };
+  classMetadata: ClassMedatadataProps;
 }
 
-const ModalPayment = ({ open, setOpen, date, time }: Props) => {
+const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="lg:max-w-2xl px-1 lg:px-8 py-8 lg:py-8 bg-modal rounded-lg">
+      <DialogContent className="lg:max-w-2xl px-1 lg:p-12 py-8 bg-modal rounded-lg">
         <DialogHeader>
           <DialogTitle className="text-[10px] text-left lg:text-base lg:text-center">
             <div className="flex items-end space-x-4">
@@ -26,7 +29,7 @@ const ModalPayment = ({ open, setOpen, date, time }: Props) => {
             </div>
           </DialogTitle>
           <DialogDescription className="text-xs lg:text-sm text-left mt-2 mb-6 font-roboto">
-            Reserva tu clase de prueba gratuita o tu clase regular
+            Revisa los datos de tu clase antes de proceder al pago
           </DialogDescription>
           <article className='mb-6'>
             {
@@ -38,8 +41,16 @@ const ModalPayment = ({ open, setOpen, date, time }: Props) => {
           </article>
 
           <article>
-            <p>Elegir metodo de pago: mercado pago / criptomonedas ...</p>
+            {
+              classMetadata &&
+              <div className='font-roboto space-y-4 text-xl dark:text-white'>
+                <p>Tipo de clase: <span className='font-bold capitalize'>&nbsp; {classMetadata.type}</span></p>
+                <p>Cantidad de estudiantes: <span className='font-bold'>&nbsp; {classMetadata.studentsCount == 0 ? 1 : classMetadata.studentsCount}</span></p>
+                <p>Precio: <span className='font-bold'>&nbsp; ${classMetadata.price}</span></p>
+              </div>
+            }
           </article>
+          <Button className='w-full mt-8 bg-purple-700 hover:bg-purple-600 text-white tracking-wider text-base'>Procesar pago</Button>
         </DialogHeader>
 
       </DialogContent>

@@ -5,13 +5,14 @@ import React, { useEffect, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
-import { FullCalendarProps, metodos_pago, ScheduleClassProps } from '@/lib/types'
+import { ClassMedatadataProps, FullCalendarProps, metodos_pago, ScheduleClassProps } from '@/lib/types'
 import useCalendar from '@/hooks/useCalendar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { MetodoDePagoBadge } from '@/components/reutilizable/MetodoDePagoBadge'
 import { Button } from '@/components/ui/button'
 import ModalPayment from '@/components/reutilizable/ModalPayment'
 import { Card } from '@/components/ui/card'
+import esLocale from '@fullcalendar/core/locales/es';
 
 
 type Props = {}
@@ -61,10 +62,15 @@ const Reservas = (props: Props) => {
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
   const [price, setPrice] = useState(12000)
-  const [studentsCount, setStudentsCount] = useState(12000);
+  const [studentsCount, setStudentsCount] = useState(0);
 
   // TODO: SEND THIS OBJECT VIA PROPS TO MODAL PAYMENT
-  const [classMetadata, setClassMetadata] = useState({})
+  const initData: ClassMedatadataProps = {
+    type: "individual",
+    studentsCount: 0,
+    price: 12000
+  }
+  const [classMetadata, setClassMetadata] = useState<ClassMedatadataProps>(initData)
 
   const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
@@ -105,6 +111,7 @@ const Reservas = (props: Props) => {
   }, [events]);
 
   //console.log("tipo de clase", isGroupClass);
+
   return (
     <>
       <div className='flex space-x-4 items-end'>
@@ -133,12 +140,17 @@ const Reservas = (props: Props) => {
               events={fullCalendarEvents}
               eventContent={(fullCalendarContent)}
               expandRows={true}
-              headerToolbar={false} // oculta los botones de navegación
+              // headerToolbar={false} // oculta los botones de navegación
+              headerToolbar={{
+                left: 'prev,next today',
+                center: 'title',
+                right: 'timeGridWeek' // timeGridDay
+              }}
               height="200px"
               // hiddenDays={[0, 1]}
               initialView="timeGridWeek"
               initialDate={new Date()}
-              locale={"es"}
+              locale={esLocale}
               nowIndicator={true}
               plugins={[timeGridPlugin, interactionPlugin]}
               slotMinTime="17:00:00" // hora mínima visible
@@ -180,8 +192,13 @@ const Reservas = (props: Props) => {
                   <select
                     name="tipo-clase"
                     id="tipo-clase"
-                    className="bg-black px-2 border-card"
-                    onChange={(e) => setIsGroupClass(e.target.value === "grupal")}
+                    className="dark:bg-black px-2 border-card rounded-lg"
+                    onChange={(e) => {
+                      setIsGroupClass(e.target.value === "grupal")
+
+                      setClassMetadata({ ...classMetadata, type: 'individual', studentsCount: 1, price: 12000 })
+                    }
+                    }
                   >
                     <option value="individual">Individual</option>
                     <option value="grupal">Grupal</option>
@@ -197,9 +214,13 @@ const Reservas = (props: Props) => {
                       onChange={(e) => {
                         if (e.target.value === "1") setIsGroupClass(false);
                         setStudentsCount(parseInt(e.target.value))
+
+                        let students = parseInt(e.target.value) > 0 ? Math.floor(parseInt(e.target.value) / 10000) : 1;
+                        console.log("current students", students);
+                        setClassMetadata({ ...classMetadata, type: "grupal", studentsCount: students, price: parseInt(e.target.value) })
                       }}
-                      className='bg-black px-1 border-card'>
-                      <option value="12000"></option>
+                      className='dark:bg-black px-1 border-card rounded-lg'>
+                      <option value="0"></option>
                       <option value="24000">2</option>
                       <option value="30000">3</option>
                       <option value="40000">4</option>
@@ -208,10 +229,10 @@ const Reservas = (props: Props) => {
                   </div> : null
                 }
               </div>
-              <p><span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${studentsCount ? studentsCount : price}</span> </p>
+              <p><span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${(studentsCount && classMetadata.type === "grupal") ? studentsCount : price}</span> </p>
             </div>
             <div>
-              <Button disabled={!selectedDate || !scheduledTime.start || !scheduledTime.end} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
+              <Button disabled={!selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
             </div>
           </article>
         </Card>
@@ -227,7 +248,7 @@ const Reservas = (props: Props) => {
       <br /><br /><br />
 
 
-      <ModalPayment setOpen={setPayment} open={payment} date={selectedDate} time={scheduledTime} />
+      <ModalPayment setOpen={setPayment} open={payment} date={selectedDate} time={scheduledTime} classMetadata={classMetadata} />
     </>
   );
 }

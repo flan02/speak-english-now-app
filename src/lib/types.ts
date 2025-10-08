@@ -118,3 +118,9 @@ export type ScheduleClassProps = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>,
   setSelectedDate: React.Dispatch<React.SetStateAction<string | null>>
 }
+
+export type ClassMedatadataProps = {
+  type: 'individual' | 'grupal',
+  studentsCount: number,
+  price: number
+}
