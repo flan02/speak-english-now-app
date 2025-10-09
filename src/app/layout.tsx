@@ -44,7 +44,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        <script
+          src="https://sdk.mercadopago.com/js/v2"
+          async
+        ></script>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${orbitron.variable} antialiased`} >
 
         <ThemeProvider
