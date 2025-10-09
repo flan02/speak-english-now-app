@@ -79,12 +79,12 @@ export // Menu items.
       icon: Home,
     },
     {
-      title: "Mis Clases Virtuales",
+      title: "Clases Virtuales",
       url: "/inicio/mis-clases-virtuales",
       icon: Computer
     },
     {
-      title: "Mis Actividades",
+      title: "Actividades",
       url: "/inicio/mis-actividades",
       icon: Bot
     },

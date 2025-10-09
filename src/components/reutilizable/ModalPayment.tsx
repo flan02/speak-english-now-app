@@ -5,6 +5,14 @@ import { LanguagesIcon } from 'lucide-react';
 import { ClassMedatadataProps } from '@/lib/types';
 import { Button } from '../ui/button';
 import { KY, Method } from '@/services/api';
+import { initMercadoPago } from '@mercadopago/sdk-react';
+
+declare global {
+  interface Window {
+    MercadoPagoBricks: (options: { locale: string }) => any;
+    MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
+  }
+}
 
 type Props = {
   open: boolean;
@@ -22,22 +30,57 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
 
   const handlePayments = async (classMetadata: ClassMedatadataProps) => {
     //console.log('handle payments', classMetadata);
+
     setIsLoading(true);
 
     try {
-      const response = await KY(Method.POST, '/api/mercado-pago/create-preference', {
+      const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
         json: classMetadata
       })
 
       const data = await response.json();
-      console.log('response mercado pago', data);
+      console.log('response from mercado pago', data.preferenceId);
 
-      if (data.id) {
+      if (data.preferenceId) {
+        initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
 
-        console.log('Preference ID:', data.id);
+        const renderPaymentBrick = async (preferenceId: string) => {
+          if (!window.MercadoPago) {
+            console.error("MercadoPago SDK no cargado aún");
+            return;
+          }
+
+          // Instancia de MercadoPago
+          const mp = new window.MercadoPago(
+            process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
+            { locale: "es-AR" }
+          );
+
+          // Obtener el builder de bricks
+          const bricksBuilder = mp.bricks();
+
+          // Crear el payment brick
+          await bricksBuilder.create("payment", "payment-brick", {
+            initialization: { preferenceId: data.preferenceId, amount: classMetadata.price },
+            customization: { visual: { style: { theme: "dark" } } },
+            callbacks: {
+              onReady: () => {
+                console.log("Payment Brick listo!");
+              },
+              onError: (error: any) => {
+                console.error("Error en Payment Brick:", error);
+              },
+            },
+          });
+        };
+        // TODO: We calling mp api
+        renderPaymentBrick(data.preferenceId);
+
+        setIsLoading(false);
+
 
       } else {
-        console.error("No se recibió un ID de preferencia:", data);
+        console.error("No se recibió un ID de preferencia:", data.preferenceId);
       }
     } catch (error) {
       console.error('Error processing payment:', error);
@@ -85,6 +128,7 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
         </DialogHeader>
 
       </DialogContent>
+      <div id="payment-brick"></div>
     </Dialog>
   )
 }
