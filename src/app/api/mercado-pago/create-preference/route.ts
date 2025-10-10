@@ -42,7 +42,12 @@ export async function POST(request: NextRequest) {
       metadata: {
         type,
         studentsCount
-      }
+      },
+      payment_methods: {
+        excluded_payment_types: [], // puedes excluir tipos si querés
+        excluded_payment_methods: [], // puedes excluir métodos específicos
+        installments: 12, // máximo de cuotas
+      },
     }
 
 

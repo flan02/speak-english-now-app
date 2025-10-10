@@ -60,9 +60,12 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
           const bricksBuilder = mp.bricks();
 
           // Crear el payment brick
-          await bricksBuilder.create("payment", "payment-brick", {
-            initialization: { preferenceId: data.preferenceId, amount: classMetadata.price },
+          await bricksBuilder.create("wallet", "payment-brick", {
+            initialization: { preferenceId: preferenceId, amount: classMetadata.price },
             customization: { visual: { style: { theme: "dark" } } },
+            texts: {
+              valueProp: 'smart_option', // muestra “pago rápido con Mercado Pago”
+            },
             callbacks: {
               onReady: () => {
                 console.log("Payment Brick listo!");
@@ -70,6 +73,9 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
               onError: (error: any) => {
                 console.error("Error en Payment Brick:", error);
               },
+              onSubmit: () => {
+                console.log("💳 Usuario inició el pago");
+              }
             },
           });
         };
@@ -128,7 +134,7 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
         </DialogHeader>
 
       </DialogContent>
-      <div id="payment-brick"></div>
+      <div id="payment-brick" ></div>
     </Dialog>
   )
 }
