@@ -7,12 +7,7 @@ import { Button } from '../ui/button';
 import { KY, Method } from '@/services/api';
 import { initMercadoPago } from '@mercadopago/sdk-react';
 
-declare global {
-  interface Window {
-    MercadoPagoBricks: (options: { locale: string }) => any;
-    MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
-  }
-}
+
 
 type Props = {
   open: boolean;

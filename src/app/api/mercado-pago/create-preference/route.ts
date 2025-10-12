@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   console.log('Request body:', body);
 
   try {
-    const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN! })
+    const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN! });
 
     const preference = new Preference(client);
 
@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
       items: [
         {
           id: "english-class-reservation", // * Check it later. Possible uses for id
-          title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 0 ? 1 : studentsCount}`,
+          title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / 10000)}`,
           quantity: 1,
           unit_price: Number(price), // precio en ARS
           currency_id: "ARS",
@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
         excluded_payment_types: [], // puedes excluir tipos si querés
         excluded_payment_methods: [], // puedes excluir métodos específicos
         installments: 12, // máximo de cuotas
+        crypto_currency: "ETH", // habilitar pago con criptomonedas
       },
     }
 

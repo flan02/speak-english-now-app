@@ -1,3 +1,4 @@
+import { ScheduleTimeProps } from "@/lib/types"
 import { create } from "zustand"
 
 interface PremiumModalState {
@@ -24,6 +25,8 @@ interface PaymentData {
   setStudentsCount: (count: number) => void
   price: number
   setPrice: (price: number) => void
+  scheduledTime: ScheduleTimeProps
+  setScheduledTime: (time: ScheduleTimeProps) => void
 }
 
 export const storePaymentData = create<PaymentData>((set) => ({
@@ -37,5 +40,7 @@ export const storePaymentData = create<PaymentData>((set) => ({
   setStudentsCount: (count: number) => set({ studentsCount: count }),
   price: 12000,
   setPrice: (price: number) => set({ price }),
+  scheduledTime: { start: null, end: null },
+  setScheduledTime: (time: ScheduleTimeProps) => set({ scheduledTime: time }),
 }))
 

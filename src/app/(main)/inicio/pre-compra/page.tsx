@@ -9,10 +9,17 @@ import { ArrowLeftCircle, CreditCard, PenTool } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react'
 
+declare global {
+  interface Window {
+    MercadoPagoBricks: (options: { locale: string }) => any;
+    MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
+  }
+}
+
 type Props = {}
 
 const PreCompraPage = (props: Props) => {
-  const { payment, isGroupClass, selectedDate, studentsCount, price } = storePaymentData();
+  const { payment, isGroupClass, selectedDate, studentsCount, price, scheduledTime } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
 
@@ -23,7 +30,7 @@ const PreCompraPage = (props: Props) => {
     const classMetadata = {
       type: isGroupClass ? 'grupo' : 'individual',
       studentsCount: studentsCount == 0 ? 1 : studentsCount,
-      price: price
+      price: studentsCount > 2 ? (studentsCount) : price
     }
     setIsLoading(true);
 
@@ -55,7 +62,7 @@ const PreCompraPage = (props: Props) => {
 
           // Crear el payment brick
           await bricksBuilder.create("wallet", "payment-brick", {
-            initialization: { preferenceId: preferenceId, amount: classMetadata.price },
+            initialization: { preferenceId: preferenceId, amount: studentsCount > 2 ? (studentsCount) : price },
             customization: { visual: { style: { theme: "dark" } } },
             texts: {
               valueProp: 'smart_option', // muestra “pago rápido con Mercado Pago”
@@ -91,7 +98,7 @@ const PreCompraPage = (props: Props) => {
     <>
       <div className='flex space-x-4 justify-between items-end'>
         <div className='flex items-end space-x-2'>
-          <CreditCard className='' />
+          <CreditCard className='mb-0.5' />
           <H1 title='Revisa y abona tu reserva' />
         </div>
         <Link href='/inicio/reservas' className='underline'>
@@ -103,16 +110,18 @@ const PreCompraPage = (props: Props) => {
         <h2 className='font-roboto uppercase font-bold text-xs'>Esta es la información de la clase a reservar:</h2>
       </article>
       <section className="w-full max-w-6xl mx-auto px-4 py-2">
-        <Card className='w-full border border-card py-4 px-4'>
+        <Card className='w-full h-[600px] border border-card py-4 px-4'>
 
           <div className='space-y-4 py-8'>
 
-            <div className='space-y-4'>
-              <p className='font-roboto text-2xl'>Tipo de clase: <span className='font-bold capitalize'>&nbsp; {isGroupClass ? 'grupal' : 'individual'}</span></p>
-              <p className='font-roboto text-2xl'>Cantidad de estudiantes: <span className='font-bold'>&nbsp; {studentsCount == 0 ? 1 : studentsCount}</span></p>
-              <p className='font-roboto text-2xl'>Fecha y hora seleccionada: <span className='font-bold'>&nbsp; {selectedDate}</span></p>
-              <p className='font-roboto text-2xl'>Precio a abonar: <span className='font-bold'>&nbsp; ${price}</span></p>
+            <div className='space-y-8 px-8'>
+              <p className='font-roboto text-3xl'>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
+              <p className='font-roboto text-3xl'>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / 10000)}</span></p>
+              <p className='font-roboto text-3xl'>Fecha: <span className='font-extrabold'>{selectedDate}</span></p>
+              <p className='font-roboto text-3xl'>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
+              <p className='font-roboto text-3xl'>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
             </div>
+            <br />
             <div className='w-full text-center'>
               <Button onClick={handlePayments} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-base'>Confirmar ...</Button>
             </div>

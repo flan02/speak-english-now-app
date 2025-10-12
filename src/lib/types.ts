@@ -125,3 +125,8 @@ export type ClassMedatadataProps = {
   studentsCount: number,
   price: number
 }
+
+export type ScheduleTimeProps = {
+  start: Date | null,
+  end: Date | null
+}

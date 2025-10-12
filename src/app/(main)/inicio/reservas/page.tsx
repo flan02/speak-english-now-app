@@ -58,10 +58,10 @@ const removePastDays = (arg: any) => {
 const Reservas = (props: Props) => {
   const router = useRouter()
   const [isCalendarReady, setIsCalendarReady] = useState(false);
-  const [scheduledTime, setScheduledTime] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
+  // const [scheduledTime, setScheduledTime] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
-  const { payment, setPayment, isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice } = storePaymentData();
+  const { payment, setPayment, isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime } = storePaymentData();
 
   // TODO: SEND THIS OBJECT VIA PROPS TO MODAL PAYMENT
   const initData: ClassMedatadataProps = {
@@ -244,7 +244,7 @@ const Reservas = (props: Props) => {
       <br /><br /><br />
 
 
-      {/* <ModalPayment setOpen={setPayment} open={payment} date={selectedDate} time={scheduledTime} classMetadata={classMetadata} /> */}
+
     </>
   );
 }
