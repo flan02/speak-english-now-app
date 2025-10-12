@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button'
 import ModalPayment from '@/components/reutilizable/ModalPayment'
 import { Card } from '@/components/ui/card'
 import esLocale from '@fullcalendar/core/locales/es';
+import { useRouter } from 'next/navigation'
+import { storePaymentData } from '@/zustand/store'
 
 
 type Props = {}
@@ -54,15 +56,12 @@ const removePastDays = (arg: any) => {
 }
 
 const Reservas = (props: Props) => {
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [payment, setPayment] = useState(false);
+  const router = useRouter()
   const [isCalendarReady, setIsCalendarReady] = useState(false);
-  const [isGroupClass, setIsGroupClass] = useState(false);
   const [scheduledTime, setScheduledTime] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
-  const [price, setPrice] = useState(12000)
-  const [studentsCount, setStudentsCount] = useState(0);
+  const { payment, setPayment, isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice } = storePaymentData();
 
   // TODO: SEND THIS OBJECT VIA PROPS TO MODAL PAYMENT
   const initData: ClassMedatadataProps = {
@@ -87,13 +86,6 @@ const Reservas = (props: Props) => {
       return date.getHours().toString().padStart(2, "0") + "hs";
     };
 
-    // w-full text-center text-xs font-semibold rounded-md px-1 py-0.5 bg-slate-600 text-white
-
-    // TODO: Here's the place where meeting data from db will be shown
-
-    const horario = `${formatHour(start)}-${formatHour(end)}`;
-
-
     return (
       <div className="text-xs">
         info del meeting desde la db...
@@ -101,16 +93,20 @@ const Reservas = (props: Props) => {
     );
   }
 
-  const handlePayment = () => setPayment(true)
+  const handlePayment = () => {
+    //setPayment(true);
+    router.push('http://localhost:3000/inicio/pre-compra');
+
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsCalendarReady(true);
-    }, 500); // espera 0.5s para evitar flicker visual
+    }, 500);
     return () => clearTimeout(timer);
   }, [events]);
 
-  //console.log("tipo de clase", isGroupClass);
+
 
   return (
     <>
@@ -248,7 +244,7 @@ const Reservas = (props: Props) => {
       <br /><br /><br />
 
 
-      <ModalPayment setOpen={setPayment} open={payment} date={selectedDate} time={scheduledTime} classMetadata={classMetadata} />
+      {/* <ModalPayment setOpen={setPayment} open={payment} date={selectedDate} time={scheduledTime} classMetadata={classMetadata} /> */}
     </>
   );
 }

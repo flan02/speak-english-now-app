@@ -28,70 +28,7 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
   const [isLoading, setIsLoading] = React.useState(false);
 
 
-  const handlePayments = async (classMetadata: ClassMedatadataProps) => {
-    //console.log('handle payments', classMetadata);
 
-    setIsLoading(true);
-
-    try {
-      const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
-        json: classMetadata
-      })
-
-      const data = await response.json();
-      console.log('response from mercado pago', data.preferenceId);
-
-      if (data.preferenceId) {
-        initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
-
-        const renderPaymentBrick = async (preferenceId: string) => {
-          if (!window.MercadoPago) {
-            console.error("MercadoPago SDK no cargado aún");
-            return;
-          }
-
-          // Instancia de MercadoPago
-          const mp = new window.MercadoPago(
-            process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
-            { locale: "es-AR" }
-          );
-
-          // Obtener el builder de bricks
-          const bricksBuilder = mp.bricks();
-
-          // Crear el payment brick
-          await bricksBuilder.create("wallet", "payment-brick", {
-            initialization: { preferenceId: preferenceId, amount: classMetadata.price },
-            customization: { visual: { style: { theme: "dark" } } },
-            texts: {
-              valueProp: 'smart_option', // muestra “pago rápido con Mercado Pago”
-            },
-            callbacks: {
-              onReady: () => {
-                console.log("Payment Brick listo!");
-              },
-              onError: (error: any) => {
-                console.error("Error en Payment Brick:", error);
-              },
-              onSubmit: () => {
-                console.log("💳 Usuario inició el pago");
-              }
-            },
-          });
-        };
-        // TODO: We calling mp api
-        renderPaymentBrick(data.preferenceId);
-
-        setIsLoading(false);
-
-
-      } else {
-        console.error("No se recibió un ID de preferencia:", data.preferenceId);
-      }
-    } catch (error) {
-      console.error('Error processing payment:', error);
-    }
-  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -130,7 +67,7 @@ const ModalPayment = ({ open, setOpen, date, time, classMetadata }: Props) => {
               </div>
             }
           </article>
-          <Button onClick={() => handlePayments(classMetadata)} disabled={isLoading} className='w-full mt-8 bg-purple-700 hover:bg-purple-600 text-white tracking-wider text-base'>Procesar pago</Button>
+          {/* <Button onClick={() => handlePayments(classMetadata)} disabled={isLoading} className='w-full mt-8 bg-purple-700 hover:bg-purple-600 text-white tracking-wider text-base'>Procesar pago</Button> */}
         </DialogHeader>
 
       </DialogContent>

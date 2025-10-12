@@ -116,7 +116,8 @@ export const nivelIngles = [
 export type ScheduleClassProps = {
   info: { date: Date },
   setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  setSelectedDate: React.Dispatch<React.SetStateAction<string | null>>
+  setSelectedDate: (date: string | null) => void
+  // setSelectedDate: React.Dispatch<React.SetStateAction<string | null>>
 }
 
 export type ClassMedatadataProps = {

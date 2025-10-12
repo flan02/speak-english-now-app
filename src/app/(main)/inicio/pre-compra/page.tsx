@@ -1,0 +1,133 @@
+'use client'
+import H1 from '@/components/html/h1';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { KY, Method } from '@/services/api';
+import { storePaymentData } from '@/zustand/store';
+import { initMercadoPago } from '@mercadopago/sdk-react';
+import { ArrowLeftCircle, CreditCard, PenTool } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react'
+
+type Props = {}
+
+const PreCompraPage = (props: Props) => {
+  const { payment, isGroupClass, selectedDate, studentsCount, price } = storePaymentData();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isConfirm, setIsConfirm] = useState(false);
+
+  // classMetadata: ClassMedatadataProps
+  const handlePayments = async () => {
+    //console.log('handle payments', classMetadata);
+
+    const classMetadata = {
+      type: isGroupClass ? 'grupo' : 'individual',
+      studentsCount: studentsCount == 0 ? 1 : studentsCount,
+      price: price
+    }
+    setIsLoading(true);
+
+    try {
+      const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
+        json: classMetadata
+      })
+
+      const data = await response.json();
+      console.log('response from mercado pago', data.preferenceId);
+
+      if (data.preferenceId) {
+        initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
+
+        const renderPaymentBrick = async (preferenceId: string) => {
+          if (!window.MercadoPago) {
+            console.error("MercadoPago SDK no cargado aún");
+            return;
+          }
+
+          // Instancia de MercadoPago
+          const mp = new window.MercadoPago(
+            process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
+            { locale: "es-AR" }
+          );
+
+          // Obtener el builder de bricks
+          const bricksBuilder = mp.bricks();
+
+          // Crear el payment brick
+          await bricksBuilder.create("wallet", "payment-brick", {
+            initialization: { preferenceId: preferenceId, amount: classMetadata.price },
+            customization: { visual: { style: { theme: "dark" } } },
+            texts: {
+              valueProp: 'smart_option', // muestra “pago rápido con Mercado Pago”
+            },
+            callbacks: {
+              onReady: () => {
+                console.log("Payment Brick listo!");
+              },
+              onError: (error: any) => {
+                console.error("Error en Payment Brick:", error);
+              },
+              onSubmit: () => {
+                console.log("💳 Usuario inició el pago");
+              }
+            },
+          });
+        };
+        // TODO: We calling mp api
+        renderPaymentBrick(data.preferenceId);
+
+        setIsLoading(false);
+
+        setIsConfirm(true);
+      } else {
+        console.error("No se recibió un ID de preferencia:", data.preferenceId);
+      }
+    } catch (error) {
+      console.error('Error processing payment:', error);
+    }
+  }
+
+  return (
+    <>
+      <div className='flex space-x-4 justify-between items-end'>
+        <div className='flex items-end space-x-2'>
+          <CreditCard className='' />
+          <H1 title='Revisa y abona tu reserva' />
+        </div>
+        <Link href='/inicio/reservas' className='underline'>
+          <ArrowLeftCircle />
+        </Link>
+      </div>
+      <article className='flex space-x-2 items-end'>
+        <PenTool />
+        <h2 className='font-roboto uppercase font-bold text-xs'>Esta es la información de la clase a reservar:</h2>
+      </article>
+      <section className="w-full max-w-6xl mx-auto px-4 py-2">
+        <Card className='w-full border border-card py-4 px-4'>
+
+          <div className='space-y-4 py-8'>
+
+            <div className='space-y-4'>
+              <p className='font-roboto text-2xl'>Tipo de clase: <span className='font-bold capitalize'>&nbsp; {isGroupClass ? 'grupal' : 'individual'}</span></p>
+              <p className='font-roboto text-2xl'>Cantidad de estudiantes: <span className='font-bold'>&nbsp; {studentsCount == 0 ? 1 : studentsCount}</span></p>
+              <p className='font-roboto text-2xl'>Fecha y hora seleccionada: <span className='font-bold'>&nbsp; {selectedDate}</span></p>
+              <p className='font-roboto text-2xl'>Precio a abonar: <span className='font-bold'>&nbsp; ${price}</span></p>
+            </div>
+            <div className='w-full text-center'>
+              <Button onClick={handlePayments} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-base'>Confirmar ...</Button>
+            </div>
+            {
+              isConfirm && <div>
+                <p className='font-roboto text-center text-lg mb-4'>¡Perfecto! Ya podes abonar tu reserva!</p>
+                <div id="payment-brick" className='w-full'></div>
+              </div>
+            }
+          </div>
+
+        </Card>
+      </section>
+    </>
+  )
+}
+
+export default PreCompraPage
