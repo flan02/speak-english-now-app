@@ -7,6 +7,7 @@ import { storePaymentData } from '@/zustand/store';
 import { initMercadoPago } from '@mercadopago/sdk-react';
 import { ArrowLeftCircle, CreditCard, PenTool } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 
 declare global {
@@ -22,9 +23,10 @@ const PreCompraPage = (props: Props) => {
   const { payment, isGroupClass, selectedDate, studentsCount, price, scheduledTime } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
+  const router = useRouter();
 
-  // classMetadata: ClassMedatadataProps
-  const handlePayments = async () => {
+  // * CALL CHECKOUT BRICKS FROM MERCADO PAGO
+  const handlePayment = async () => {
     //console.log('handle payments', classMetadata);
 
     const classMetadata = {
@@ -76,6 +78,21 @@ const PreCompraPage = (props: Props) => {
               },
               onSubmit: () => {
                 console.log("💳 Usuario inició el pago");
+              },
+              onPaymentCompleted: async (paymentData: any) => {
+                console.log("💰 Pago completado:", paymentData);
+                // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito
+
+                // * TODO: Add real value
+                let payment = {
+                  id: paymentData.id,
+                  status: paymentData.status
+                }
+
+                router.push(`/checkout/callback/success?payment_id=${payment.id}&status=success`)
+
+                // TODO: Calling to google api calendar to create event (pass date and user)
+                await KY(Method.POST, 'http://localhost:3000/api/calendar', {})
               }
             },
           });
@@ -93,6 +110,44 @@ const PreCompraPage = (props: Props) => {
       console.error('Error processing payment:', error);
     }
   }
+
+  // * Simular pago exitoso
+  const simulateSuccessPayment = async () => {
+    const classMetadata = {
+      type: isGroupClass ? 'grupo' : 'individual',
+      studentsCount: studentsCount == 0 ? 1 : studentsCount,
+      price: studentsCount > 2 ? (studentsCount) : price
+    }
+    setIsLoading(true);
+    try {
+
+      // TODO: Simulate booking event in google api calendar
+
+      await KY(Method.POST, 'http://localhost:3000/api/calendar', {})
+
+      const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
+        json: classMetadata
+      })
+
+      const data = await response.json();
+      console.log('response from mercado pago', data.preferenceId);
+
+      if (data.preferenceId) {
+
+        const simulatedParams = new URLSearchParams({
+          payment_id: 'TEST1234',
+          status: 'success',
+          preference_id: data.preferenceId,
+        }).toString();
+
+        window.location.href = `http://localhost:3000/checkout/callback/success?${simulatedParams}`;
+      }
+    } catch (error) {
+      console.error("Error simulating payment", error)
+    }
+  };
+
+
 
   return (
     <>
@@ -123,7 +178,7 @@ const PreCompraPage = (props: Props) => {
             </div>
             <br />
             <div className='w-full text-center'>
-              <Button onClick={handlePayments} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-base'>Confirmar ...</Button>
+              <Button onClick={simulateSuccessPayment} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-base'>Confirmar ...</Button>
             </div>
             {
               isConfirm && <div>

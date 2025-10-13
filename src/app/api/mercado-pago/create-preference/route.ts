@@ -16,6 +16,24 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 // },
 // auto_return: "approved"
 
+// PARAMS enviado por url desde mercado pago
+/* 
+payment_id — ID del pago en Mercado Pago 
+Mercado Pago
+
+status — estado del pago (approved, rejected, etc.) 
+Mercado Pago
++1
+
+external_reference — referencia externa que vos enviaste al crear la preferencia 
+Mercado Pago
+
+merchant_order_id — identificador de la orden dentro de Mercado Pago 
+Mercado Pago
+
+preference_id — la preferencia que vos creaste y pasaste al Brick
+*/
+
 
 export async function POST(request: NextRequest) {
   // TODO: Every value come from the request body
@@ -35,8 +53,8 @@ export async function POST(request: NextRequest) {
           id: "english-class-reservation", // * Check it later. Possible uses for id
           title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / 10000)}`,
           quantity: 1,
-          unit_price: Number(price), // precio en ARS
-          currency_id: "ARS",
+          unit_price: 1000, //Number(price), // precio en ARS
+          currency_id: "ARS"
         },
       ],
       metadata: {
@@ -52,7 +70,7 @@ export async function POST(request: NextRequest) {
     }
 
 
-    console.log('Creating preference with body:', body);
+    //console.log('Creating preference with body:', body);
 
 
     const result = await preference.create({ body });
