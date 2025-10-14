@@ -13,3 +13,5 @@ export async function getUserEvents(accessToken: string) {
   })
   return res.data.items
 }
+
+

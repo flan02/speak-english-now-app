@@ -60,16 +60,3 @@ const Configuracion = async (props: Props) => {
 
 export default Configuracion
 
-/* 
- <select name="" id="" className='font-roboto text-xs border border-gray-300 dark:bg-black'>
-                <option value=""></option>
-                <option value="inicial">inicial</option>
-                <option value="basico">basico</option>
-                <option value="intermedio">intermedio</option>
-                <option value="avanzado">avanzado</option>
-              </select>
-              <button className='flex bg-red-500 px-2 py-0.5 rounded-md space-x-2'>
-                <PenIcon className='size-4' size={12} color='white' />
-                <span className='text-xs text-white'>Editar</span>
-              </button>
-*/

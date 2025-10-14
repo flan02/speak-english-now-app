@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { KY, Method } from '@/services/api'
 import { calendarEvent } from "@/lib/types";
 import { google } from "googleapis";
+import { createGoogleCalendarEvent, listEvents, saveGoogleCalendarEvent } from "@/services/functions";
+import { auth } from "@/auth";
 
 
 export async function GET() {
@@ -33,27 +35,22 @@ export async function GET() {
 
 
 export async function POST(request: NextRequest) {
+  let userData, userId
+  const session = await auth()
+  if (session?.user) {
+    userData = {
+      name: session?.user?.name,
+      email: session?.user?.email
+    }
 
-  const bookingData = {
-    summary: "Clase individual",
-    description: "Clase reservada por Juan Pérez, payment ID: TEST1234",
-    start: "2025-10-14T17:00:00-03:00",
-    end: "2025-10-14T18:00:00-03:00",
-    attendeeEmail: "chanivetdan@hotmail.com"
+    userId = session.user.id
   }
 
-  const event = {
-    summary: bookingData.summary,
-    description: bookingData.description,
-    start: { dateTime: bookingData.start, timeZone: "America/Argentina/Buenos_Aires" },
-    end: { dateTime: bookingData.end, timeZone: "America/Argentina/Buenos_Aires" },
-    attendees: [{ email: bookingData.attendeeEmail }]
-  };
+  const body = await request.json();
 
   try {
-    // const body = await request.json();
+
     const calendarId = process.env.CALENDAR_ID!;
-    // const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${apiKey}`;
 
     const auth = new google.auth.GoogleAuth({
       credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!),
@@ -63,36 +60,51 @@ export async function POST(request: NextRequest) {
     const calendar = google.calendar({ version: 'v3', auth });
 
     // TODO: Create events in google calendar api
-    //const response = await calendar.events.insert({ calendarId, requestBody: event });
+    const googleCalendarEvent = await createGoogleCalendarEvent(calendarId, calendar, body, userData);
+    await saveGoogleCalendarEvent(googleCalendarEvent);
+    // sistema de cupos con código de acceso
 
     // * TESTING: List of my current events
-    //async function listEvents() {
-    const response = await calendar.events.list({
-      calendarId: calendarId,
-      maxResults: 10,
-      singleEvents: true,
-      orderBy: "startTime",
-      timeMin: new Date().toISOString()
-    });
+    //listEvents();
 
-    const events = response.data.items;
-
-    if (!events || events.length === 0) {
-      console.log("No hay eventos en el calendario.");
-    } else {
-      // Imprime los eventos completos en formato JSON
-      console.log("Eventos completos:", JSON.stringify(events, null, 2));
-    }
-    //console.log("Listing google calendar api events:", response);
-    // console.log("Listing google calendar api events:", response.data.items);
-
-    //}
-
-    // listEvents();
-
-    return NextResponse.json(response);
+    return NextResponse.json({});
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to create calendar event' }, { status: 500 });
   }
 }
+
+
+/* 
+
+Creás la clase → Se genera:
+
+Un classId
+
+Un accessCode (por ejemplo: "F7K2D9QX")
+
+Un campo maxParticipants (por ejemplo: 5)
+
+Un contador currentParticipants = 0
+
+Un usuario ingresa el código desde el frontend:
+
+Enviás una request al backend /api/join-class.
+
+El backend busca la clase con ese código.
+
+Si currentParticipants < maxParticipants, se permite el acceso y se incrementa el contador.
+
+Si ya se alcanzó el máximo, devolvés un mensaje tipo:
+
+{ "error": "Cupo completo. No se permiten más participantes." }
+
+
+Acceso al botón de videollamada:
+
+Si el usuario fue aceptado, el backend responde también con el link del Meet.
+
+En el frontend, recién ahí mostrás el botón “Unirse a la clase”.
+
+(Opcional): Si querés más seguridad, podés registrar los emails o IDs de los usuarios que usaron el código, para evitar que se use más de una vez por la misma persona.
+*/

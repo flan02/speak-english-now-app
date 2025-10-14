@@ -1,11 +1,27 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { ResumeServerData } from "@/lib/types";
-import { ResumeValues } from "@/lib/validation";
+
 
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+// export function toGoogleDate(date: Date) {
+//   const iso = date.toISOString(); // → 2025-10-15T23:00:00.000Z
+//   return iso.slice(0, 19) //+ "-03:00"; // ajusta a tu timezone local
+// }
+
+export function toGoogleDate(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  // Mantiene tu hora local (ej: 20:00) y agrega el offset correcto
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-03:00`;
 }
 
 export function fileReplacer(key: unknown, value: unknown) {
@@ -63,35 +79,3 @@ export function getFormattedTimeRemaining(exp: number): string {
   return `${days > 0 ? `${days}d ` : ""}${hours}h ${minutes}m ${seconds}s`;
 }
 
-export function mapToResumeValues(data: ResumeServerData): ResumeValues {
-  return {
-    id: data.id,
-    title: data.title || undefined,
-    description: data.description || undefined,
-    photoUrl: data.photoUrl || undefined,
-    firstName: data.firstName || undefined,
-    lastName: data.lastName || undefined,
-    jobTitle: data.jobTitle || undefined,
-    city: data.city || undefined,
-    country: data.country || undefined,
-    phone: data.phone || undefined,
-    email: data.email || undefined,
-    workExperiences: data.workExperiences.map((exp) => ({
-      position: exp.position || undefined,
-      company: exp.company || undefined,
-      startDate: exp.startDate?.toISOString().split("T")[0],
-      endDate: exp.endDate?.toISOString().split("T")[0],
-      description: exp.description || undefined,
-    })),
-    educations: data.educations.map((edu) => ({
-      degree: edu.degree || undefined,
-      school: edu.school || undefined,
-      startDate: edu.startDate?.toISOString().split("T")[0],
-      endDate: edu.endDate?.toISOString().split("T")[0],
-    })),
-    skills: data.skills,
-    borderStyle: data.borderStyle,
-    colorHex: data.colorHex,
-    summary: data.summary || undefined
-  }
-}

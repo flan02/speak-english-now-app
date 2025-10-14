@@ -48,16 +48,21 @@ model User {
   updatedAt          DateTime            @updatedAt
 }
 
-model WorkExperience {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  position    String?
-  company     String?
-  startDate   DateTime?
-  endDate     DateTime?
-  description String?
-  resumeId    String    @db.ObjectId
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+model VirtualClass {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId // classId
+  bookedById          String   @db.ObjectId // same id than model User: id
+  googleEventId       String   @unique // allow me to modify this event
+  accessCode          String
+  startTime           DateTime
+  endTime             DateTime
+  maxParticipants     Int // studentsCount
+  currentParticipants Int      @default(1)
+  htmlLink            String
+  status              String
+  summary             String
+  description         String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }
 
 model billingMercadoPago {

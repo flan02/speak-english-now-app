@@ -2,6 +2,7 @@
 import H1 from '@/components/html/h1';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { toGoogleDate } from '@/lib/utils';
 import { KY, Method } from '@/services/api';
 import { storePaymentData } from '@/zustand/store';
 import { initMercadoPago } from '@mercadopago/sdk-react';
@@ -10,16 +11,39 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 
-declare global {
-  interface Window {
-    MercadoPagoBricks: (options: { locale: string }) => any;
-    MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
-  }
-}
+// .no-copy {
+//   user-select: none;  /* Evita seleccionar el texto */
+// }
+// tsx
+// Copy code
+// <div className="no-copy" onContextMenu={(e) => e.preventDefault()}>
+//   {meetLink}
+// </div>
+
+//<button onClick={() => window.open(meetLink, "_blank")}>
+//  Unirse a la clase
+// </button>
+
+
+// const part1 = "https://meet.google.com/";
+// const part2 = "bxq-rtsu-jgv";
+
+// <button onClick={() => window.open(part1 + part2, "_blank")}>
+//   Unirse a la clase
+// </button>
+
+
+
+// declare global {
+//   interface Window {
+//     MercadoPagoBricks: (options: { locale: string }) => any;
+//     MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
+//   }
+// }
 
 type Props = {}
 
-const PreCompraPage = (props: Props) => {
+const PreCompraPage = () => {
   const { payment, isGroupClass, selectedDate, studentsCount, price, scheduledTime } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
@@ -113,17 +137,35 @@ const PreCompraPage = (props: Props) => {
 
   // * Simular pago exitoso
   const simulateSuccessPayment = async () => {
-    const classMetadata = {
-      type: isGroupClass ? 'grupo' : 'individual',
-      studentsCount: studentsCount == 0 ? 1 : studentsCount,
-      price: studentsCount > 2 ? (studentsCount) : price
-    }
     setIsLoading(true);
+
     try {
 
       // TODO: Simulate booking event in google api calendar
+      const toGoogleCalendarEvent = {
+        start: `${toGoogleDate(scheduledTime.start!)}`,
+        end: `${toGoogleDate(scheduledTime.end!)}`,
+        isGroupClass,
+        studentsCount
+      }
 
-      await KY(Method.POST, 'http://localhost:3000/api/calendar', {})
+      await KY(Method.POST, 'http://localhost:3000/api/calendar', {
+        json: toGoogleCalendarEvent
+      })
+
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+
+
+
+    try {
+      const classMetadata = {
+        type: isGroupClass ? 'grupo' : 'individual',
+        studentsCount: studentsCount == 0 ? 1 : studentsCount,
+        price: studentsCount > 2 ? (studentsCount) : price
+      }
+
 
       const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
         json: classMetadata
@@ -140,8 +182,11 @@ const PreCompraPage = (props: Props) => {
           preference_id: data.preferenceId,
         }).toString();
 
+        // * REDIRECT TO CALLBACK SUCCESS PAGE
         window.location.href = `http://localhost:3000/checkout/callback/success?${simulatedParams}`;
       }
+
+
     } catch (error) {
       console.error("Error simulating payment", error)
     }
