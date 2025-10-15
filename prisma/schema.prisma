@@ -32,6 +32,17 @@ enum NivelIngles {
   avanzado
 }
 
+enum Status {
+  scheduled
+  cancelled
+  completed
+}
+
+enum ClassType {
+  individual
+  grupal
+}
+
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
@@ -49,20 +60,23 @@ model User {
 }
 
 model VirtualClass {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId // classId
-  bookedById          String   @db.ObjectId // same id than model User: id
-  googleEventId       String   @unique // allow me to modify this event
+  id                  String    @id @default(auto()) @map("_id") @db.ObjectId // classId
+  googleEventId       String    @unique // allow me to modify this event
+  bookedById          String    @db.ObjectId // same id than model User: id
   accessCode          String
   startTime           DateTime
   endTime             DateTime
+  currentParticipants Int       @default(1)
   maxParticipants     Int // studentsCount
-  currentParticipants Int      @default(1)
+  classType           ClassType
+  classPrice          Int
   htmlLink            String
-  status              String
+  status              Status    @default(scheduled) // scheduled, cancelled, completed
   summary             String
   description         String
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  learningFocus       String
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 model billingMercadoPago {
@@ -72,3 +86,29 @@ model billingMercadoPago {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// google calendar event arriving to save fc {
+//   kind: 'calendar#event',
+//   etag: '"3521078267656126"',
+//   id: 'e47h4cbo3tusboge97b1n3ahlg',
+//   status: 'confirmed',
+//   htmlLink: 'https://www.google.com/calendar/event?eid=ZTQ3aDRjYm8zdHVzYm9nZTk3YjFuM2FobGcgY2hhbml2ZXRkYW4xOTg4QG0',
+//   created: '2025-10-15T14:38:53.000Z',
+//   updated: '2025-10-15T14:38:53.828Z',
+//   summary: 'Clase de Inglés reservada por (Dan Chanivet)',
+//   description: 'La clase sera individual con x1 participantes',
+//   creator: { email: 'hablainglesya@cvai-448217.iam.gserviceaccount.com' },
+//   organizer: { email: 'chanivetdan1988@gmail.com', self: true },
+//   start: {
+//     dateTime: '2025-10-18T20:00:00-03:00',
+//     timeZone: 'America/Argentina/Buenos_Aires'
+//   },
+//   end: {
+//     dateTime: '2025-10-18T21:00:00-03:00',
+//     timeZone: 'America/Argentina/Buenos_Aires'
+//   },
+//   iCalUID: 'e47h4cbo3tusboge97b1n3ahlg@google.com',
+//   sequence: 0,
+//   reminders: { useDefault: true },
+//   eventType: 'default'
+// }

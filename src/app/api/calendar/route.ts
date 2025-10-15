@@ -43,10 +43,11 @@ export async function POST(request: NextRequest) {
       email: session?.user?.email
     }
 
-    userId = session.user.id
+    userId = session?.user?.id
   }
 
   const body = await request.json();
+
 
   try {
 
@@ -61,8 +62,8 @@ export async function POST(request: NextRequest) {
 
     // TODO: Create events in google calendar api
     const googleCalendarEvent = await createGoogleCalendarEvent(calendarId, calendar, body, userData);
-    await saveGoogleCalendarEvent(googleCalendarEvent);
-    // sistema de cupos con código de acceso
+
+    if (userId) await saveGoogleCalendarEvent(googleCalendarEvent, userId, body);
 
     // * TESTING: List of my current events
     //listEvents();

@@ -1,10 +1,6 @@
-import { Prisma } from "@prisma/client";
-import { ResumeValues } from "./validation";
-import { Book, BookAIcon, Bot, Calendar, Computer, DollarSign, Home, Inbox, NotebookIcon, PenBox, Search, Settings } from "lucide-react"
-export interface EditorFormProps {
-  resumeData: ResumeValues;
-  setResumeData: (data: ResumeValues) => void
-}
+import { BookAIcon, Bot, Calendar, Computer, Home, Settings } from "lucide-react"
+import { Session } from "next-auth"
+
 
 export const marquee_banners = [
   "🌟 La clase dura 2hs, la primera es virtual y la segunda una evaluación integradora —",
@@ -130,3 +126,36 @@ export type ScheduleTimeProps = {
   start: Date | null,
   end: Date | null
 }
+
+
+export type CalendarEvent = {
+  googleEventId: string
+  bookedById: string
+  accessCode: string
+  startTime: Date
+  endTime: Date
+  maxParticipants: number
+  currentParticipants: number
+  classType: 'individual' | 'grupal'
+  classPrice: number
+  htmlLink: string
+  status: 'scheduled' | 'completed' | 'cancelled'
+  summary: string
+  description: string
+  learningFocus: string
+}
+
+export type UserSession = {
+  id: string
+  name: string
+  email: string
+  image: string
+  iat: string
+  exp: string
+  jti: string
+  sub: string
+}
+
+export type MisClasesVirtualesListProps = {
+  session: Session["user"];
+};

@@ -11,40 +11,10 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 
-// .no-copy {
-//   user-select: none;  /* Evita seleccionar el texto */
-// }
-// tsx
-// Copy code
-// <div className="no-copy" onContextMenu={(e) => e.preventDefault()}>
-//   {meetLink}
-// </div>
-
-//<button onClick={() => window.open(meetLink, "_blank")}>
-//  Unirse a la clase
-// </button>
-
-
-// const part1 = "https://meet.google.com/";
-// const part2 = "bxq-rtsu-jgv";
-
-// <button onClick={() => window.open(part1 + part2, "_blank")}>
-//   Unirse a la clase
-// </button>
-
-
-
-// declare global {
-//   interface Window {
-//     MercadoPagoBricks: (options: { locale: string }) => any;
-//     MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
-//   }
-// }
-
 type Props = {}
 
 const PreCompraPage = () => {
-  const { payment, isGroupClass, selectedDate, studentsCount, price, scheduledTime } = storePaymentData();
+  const { payment, isGroupClass, selectedDate, studentsCount, price, scheduledTime, text } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
   const router = useRouter();
@@ -146,7 +116,8 @@ const PreCompraPage = () => {
         start: `${toGoogleDate(scheduledTime.start!)}`,
         end: `${toGoogleDate(scheduledTime.end!)}`,
         isGroupClass,
-        studentsCount
+        studentsCount,
+        text
       }
 
       await KY(Method.POST, 'http://localhost:3000/api/calendar', {
@@ -172,7 +143,7 @@ const PreCompraPage = () => {
       })
 
       const data = await response.json();
-      console.log('response from mercado pago', data.preferenceId);
+      //console.log('response from mercado pago', data.preferenceId);
 
       if (data.preferenceId) {
 
@@ -220,6 +191,12 @@ const PreCompraPage = () => {
               <p className='font-roboto text-3xl'>Fecha: <span className='font-extrabold'>{selectedDate}</span></p>
               <p className='font-roboto text-3xl'>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
               <p className='font-roboto text-3xl'>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
+              {text && text != '' &&
+                <div className='space-y-2'>
+                  <p className='font-roboto text-3xl'>Tema a tratar en la clase: </p>
+                  <p className='font-extrabold text-sm ml-4'>{text}</p>
+                </div>
+              }
             </div>
             <br />
             <div className='w-full text-center'>
@@ -240,3 +217,35 @@ const PreCompraPage = () => {
 }
 
 export default PreCompraPage
+
+
+
+// .no-copy {
+//   user-select: none;  /* Evita seleccionar el texto */
+// }
+// tsx
+// Copy code
+// <div className="no-copy" onContextMenu={(e) => e.preventDefault()}>
+//   {meetLink}
+// </div>
+
+//<button onClick={() => window.open(meetLink, "_blank")}>
+//  Unirse a la clase
+// </button>
+
+
+// const part1 = "https://meet.google.com/";
+// const part2 = "bxq-rtsu-jgv";
+
+// <button onClick={() => window.open(part1 + part2, "_blank")}>
+//   Unirse a la clase
+// </button>
+
+
+
+// declare global {
+//   interface Window {
+//     MercadoPagoBricks: (options: { locale: string }) => any;
+//     MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
+//   }
+// }

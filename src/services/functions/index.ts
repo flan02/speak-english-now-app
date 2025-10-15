@@ -1,9 +1,11 @@
 "use server"
 
 import { db } from "@/db";
-import { $Enums } from "@prisma/client";
+import { CalendarEvent } from "@/lib/types";
+import { $Enums, Status } from "@prisma/client";
 import { google } from "googleapis";
-import { start } from "repl";
+import { NextResponse } from "next/server";
+
 
 export async function getUserData({ id }: { id: string }) {
   try {
@@ -77,13 +79,16 @@ export async function listEvents() {
 }
 
 
+
+
+
 export async function createGoogleCalendarEvent(calendarId: string, calendar: any, eventData: any, userData: any) {
 
   const { start, end, isGroupClass, studentsCount } = eventData;
 
   const bookingClass = {
     summary: `Clase de Inglés reservada por (${userData?.name})`,
-    description: `La clase sera ${isGroupClass ? 'grupal' : 'individual'} con x${studentsCount == 0 ? 1 : studentsCount} participantes`,
+    description: `La clase sera ${isGroupClass ? 'grupal' : 'individual'} con x${studentsCount == 0 ? 1 : studentsCount / 10000} participantes`,
     start: {
       dateTime: start,
       timeZone: 'America/Argentina/Buenos_Aires',
@@ -94,8 +99,6 @@ export async function createGoogleCalendarEvent(calendarId: string, calendar: an
     },
     transparency: "opaque", // Esto marca el horario como ocupado
   }
-  // attendeeEmail: "chanivetdan@hotmail.com"
-  console.log('user data in createGoogleCalendarEvent:', userData);
 
 
   try {
@@ -103,11 +106,6 @@ export async function createGoogleCalendarEvent(calendarId: string, calendar: an
       calendarId,
       requestBody: bookingClass
     });
-
-    console.log("Evento creado en Google Calendar:", response.data);
-    const eventLink = response.data.htmlLink;
-
-    // TODO: CALL DB TO SAVE EVENT DATA
 
     return response.data;
 
@@ -118,12 +116,50 @@ export async function createGoogleCalendarEvent(calendarId: string, calendar: an
 }
 
 
-export async function saveGoogleCalendarEvent(googleCalendarEvent: any) {
-  // TODO: MUST CREATE A NEW MODEL IN PRISMA FOR SAVING ACTIVITIES GENERATED WITH AI
+export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: string, body: any) {
+  const { isGroupClass, studentsCount, text } = body;
+  const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();  // Create a random access code with 8 char.
 
-  // Parsing string date to format date
-  // const startDate = new Date(start);
-  // const endDate = new Date(end);
+  console.log("current studentsCount", studentsCount);
+
+  const price = studentsCount > 2 ? (studentsCount) : (12000 * (studentsCount + 1));
+
+  const saveCalendarEvent: CalendarEvent = {
+    googleEventId: googleCalendarEvent.id,
+    bookedById: userId,
+    classType: isGroupClass ? 'grupal' : 'individual',
+    accessCode: randomCode,
+    startTime: new Date(googleCalendarEvent.start.dateTime),
+    endTime: new Date(googleCalendarEvent.end.dateTime),
+    maxParticipants: studentsCount == 0 ? 1 : studentsCount / 10000,
+    currentParticipants: 1,
+    classPrice: price,
+    htmlLink: googleCalendarEvent.htmlLink,
+    status: "scheduled",
+    summary: googleCalendarEvent.summary,
+    description: googleCalendarEvent.description,
+    learningFocus: text
+  }
+
+  try {
+
+    console.log('google calendar event arriving to save fc', googleCalendarEvent);
+
+    const response = await db.virtualClass.create({
+      data: saveCalendarEvent
+    })
+
+    return NextResponse.json({
+      success: true,
+      message: 'Google Calendar event saved successfully',
+      data: response,
+      status: 200
+    });
+
+  } catch (error) {
+    console.error('Error saving google event in database', error)
+    return NextResponse.json({ error: 'Failed to save google event in database' }, { status: 500 });
+  }
 }
 
 

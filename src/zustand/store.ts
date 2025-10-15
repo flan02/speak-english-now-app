@@ -1,4 +1,4 @@
-import { ScheduleTimeProps } from "@/lib/types"
+import { ClassMedatadataProps, ScheduleTimeProps } from "@/lib/types"
 import { create } from "zustand"
 
 interface PremiumModalState {
@@ -14,6 +14,15 @@ interface AddPhotoState {
 export const storePremiumModal = create<PremiumModalState>((set) => ({ open: false, setOpen: (open: boolean) => set({ open }) }))
 export const storeAddPhoto = create<AddPhotoState>((set) => ({ showImage: true, setShowImage: (show: boolean) => set({ showImage: show }) }))
 
+
+// TODO: SEND THIS OBJECT VIA PROPS TO MODAL PAYMENT
+const initData: ClassMedatadataProps = {
+  type: "individual",
+  studentsCount: 0,
+  price: 12000
+}
+
+
 interface PaymentData {
   payment: boolean
   setPayment: (payment: boolean) => void
@@ -27,6 +36,10 @@ interface PaymentData {
   setPrice: (price: number) => void
   scheduledTime: ScheduleTimeProps
   setScheduledTime: (time: ScheduleTimeProps) => void
+  text: string
+  setText: (text: string) => void
+  classMetadata: ClassMedatadataProps
+  setClassMetadata: (metadata: ClassMedatadataProps) => void
 }
 
 export const storePaymentData = create<PaymentData>((set) => ({
@@ -42,5 +55,9 @@ export const storePaymentData = create<PaymentData>((set) => ({
   setPrice: (price: number) => set({ price }),
   scheduledTime: { start: null, end: null },
   setScheduledTime: (time: ScheduleTimeProps) => set({ scheduledTime: time }),
+  text: "",
+  setText: (text: string) => set({ text }),
+  classMetadata: initData,
+  setClassMetadata: (metadata: ClassMedatadataProps) => set({ classMetadata: metadata }),
 }))
 

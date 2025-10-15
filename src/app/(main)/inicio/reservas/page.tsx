@@ -10,11 +10,11 @@ import useCalendar from '@/hooks/useCalendar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { MetodoDePagoBadge } from '@/components/reutilizable/MetodoDePagoBadge'
 import { Button } from '@/components/ui/button'
-import ModalPayment from '@/components/reutilizable/ModalPayment'
 import { Card } from '@/components/ui/card'
 import esLocale from '@fullcalendar/core/locales/es';
 import { useRouter } from 'next/navigation'
 import { storePaymentData } from '@/zustand/store'
+import { Textarea } from '@/components/ui/textarea'
 
 
 type Props = {}
@@ -56,20 +56,15 @@ const removePastDays = (arg: any) => {
 }
 
 const Reservas = (props: Props) => {
+
   const router = useRouter()
   const [isCalendarReady, setIsCalendarReady] = useState(false);
   // const [scheduledTime, setScheduledTime] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
-  const { payment, setPayment, isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime } = storePaymentData();
+  const { payment, setPayment, isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime, text, setText, classMetadata, setClassMetadata } = storePaymentData();
 
-  // TODO: SEND THIS OBJECT VIA PROPS TO MODAL PAYMENT
-  const initData: ClassMedatadataProps = {
-    type: "individual",
-    studentsCount: 0,
-    price: 12000
-  }
-  const [classMetadata, setClassMetadata] = useState<ClassMedatadataProps>(initData)
+
 
   const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
@@ -107,6 +102,8 @@ const Reservas = (props: Props) => {
   }, [events]);
 
 
+  console.log(classMetadata.type);
+  console.log(studentsCount);
 
   return (
     <>
@@ -189,6 +186,7 @@ const Reservas = (props: Props) => {
                     name="tipo-clase"
                     id="tipo-clase"
                     className="dark:bg-black px-2 border-card rounded-lg"
+                    value={isGroupClass ? "grupal" : "individual"}
                     onChange={(e) => {
                       setIsGroupClass(e.target.value === "grupal")
 
@@ -207,6 +205,7 @@ const Reservas = (props: Props) => {
                     <select
                       name="cantidad-alumnos"
                       id="cantidad-alumnos"
+                      value={studentsCount}
                       onChange={(e) => {
                         if (e.target.value === "1") setIsGroupClass(false);
                         setStudentsCount(parseInt(e.target.value))
@@ -226,16 +225,30 @@ const Reservas = (props: Props) => {
                 }
               </div>
               <p><span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${(studentsCount && classMetadata.type === "grupal") ? studentsCount : price}</span> </p>
+              <div className='space-y-2'>
+                <p className='underline underline-offset-4'>Objetivo de la clase:</p>
+                <Textarea
+                  maxLength={100}
+                  placeholder='Describe el tema que necesitas ver durante la clase (opcional)...'
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+
+                />
+                <p className="text-sm text-muted-foreground text-right">
+                  {text?.length}/100
+                </p>
+              </div>
+
             </div>
             <div>
-              <Button disabled={!selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
+              <Button disabled={!text || !selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
             </div>
           </article>
         </Card>
       </section>
 
       <section className='mt-8'>
-        <p className='text-sm italic'>* Luego de abonar la clase se crea el evento y recibirás un enlace a tu email para acceder a la misma en el horario que elegiste.</p>
+        <p className='text-sm italic'>* Luego de abonar la clase se crea el evento en el calendario de google y podras ver el acceso a la clase desde la seccion Clases Virtuales.</p>
         <p className='text-sm italic'>* Si necesitas un horario especial o tienes alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o por email a chanivetdan@hotmail.com</p>
       </section>
 
