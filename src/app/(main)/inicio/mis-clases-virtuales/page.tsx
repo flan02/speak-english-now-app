@@ -4,6 +4,8 @@ import { Card } from '@/components/ui/card'
 import { Session } from "next-auth"
 import { Computer } from 'lucide-react'
 import React from 'react'
+import AllClasses from '@/components/mis-clases-virtuales/AllClasses'
+import GetCode from '@/components/mis-clases-virtuales/GetCode'
 
 type Props = {}
 
@@ -18,16 +20,22 @@ const MisClasesVirtuales = async (props: Props) => {
         <H1 title='Mis Clases Virtuales' />
       </div>
       <h2 className='font-roboto font-bold text-base'>Aqui veras las clases virtuales que has tomado y las clases futuras que tengas reservadas</h2>
+      <GetCode />
+
       <Card className='w-full border border-card py-4 px-4 h-screen'>
         {
           session?.user.id
-            ? <MisClasesVirtuales session={session} />
+            ? <AllClasses session={session} />
             : null
         }
       </Card>
     </>
   )
 }
+
+
+
+
 
 
 

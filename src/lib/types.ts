@@ -143,19 +143,18 @@ export type CalendarEvent = {
   summary: string
   description: string
   learningFocus: string
+  hostType: 'anfitrion' | 'invitado'
+  participantsIds: string[]
 }
 
-export type UserSession = {
-  id: string
+
+
+export type MisClasesVirtualesProps = {
+  session: Session["user"];
+};
+
+export type User = {
   name: string
   email: string
   image: string
-  iat: string
-  exp: string
-  jti: string
-  sub: string
 }
-
-export type MisClasesVirtualesListProps = {
-  session: Session["user"];
-};

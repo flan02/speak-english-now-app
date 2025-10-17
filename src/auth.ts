@@ -5,8 +5,9 @@ import Github from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import { createUser, loggedAsAdmin } from '@/server-actions/actions'
 
-import { User } from 'types'
+
 import { db } from './db'
+import { User } from './lib/types'
 
 // ? To see the current providers
 // $ http://localhost:3000/api/auth/providers  
@@ -18,7 +19,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // clientSecret: process.env.AUTH_GOOGLE_SECRET,
     authorization: {
       params: {
-        scope: "openid email profile https://www.googleapis.com/auth/calendar",
+        scope: "openid email profile https://www.googleapis.com/auth/calendar.events",
         access_type: "offline",
         prompt: "consent"
       }
@@ -66,6 +67,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           token.accessToken = account.access_token
           token.refreshToken = account.refresh_token
+
+          //console.log('THIS IS THE refresh_token', token.refreshToken);
+
           // const now = Math.floor(Date.now() / 1000);
           // const timeUntilExpiration = token.exp - now; // Si el token tiene menos de 5 minutos antes de expirar, renovarlo
           // if (timeUntilExpiration < 5 * 60) token.exp = now + 10 * 60; // Renovar el token estableciendo un nuevo tiempo de expiración

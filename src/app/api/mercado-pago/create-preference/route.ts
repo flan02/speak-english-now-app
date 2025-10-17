@@ -1,13 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 
-/* 
-*| Medio      | Número              | Vencimiento | CVV | Resultado |
- | ---------- | ------------------- | ----------- | --- | --------- |
- | VISA       | 4509 9535 6623 3704 | 11/25       | 123 | Aprobado  |
- | Mastercard | 5031 7557 3453 0604 | 11/25       | 123 | Rechazado |
-*/
-
 // * Checkout ReAddressable (external URL)
 // back_urls: {
 //   success: "http://localhost:3000/checkout/callback/success",
@@ -15,24 +8,6 @@ import { MercadoPagoConfig, Preference } from 'mercadopago';
 //   pending: "http://localhost:3000/checkout/callback/pending"
 // },
 // auto_return: "approved"
-
-// PARAMS enviado por url desde mercado pago
-/* 
-payment_id — ID del pago en Mercado Pago 
-Mercado Pago
-
-status — estado del pago (approved, rejected, etc.) 
-Mercado Pago
-+1
-
-external_reference — referencia externa que vos enviaste al crear la preferencia 
-Mercado Pago
-
-merchant_order_id — identificador de la orden dentro de Mercado Pago 
-Mercado Pago
-
-preference_id — la preferencia que vos creaste y pasaste al Brick
-*/
 
 
 export async function POST(request: NextRequest) {
@@ -69,9 +44,7 @@ export async function POST(request: NextRequest) {
       },
     }
 
-
     //console.log('Creating preference with body:', body);
-
 
     const result = await preference.create({ body });
     //console.log("preferencia creada:", result.id);

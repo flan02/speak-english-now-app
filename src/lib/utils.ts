@@ -7,11 +7,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// export function toGoogleDate(date: Date) {
-//   const iso = date.toISOString(); // → 2025-10-15T23:00:00.000Z
-//   return iso.slice(0, 19) //+ "-03:00"; // ajusta a tu timezone local
-// }
-
 export function toGoogleDate(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

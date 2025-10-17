@@ -97,14 +97,23 @@ export async function createGoogleCalendarEvent(calendarId: string, calendar: an
       dateTime: end,
       timeZone: 'America/Argentina/Buenos_Aires',
     },
-    transparency: "opaque", // Esto marca el horario como ocupado
+    conferenceData: {
+      createRequest: {
+        requestId: `meet-${Date.now()}`, // debe ser único
+        conferenceSolutionKey: {
+          type: 'hangoutsMeet', // ⚠️ este valor exacto
+        },
+      },
+    },
+    transparency: "opaque", // This line makes show the event as busy in our calendar
   }
 
 
   try {
     const response = await calendar.events.insert({
       calendarId,
-      requestBody: bookingClass
+      requestBody: bookingClass,
+      conferenceDataVersion: 1, // Mandatory to obtain Google Meet link
     });
 
     return response.data;
@@ -134,11 +143,13 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
     maxParticipants: studentsCount == 0 ? 1 : studentsCount / 10000,
     currentParticipants: 1,
     classPrice: price,
-    htmlLink: googleCalendarEvent.htmlLink,
+    htmlLink: googleCalendarEvent.conferenceData.entryPoints[0].uri,
     status: "scheduled",
     summary: googleCalendarEvent.summary,
     description: googleCalendarEvent.description,
-    learningFocus: text
+    learningFocus: text,
+    hostType: 'anfitrion',
+    participantsIds: []
   }
 
   try {
@@ -161,6 +172,97 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
     return NextResponse.json({ error: 'Failed to save google event in database' }, { status: 500 });
   }
 }
+
+
+
+export async function getGoogleMeetLink(accessCode: string) {
+  try {
+    const googleMeetLink = await db.virtualClass.findFirst({
+      where: {
+        accessCode
+      },
+      select: {
+        id: true,
+        bookedById: true,
+        htmlLink: true,
+        startTime: true,
+        endTime: true,
+        classType: true,
+        currentParticipants: true,
+        maxParticipants: true
+      }
+    })
+
+    return googleMeetLink;
+
+  } catch (error) {
+    console.error("We couldn't retrieve our google meet link", error)
+  }
+}
+
+
+export async function addParticipant(event: any, userId: string) {
+  try {
+    const result = await db.$transaction(async (tx) => {
+      const existing = await tx.virtualClass.findUnique({
+        where: { id: event.id },
+        select: {
+          participantsIds: true,
+          currentParticipants: true,
+          maxParticipants: true
+        }
+      });
+
+      if (!existing) throw new Error("Clase no encontrada");
+
+      if (existing.participantsIds.includes(userId)) {
+        return { message: "El usuario ya está registrado en la clase" };
+      }
+
+      if (existing.currentParticipants >= existing.maxParticipants) {
+        return { message: "La clase ya alcanzó el número máximo de participantes" };
+      }
+
+      const response = await tx.virtualClass.update({
+        where: { id: event.id },
+        data: {
+          currentParticipants: { increment: 1 },
+          participantsIds: { push: userId },
+        },
+      });
+
+      return response;
+    });
+
+    return result;
+  } catch (error) {
+    console.error("We couldn't add a new participant in this meeting", error);
+    return { error: "No se pudo agregar el participante", details: error };
+  }
+}
+
+
+// const existing = await db.virtualClass.findUnique({
+//   where: { id: event.id },
+//   select: {
+//     participantsIds: true,
+//     currentParticipants: true,
+//     maxParticipants: true
+//   },
+// });
+// const response = await db.virtualClass.update({
+//   where: {
+//     id: event.id,
+//   },
+//   data: {
+//     currentParticipants: {
+//       increment: 1
+//     },
+//     participantsIds: {
+//       push: userId
+//     }
+//   }
+// });
 
 
 

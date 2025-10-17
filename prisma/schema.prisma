@@ -43,6 +43,11 @@ enum ClassType {
   grupal
 }
 
+enum HostType {
+  anfitrion
+  invitado
+}
+
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
@@ -66,6 +71,7 @@ model VirtualClass {
   accessCode          String
   startTime           DateTime
   endTime             DateTime
+  hostType            HostType  @default(anfitrion)
   currentParticipants Int       @default(1)
   maxParticipants     Int // studentsCount
   classType           ClassType
@@ -75,6 +81,7 @@ model VirtualClass {
   summary             String
   description         String
   learningFocus       String
+  participantsIds     String[]  @default([])
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 }

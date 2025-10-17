@@ -10,6 +10,7 @@ declare module "next-auth" {
       exp?: string
       jti?: string // Unique identifier for the JWT
       sub?: string // Says who is the owner of the token
+      accessToken?: string
     } & DefaultSession["user"];
     token?: JwtToken; // Agrega el campo `token` a la sesión
   }
