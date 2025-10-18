@@ -1,7 +1,7 @@
 'use client'
 import H1 from '@/components/html/h1'
 import { BookAIcon, MouseIcon, PenBoxIcon } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
@@ -15,6 +15,9 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { useRouter } from 'next/navigation'
 import { storePaymentData } from '@/zustand/store'
 import { Textarea } from '@/components/ui/textarea'
+import { KY, Method } from '@/services/api'
+import { cutId } from '@/lib/utils'
+
 
 
 type Props = {}
@@ -43,67 +46,112 @@ export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassP
   setOpen(true);
 };
 
-const removePastDays = (arg: any) => {
-  const cellDate = new Date(arg.date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  cellDate.setHours(0, 0, 0, 0);
 
-  if (cellDate < today) {
-    return ["bg-gray-600/10 bg-previous-day", "pointer-events-none"]; // gris y deshabilitado
-  }
-  return [];
-}
+// const removePastDays = (arg: any) => {
+//   const cellDate = new Date(arg.date);
+//   console.log("Current Time", arg.date);
+//   const today = new Date();
+//   today.setHours(0, 0, 0, 0);
+//   cellDate.setHours(0, 0, 0, 0);
+
+//   if (cellDate < today) {
+//     return ["bg-gray-600/10", "bg-previous-day", "pointer-events-none"]; // gris y deshabilitado - 
+//   }
+//   return [];
+// }
+
+
+
 
 const Reservas = (props: Props) => {
 
+
+  const [upcomingClasses, setUpcomingClasses] = useState<any[]>([]);
   const router = useRouter()
   const [isCalendarReady, setIsCalendarReady] = useState(false);
-  // const [scheduledTime, setScheduledTime] = useState<{ start: Date | null; end: Date | null }>({ start: null, end: null });
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
-  const { payment, setPayment, isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime, text, setText, classMetadata, setClassMetadata } = storePaymentData();
+  const { isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime, text, setText, classMetadata, setClassMetadata } = storePaymentData();
 
-
-
-  const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
-    title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
-    start: slot.start.dateTime,
-    end: slot.end.dateTime,
-    color: slot.status === 'confirmed' ? 'green' : 'red',
+  const fullCalendarEvents = upcomingClasses.map((meeting) => ({
+    id: `#${cutId(meeting.id)}`,
+    title: meeting.classType,
+    start: meeting.startTime,
+    end: meeting.endTime,
+    color: meeting.status === 'scheduled' ? '#F0ED90' : 'red',
+    extendedProps: {
+      participants: meeting.maxParticipants,
+      status: meeting.status === 'scheduled' ? 'Reservada' : meeting.status === 'completed' ? 'Completada' : 'Cancelada',
+    },
   }))
 
-  const fullCalendarContent = (arg: any) => {
-    const start = arg.event.start;
-    const end = arg.event.end;
-    const formatHour = (date: Date | null) => {
-      if (!date) return "";
-      return date.getHours().toString().padStart(2, "0") + "hs";
-    };
+  const fullCalendarContent = useCallback((arg: any) => {
+    //console.log("Argumentos", arg);
+    const { title, extendedProps } = arg.event;
 
     return (
-      <div className="text-xs">
-        info del meeting desde la db...
+      <div className="text-xs px-2 py-2 text-gray-500">
+        <p className="font-roboto capitalize">Tipo: {title}</p>
+        <p className="font-roboto capitalize">Participantes: {extendedProps.participants}</p>
+        <p className="font-roboto capitalize">Estado: {extendedProps.status}</p>
+        <p className="font-roboto capitalize">Id: {arg.event.id}</p>
       </div>
     );
-  }
+  }, []);
 
-  const handlePayment = () => {
+  const handleClassTypeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const isGroup = e.target.value === "grupal";
+    setIsGroupClass(isGroup)
+    setClassMetadata({
+      ...classMetadata,
+      type: isGroup ? "grupal" : "individual",
+      studentsCount: isGroup ? classMetadata.studentsCount : 1,
+      price: isGroup ? classMetadata.price : 12000
+    })
+  }, [setIsGroupClass, setClassMetadata, classMetadata])
+
+
+  const handlePayment = useCallback(() => {
     //setPayment(true);
     router.push('http://localhost:3000/inicio/pre-compra');
-
-  }
+  }, [router])
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsCalendarReady(true);
+      if (upcomingClasses?.length > 0) {
+        setIsCalendarReady(true);
+      }
     }, 500);
     return () => clearTimeout(timer);
-  }, [events]);
+  }, [upcomingClasses]);
 
 
-  console.log(classMetadata.type);
-  console.log(studentsCount);
+  const removePastDays = useCallback((arg: any) => {
+    const cellDate = new Date(arg.date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    cellDate.setHours(0, 0, 0, 0);
+
+    if (cellDate < today) {
+      return ["bg-gray-200", "bg-previous-day", "pointer-events-none"];
+    }
+    return [];
+  }, []);
+
+  async function fetchMeeting() {
+    try {
+      const response = await KY(Method.GET, '/api/upcoming-classes')
+      const data = await response.response;
+      console.log("Data", data);
+      setUpcomingClasses(data);
+    } catch (error) {
+      console.error("We couldn't retrieve any class for this calendar", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchMeeting()
+  }, [])
 
   return (
     <>
@@ -117,7 +165,7 @@ const Reservas = (props: Props) => {
       </article>
       <section className="w-full max-w-6xl mx-auto px-4 py-2">
         {
-          isCalendarReady
+          isCalendarReady && !isLoading
             ? <FullCalendar
               allDaySlot={false} // ocultar el "All day"
               businessHours={{
@@ -129,9 +177,16 @@ const Reservas = (props: Props) => {
               dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
               dayCellClassNames={removePastDays}
               datesSet={() => setIsCalendarReady(true)}
-              eventDidMount={() => setIsCalendarReady(true)}
+              eventDidMount={(info) => {
+                if (info.event.extendedProps?.status === 'confirmed') {
+                  info.el.style.border = '1px solid #000';
+                } else {
+                  info.el.style.border = '1px solid #777';
+                }
+                setIsCalendarReady(true)
+              }}
               events={fullCalendarEvents}
-              eventContent={(fullCalendarContent)}
+              eventContent={fullCalendarContent}
               expandRows={true}
               // headerToolbar={false} // oculta los botones de navegación
               headerToolbar={{
@@ -187,12 +242,7 @@ const Reservas = (props: Props) => {
                     id="tipo-clase"
                     className="dark:bg-black px-2 border-card rounded-lg"
                     value={isGroupClass ? "grupal" : "individual"}
-                    onChange={(e) => {
-                      setIsGroupClass(e.target.value === "grupal")
-
-                      setClassMetadata({ ...classMetadata, type: 'individual', studentsCount: 1, price: 12000 })
-                    }
-                    }
+                    onChange={handleClassTypeChange}
                   >
                     <option value="individual">Individual</option>
                     <option value="grupal">Grupal</option>
@@ -238,7 +288,6 @@ const Reservas = (props: Props) => {
                   {text?.length}/100
                 </p>
               </div>
-
             </div>
             <div>
               <Button disabled={!text || !selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
@@ -255,12 +304,41 @@ const Reservas = (props: Props) => {
       <br /><br /><br />
       <MetodoDePagoBadge title={metodos_pago} color="metodopago text-[9px] lg:text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" />
       <br /><br /><br />
-
-
-
     </>
-  );
+  )
 }
 
 export default Reservas
 
+// const fullCalendarContent = useCallback((arg: any) => {
+
+//   return (
+//     <>
+//       {
+//         upcomingClasses && upcomingClasses.map((meeting) => {
+//           <div className="text-xs px-2 py-2 text-gray-500">
+//             <p className='font-roboto capitalize'>Tipo: {meeting.type}</p>
+//             <p className='font-roboto capitalize'>Participantes: {meeting.participants}</p>
+//             <p className='font-roboto capitalize'>Estado: {meeting.status}</p>
+//             <p className='font-roboto capitalize'>Id: {meeting.id}</p>
+//           </div>
+//         })
+//       }
+//     </>
+//   );
+// }, [])
+
+// const fullCalendarEvents: FullCalendarProps[] = useMemo(() => (
+//   events?.map((slot) => ({
+//     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
+//     start: slot.start.dateTime,
+//     end: slot.end.dateTime,
+//     color: slot.status === 'confirmed' ? '#F0ED90' : 'red',
+//   }))), [events]);
+
+/*
+      id: true,
+      classType: true,
+      maxParticipants: true,
+      status: true
+*/

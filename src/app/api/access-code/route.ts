@@ -5,16 +5,25 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
 
   const session = await auth()
-
+  let response
   try {
     const body = await request.json();
-    const { accessCode } = body;
 
-    const response = await getGoogleMeetLink(accessCode);
+    response = await getGoogleMeetLink(body);
+
+    // TODO: Create a fc that avoid multiple meeting at the same time (Only validated in frontend)
+
+    if (response?.bookedById === session?.user?.id!) {
+      return NextResponse.json({ response: { message: "El creador de la clase no puede unirse como participante" } });
+    }
+
+    if (response == null) {
+      return NextResponse.json({ response: { message: `No se encontro ninguna clase asociada a este codigo: ${body}` } });
+    }
 
     if (response) {
       const guestResponse = await addParticipant(response, session?.user?.id!);
-      console.log(guestResponse);
+      response = guestResponse
     }
 
     return NextResponse.json({ response }, { status: 200 });

@@ -1,46 +1,41 @@
 import Link from 'next/link';
 import { Button } from '../ui/button';
 
-type Props = { link: string };
+type Props = {
+  link: string
+  status: string
+}
 
-const JoinClass = ({ link }: Props) => {
+const JoinClass = ({ link, status }: Props) => {
+  const isDisabled = status === 'completed'
   return (
-    <Link href={link} target="_blank" rel="noopener noreferrer">
-      <Button size="sm" variant="outline" className="w-[80px] h-8 ml-4 text-xs bg-black text-white dark:bg-white dark:text-black">
-        Unirse
-      </Button>
-    </Link>
+    <>
+      {
+        isDisabled ? (
+          <Button
+            disabled
+            size="sm"
+            variant="outline"
+            className="w-[80px] h-8 ml-4 text-xs bg-gray-500 text-white cursor-not-allowed"
+          >
+            Unirse
+          </Button>
+        ) : (
+          <Link href={link} target="_blank" rel="noopener noreferrer">
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-[80px] h-8 ml-4 text-xs bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-gray-300"
+            >
+              Unirse
+            </Button>
+          </Link>
+        )
+      }
+    </>
   );
 };
 
 export default JoinClass
 
 
-// 'use client'
-// import Link from 'next/link'
-// import { Button } from '../ui/button'
-
-// type Props = {
-//   link: string
-// }
-
-// const JoinClass = ({ link }: Props) => {
-//   return (
-//     <Link
-//       href={link}
-//       target="_blank"
-//       rel="noopener noreferrer"
-//     >
-//       <Button
-        
-//         size='sm'
-//         variant='outline'
-//         className='w-[80px] h-8 ml-4 text-xs bg-black text-white dark:bg-white dark:text-black'
-//       >
-//         <span>Unirse</span>
-//       </Button>
-//     </Link>
-//   )
-// }
-
-// export default JoinClass

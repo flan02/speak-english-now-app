@@ -193,6 +193,10 @@ export async function getGoogleMeetLink(accessCode: string) {
       }
     })
 
+    if (!googleMeetLink) {
+      console.log(`We couldn't match any meeting for this code: ${accessCode} `);
+      return null
+    }
     return googleMeetLink;
 
   } catch (error) {
@@ -207,6 +211,7 @@ export async function addParticipant(event: any, userId: string) {
       const existing = await tx.virtualClass.findUnique({
         where: { id: event.id },
         select: {
+          bookedById: true,
           participantsIds: true,
           currentParticipants: true,
           maxParticipants: true
@@ -222,6 +227,8 @@ export async function addParticipant(event: any, userId: string) {
       if (existing.currentParticipants >= existing.maxParticipants) {
         return { message: "La clase ya alcanzó el número máximo de participantes" };
       }
+
+
 
       const response = await tx.virtualClass.update({
         where: { id: event.id },
@@ -240,30 +247,6 @@ export async function addParticipant(event: any, userId: string) {
     return { error: "No se pudo agregar el participante", details: error };
   }
 }
-
-
-// const existing = await db.virtualClass.findUnique({
-//   where: { id: event.id },
-//   select: {
-//     participantsIds: true,
-//     currentParticipants: true,
-//     maxParticipants: true
-//   },
-// });
-// const response = await db.virtualClass.update({
-//   where: {
-//     id: event.id,
-//   },
-//   data: {
-//     currentParticipants: {
-//       increment: 1
-//     },
-//     participantsIds: {
-//       push: userId
-//     }
-//   }
-// });
-
 
 
 /* 
@@ -294,6 +277,5 @@ TODO: EXAMPLE EVENT CREATED
   reminders: { useDefault: true },
   eventType: 'default'
 }
-
 
 */

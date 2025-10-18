@@ -21,7 +21,7 @@ const AccessCode = ({ code, classType }: Props) => {
     }
   };
   return (
-    <div className='w-[90px] flex space-x-0.5 relative justify-between items-center'>
+    <div className='w-[90px] flex relative justify-between items-center'>
       {
         classType === 'grupal'
           ? <>

@@ -187,70 +187,6 @@ body {
   min-height: 450px;
 }
 
-.dark .fc-daygrid-day {
-  border: 1px solid #262627 !important; /* borde del calendario */
-  background-color: rgba(27, 5, 56, 0.3); /* morado oscuro */
-  opacity: 1;
-}
-
-.dark .fc-col-header-cell {
-  border: 1px solid #262627 !important; /* borde del calendario */
-}
-
-/* .dark .fc- {
-  background-color: #1e1546 !important; 
-  color: #ffffff !important;
-} */
-
-.dark .fc-scrollgrid {
-  border: 1px solid #262627 !important; /* borde del calendario */
-}
-
-.dark .fc-toolbar-title,
-.fc-toolbar-title {
-  text-transform: capitalize;
-}
-
-.fc-daygrid-day-events {
-  /* max-height: 35px; controla altura disponible para eventos */
-  height: 70px;
-}
-
-.fc-daygrid-day-number {
-  color: #888;
-}
-
-.bg-previous-day {
-  opacity: 0.5;
-  color: gray;
-  z-index: -10;
-}
-
-.dark .bg-previous-day {
-  opacity: 0.2;
-  z-index: -10;
-}
-
-.fc-day-sun {
-  background-color: #f0eee9 !important; /* amarillo */
-  opacity: 1 !important;
-  color: rgba(0, 0, 0, 0.25);
-}
-
-.dark .fc-day-sun {
-  background-color: rgba(0, 0, 0, 0.7) !important; /* morado oscuro */
-  color: gray;
-  opacity: 1 !important;
-}
-
-.fc-day-today {
-  background-color: #f7f5b9 !important; /* rojo */
-}
-
-.dark .fc-day-today {
-  background-color: rgba(43, 12, 83, 0.5) !important; /* morado oscuro */
-}
-
 /* Fondo y borde del evento */
 .fc .fc-event {
   display: block;
@@ -260,6 +196,76 @@ body {
   border-radius: 0.375rem; /* esquinas suaves */
   padding: 0 4px;
   z-index: -10;
+}
+
+.fc-day-sun {
+  background-color: #f0eee9 !important; /* amarillo */
+  opacity: 1 !important;
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.fc-toolbar-title {
+  text-transform: capitalize;
+}
+.fc-daygrid-day-events {
+  /* max-height: 35px; controla altura disponible para eventos */
+  height: 70px;
+}
+
+.fc .fc-event-title {
+  color: #444 !important;
+}
+
+.fc-day-today {
+  background-color: #f7f5b9 !important; /* rojo */
+}
+
+.fc-daygrid-day-number {
+  color: #888;
+}
+
+.bg-previous-day {
+  opacity: 1 !important;
+  color: gray;
+  z-index: -10;
+  border: 1px solid red !important;
+  background-color: red !important;
+}
+
+.bg-modal {
+  background-color: oklch(100% 0.00011 271.152);
+  color: #444;
+  border: 1px solid #eee;
+}
+
+.fc-timegrid {
+  color: #444;
+  font-size: 22px;
+}
+
+.dark .fc-scrollgrid {
+  border: 1px solid #262627 !important; /* borde del calendario */
+}
+
+.dark .fc-toolbar-title,
+.dark .fc-daygrid-day {
+  border: 1px solid #262627 !important; /* borde del calendario */
+  background-color: rgba(27, 5, 56, 0.3) !important; /* morado oscuro */
+  opacity: 1;
+}
+
+.dark .fc-col-header-cell {
+  border: 1px solid #262627 !important; /* borde del calendario */
+}
+
+.dark .fc-day-sun {
+  background-color: rgba(0, 0, 0, 0.7) !important; /* morado oscuro */
+  color: gray;
+  opacity: 0.2 !important;
+}
+
+.dark .fc-day-today {
+  background-color: rgba(43, 12, 83, 0.5) !important; /* morado oscuro */
 }
 
 .dark .fc,
@@ -276,30 +282,15 @@ body {
   z-index: -10;
 }
 
-.fc .fc-event-title {
-  color: #444 !important;
-}
-
 .dark .fc,
 .dark .fc-event-title {
   color: #444 !important;
-}
-
-.bg-modal {
-  background-color: oklch(100% 0.00011 271.152);
-  color: #444;
-  border: 1px solid #eee;
 }
 
 .dark .bg-modal {
   background-color: oklch(14.031% 0.02303 302.764);
   border: 1px solid #2e1747;
   color: #777;
-}
-
-.fc-timegrid {
-  color: #444;
-  font-size: 22px;
 }
 
 .dark .fc-timegrid {
@@ -338,6 +329,23 @@ body {
 .dark .fc-v-event {
   border: 1px solid #222 !important;
 }
+
+.dark .fc-col-header-cell,
+.dark .fc-day,
+.dark .fc-day-tue,
+.dark .fc-day-disabled {
+  background-color: oklch(0.205 0 0) !important;
+}
+
+/* .fc-col-header-cell,
+.fc-day,
+.fc-day-tue,
+} */
+.fc-day-disabled {
+  background-color: #eeeeee !important;
+}
+
+/* ! MEDIA QUERIES STYLES */
 
 @media (max-width: 768px) {
   .fc .fc-event {
@@ -461,11 +469,4 @@ body {
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-} */
+/* fc-timegrid-event-harness fc-timegrid-event-harness-inset */

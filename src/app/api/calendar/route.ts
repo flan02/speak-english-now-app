@@ -47,7 +47,6 @@ export async function POST(request: NextRequest) {
 
   const body = await request.json();
 
-
   try {
 
     const calendarId = process.env.CALENDAR_ID!;

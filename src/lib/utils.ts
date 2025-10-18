@@ -74,3 +74,7 @@ export function getFormattedTimeRemaining(exp: number): string {
   return `${days > 0 ? `${days}d ` : ""}${hours}h ${minutes}m ${seconds}s`;
 }
 
+export function cutId(id: string): string {
+  if (!id || id.length < 10) return id; // por seguridad
+  return id.slice(-10); // toma los últimos 10 caracteres
+}
