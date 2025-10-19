@@ -47,18 +47,18 @@ export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassP
 };
 
 
-// const removePastDays = (arg: any) => {
-//   const cellDate = new Date(arg.date);
-//   console.log("Current Time", arg.date);
-//   const today = new Date();
-//   today.setHours(0, 0, 0, 0);
-//   cellDate.setHours(0, 0, 0, 0);
+const removePastDays = (arg: any) => {
+  const cellDate = new Date(arg.date);
+  console.log("Current Time", arg.date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  cellDate.setHours(0, 0, 0, 0);
 
-//   if (cellDate < today) {
-//     return ["bg-gray-600/10", "bg-previous-day", "pointer-events-none"]; // gris y deshabilitado - 
-//   }
-//   return [];
-// }
+  if (cellDate < today) {
+    return ["bg-gray-600/10", "bg-previous-day", "pointer-events-none"]; // gris y deshabilitado - 
+  }
+  return [];
+}
 
 
 
@@ -78,7 +78,7 @@ const Reservas = (props: Props) => {
     title: meeting.classType,
     start: meeting.startTime,
     end: meeting.endTime,
-    color: meeting.status === 'scheduled' ? '#F0ED90' : 'red',
+    color: meeting.status === 'scheduled' ? '#F0ED90' : '',
     extendedProps: {
       participants: meeting.maxParticipants,
       status: meeting.status === 'scheduled' ? 'Reservada' : meeting.status === 'completed' ? 'Completada' : 'Cancelada',

@@ -71,7 +71,7 @@ const Calendar = () => {
 
     const horario = `${formatHour(start)}-${formatHour(end)}`;
     return (
-      <div className="w-full text-center text-xs font-semibold rounded-md px-1 py-0.5 bg-slate-600 text-white">
+      <div className="w-full text-center text-xs font-semibold rounded-md px-0 py-0.5 bg-slate-400 text-white z-50">
         {horario}
       </div>
     );

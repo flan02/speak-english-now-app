@@ -7,7 +7,9 @@ import React from 'react'
 import AllClasses from '@/components/mis-clases-virtuales/AllClasses'
 import GetCode from '@/components/mis-clases-virtuales/GetCode'
 
+
 type Props = {}
+
 
 const MisClasesVirtuales = async (props: Props) => {
 

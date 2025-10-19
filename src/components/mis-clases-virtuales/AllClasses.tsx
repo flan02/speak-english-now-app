@@ -1,7 +1,8 @@
-import { getAllClasses } from "@/app/(main)/inicio/mis-clases-virtuales/actions"
+
 import { Session } from "next-auth"
 import EachClass from "./EachClass"
 import { Card } from "../ui/card"
+import { getAllClasses } from "@/app/(main)/inicio/mis-clases-virtuales/actions"
 
 
 

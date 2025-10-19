@@ -48,6 +48,11 @@ enum HostType {
   invitado
 }
 
+enum Actividad {
+  uploaded
+  pending
+}
+
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
@@ -82,8 +87,25 @@ model VirtualClass {
   description         String
   learningFocus       String
   participantsIds     String[]  @default([])
+  actividad           Actividad @default(pending)
+  actividadId         String?   @db.ObjectId // Task id
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
+}
+
+model Task {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  classIds      String[] // Every VirtualClass has access to this Task
+  title         String
+  content       String // Markdown IA
+  solvedContent String // Markdown answer
+  description   String // Short description about the task
+  type          String // quiz, writing, speaking, listening, exam
+  difficulty    String? // easy, medium, hard
+  participants  Json? // [{ userId, status, score }]
+  //metadata    Json? // Any extra info. OPCIONAL
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model billingMercadoPago {
@@ -93,29 +115,3 @@ model billingMercadoPago {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-// google calendar event arriving to save fc {
-//   kind: 'calendar#event',
-//   etag: '"3521078267656126"',
-//   id: 'e47h4cbo3tusboge97b1n3ahlg',
-//   status: 'confirmed',
-//   htmlLink: 'https://www.google.com/calendar/event?eid=ZTQ3aDRjYm8zdHVzYm9nZTk3YjFuM2FobGcgY2hhbml2ZXRkYW4xOTg4QG0',
-//   created: '2025-10-15T14:38:53.000Z',
-//   updated: '2025-10-15T14:38:53.828Z',
-//   summary: 'Clase de Inglés reservada por (Dan Chanivet)',
-//   description: 'La clase sera individual con x1 participantes',
-//   creator: { email: 'hablainglesya@cvai-448217.iam.gserviceaccount.com' },
-//   organizer: { email: 'chanivetdan1988@gmail.com', self: true },
-//   start: {
-//     dateTime: '2025-10-18T20:00:00-03:00',
-//     timeZone: 'America/Argentina/Buenos_Aires'
-//   },
-//   end: {
-//     dateTime: '2025-10-18T21:00:00-03:00',
-//     timeZone: 'America/Argentina/Buenos_Aires'
-//   },
-//   iCalUID: 'e47h4cbo3tusboge97b1n3ahlg@google.com',
-//   sequence: 0,
-//   reminders: { useDefault: true },
-//   eventType: 'default'
-// }

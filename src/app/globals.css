@@ -198,6 +198,11 @@ body {
   z-index: -10;
 }
 
+/* fc-event fc-event-start fc-event-end fc-event-today fc-daygrid-event fc-daygrid-dot-event */
+.fc-daygrid-event {
+  background-color: #90a1b9 !important;
+}
+
 .fc-day-sun {
   background-color: #f0eee9 !important; /* amarillo */
   opacity: 1 !important;
@@ -218,18 +223,30 @@ body {
 
 .fc-day-today {
   background-color: #f7f5b9 !important; /* rojo */
+  color: black;
+  position: relative;
+  z-index: 1;
 }
 
 .fc-daygrid-day-number {
-  color: #888;
+  color: #999 !important; /* color gris para los números de día */
+}
+
+.dark .fc-daygrid-day-top {
+  background: transparent !important;
+}
+
+.dark .fc-daygrid-day-number {
+  color: #555 !important;
+  z-index: 2;
+  position: relative;
 }
 
 .bg-previous-day {
   opacity: 1 !important;
   color: gray;
   z-index: -10;
-  border: 1px solid red !important;
-  background-color: red !important;
+  background-color: gray/90 !important;
 }
 
 .bg-modal {
@@ -331,10 +348,15 @@ body {
 }
 
 .dark .fc-col-header-cell,
-.dark .fc-day,
 .dark .fc-day-tue,
 .dark .fc-day-disabled {
   background-color: oklch(0.205 0 0) !important;
+}
+
+.dark .fc-day {
+  background-color: oklch(0.255 0 0) !important;
+  position: relative;
+  z-index: 1;
 }
 
 /* .fc-col-header-cell,

@@ -158,3 +158,28 @@ export type User = {
   email: string
   image: string
 }
+
+
+export type VirtualClass = {
+  id: string
+  googleEventId: string
+  bookedById: string
+  accessCode: string
+  startTime: Date
+  endTime: Date
+  hostType: 'anfitrion' | 'invitado'
+  currentParticipants: number
+  maxParticipants: number
+  classType: 'individual' | 'grupal'
+  classPrice: number
+  htmlLink: string
+  status: 'scheduled' | 'completed' | 'cancelled'
+  summary: string
+  description: string
+  learningFocus: string
+  participantsIds: string[]
+  actividad: 'uploaded' | 'pending'
+  actividadId?: string
+  createdAt: Date
+  updatedAt: Date
+}

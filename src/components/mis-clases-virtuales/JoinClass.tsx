@@ -16,7 +16,7 @@ const JoinClass = ({ link, status }: Props) => {
             disabled
             size="sm"
             variant="outline"
-            className="w-[80px] h-8 ml-4 text-xs bg-gray-500 text-white cursor-not-allowed"
+            className="w-[90px] h-8 ml-4 text-xs bg-gray-500 text-white cursor-not-allowed"
           >
             Unirse
           </Button>
@@ -25,7 +25,7 @@ const JoinClass = ({ link, status }: Props) => {
             <Button
               size="sm"
               variant="outline"
-              className="w-[80px] h-8 ml-4 text-xs bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-gray-300"
+              className="w-[90px] h-8 ml-4 text-xs bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-gray-300"
             >
               Unirse
             </Button>
