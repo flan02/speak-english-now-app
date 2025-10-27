@@ -5,6 +5,7 @@ import AccessCode from '../mis-clases-virtuales/AccessCode'
 import JoinClass from '../mis-clases-virtuales/JoinClass'
 import { VirtualClass } from '@/lib/types'
 import { Button } from '../ui/button'
+import Link from 'next/link'
 
 type Props = {
   classItem: VirtualClass
@@ -51,8 +52,10 @@ const EachClass = async ({ classItem, index }: Props) => {
       <JoinClass link={classItem.htmlLink} status={classItem.status} />
       <p className='w-[105px] flex items-center justify-center'>
         {classItem.actividad === 'pending'
-          ? <Button size="sm" className='bg-green-600 hover:bg-green-500'>Upload</Button>
-          : <Button disabled size="sm" className='bg-red-700 text-white text-xs'>Uploaded</Button>
+          ? <Button asChild size="sm" className='bg-green-600 hover:bg-green-600/80 text-white text-xs w-[80px]'>
+            <Link href={`/admin/actividad/${classItem.id}`}>Pendiente</Link>
+          </Button>
+          : <Button disabled size="sm" className='bg-black text-white text-xs w-[80px]'>Enviada</Button>
         }
       </p>
     </Card>

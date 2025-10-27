@@ -53,6 +53,12 @@ enum Actividad {
   pending
 }
 
+enum Level {
+  easy
+  medium
+  hard
+}
+
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
@@ -97,11 +103,11 @@ model Task {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
   classIds      String[] // Every VirtualClass has access to this Task
   title         String
-  content       String // Markdown IA
-  solvedContent String // Markdown answer
+  content       String // Markdown AI
+  solvedContent String // Markdown answer AI
   description   String // Short description about the task
   type          String // quiz, writing, speaking, listening, exam
-  difficulty    String? // easy, medium, hard
+  difficulty    Level    @default(medium)
   participants  Json? // [{ userId, status, score }]
   //metadata    Json? // Any extra info. OPCIONAL
   createdAt     DateTime @default(now())

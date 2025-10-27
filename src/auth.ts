@@ -12,7 +12,7 @@ import { User } from './lib/types'
 // ? To see the current providers
 // $ http://localhost:3000/api/auth/providers  
 
-
+// let isAdmin = (email: string) => email === process.env.ADMIN_EMAIL!
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Github, Google({
     // clientId: process.env.AUTH_GOOGLE_ID,
@@ -68,7 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.accessToken = account.access_token
           token.refreshToken = account.refresh_token
 
-          //console.log('THIS IS THE refresh_token', token.refreshToken);
+          console.log('THIS IS THE refresh_token', token.refreshToken);
 
           // const now = Math.floor(Date.now() / 1000);
           // const timeUntilExpiration = token.exp - now; // Si el token tiene menos de 5 minutos antes de expirar, renovarlo

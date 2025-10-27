@@ -1,8 +1,8 @@
 import { getAllClasses } from '@/app/(dashboard)/admin/actions'
 import { Session } from 'next-auth'
-import React from 'react'
 import EachClass from './EachClass'
 import { VirtualClass } from '@/lib/types'
+
 
 
 type SessionProps = {
@@ -12,15 +12,13 @@ type SessionProps = {
 
 const AllClasses = async ({ session, filter }: SessionProps) => {
 
-  // const classes = await getAllClasses(filter) (create a new call to the db with filter (searchParams) value changes)
+  // ? const classes = await getAllClasses(filter) (create a new call to the db with filter (searchParams) value changes)
   const all_classes: VirtualClass[] = await getAllClasses() as VirtualClass[]
 
-  console.log("filter", filter);
   return (
     <div className='space-y-1'>
       {
-
-        filter != undefined ?
+        session && filter != undefined ?
           all_classes?.
             filter((classItem: VirtualClass) => classItem.status === filter)
             .map((classItem: VirtualClass, index) => (

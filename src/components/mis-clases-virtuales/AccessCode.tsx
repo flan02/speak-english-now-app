@@ -30,7 +30,7 @@ const AccessCode = ({ code, classType }: Props) => {
               onCut={(e) => e.preventDefault()} >
               {code}
             </p>
-            <button onClick={handleCopy} >
+            <button onClick={handleCopy}>
               <Copy size={12} className='mt-0.5' />
               {copied && (
                 <span className="text-xs text-gray-500 absolute mt-1.5 -ml-12">¡Copiado!</span>
