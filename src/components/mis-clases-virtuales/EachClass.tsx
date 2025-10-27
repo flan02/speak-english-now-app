@@ -14,9 +14,7 @@ type Props = {
 
 
 const EachClass = async ({ classItem, index }: Props) => {
-
   const session = await auth()
-
   const estado = classItem.status === 'scheduled' ? 'Reservada' : classItem.status === 'completed' ? 'Completada' : 'Cancelada'
   const parsedStartTime = classItem.startTime.toLocaleString("es-AR", {
     hour: "2-digit",
@@ -28,6 +26,7 @@ const EachClass = async ({ classItem, index }: Props) => {
     minute: "2-digit",
     hour12: false, // ✅ esto fuerza formato 24hs
   })
+
 
   return (
     <Card key={index} className='flex w-full border border-card py-4 px-4 text-xs'>
@@ -41,15 +40,14 @@ const EachClass = async ({ classItem, index }: Props) => {
         <p>hs</p>
       </div>
       <p className='w-[80px] capitalize flex items-center justify-center'>{classItem.classType} {classItem.classType == 'grupal' && `(${classItem.currentParticipants}/${classItem.maxParticipants})`}</p>
-      <p className='w-[65px] flex items-center capitalize justify-center'>
-        {classItem.participantsIds.includes(session?.user?.id!)
-          ? 'Invitado'
-          : classItem.hostType}
-      </p>
-
+      <p className='w-[65px] flex items-center capitalize justify-center'>{classItem.bookedById == session?.user?.id ? 'anfitrion' : 'invitado'}</p>
       <p className='w-[75px] flex items-center justify-center'>{estado}</p>
       <p className='w-[105px] flex items-center justify-center'>No Realizada</p>
-      {!classItem.participantsIds.includes(session?.user?.id!) && classItem.status !== 'completed' ? (
+      {/* {!classItem.participantsIds.includes(session?.user?.id!) && classItem.status !== 'completed' ? (
+        <AccessCode code={classItem.accessCode} classType={classItem.classType} />
+      ) : <div className='w-[90px] justify-center'></div>} */}
+
+      {classItem.bookedById == session?.user?.id ? (
         <AccessCode code={classItem.accessCode} classType={classItem.classType} />
       ) : <div className='w-[90px] justify-center'></div>}
 

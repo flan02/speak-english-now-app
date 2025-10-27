@@ -44,6 +44,7 @@ export async function updateUserData({ id, localidad, nivel, telefono, newslette
   }
 }
 
+
 export async function listEvents() {
   try {
     const calendarId = process.env.CALENDAR_ID!;
@@ -149,7 +150,9 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
     description: googleCalendarEvent.description,
     learningFocus: text,
     hostType: 'anfitrion',
-    participantsIds: []
+    participantsIds: [
+      userId
+    ]
   }
 
   try {

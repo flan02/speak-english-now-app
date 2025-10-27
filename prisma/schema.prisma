@@ -108,6 +108,7 @@ model Task {
   description   String // Short description about the task
   type          String // quiz, writing, speaking, listening, exam
   difficulty    Level    @default(medium)
+  classId       String[] @default([]) // Classes that have received this task
   participants  Json? // [{ userId, status, score }]
   //metadata    Json? // Any extra info. OPCIONAL
   createdAt     DateTime @default(now())

@@ -14,8 +14,6 @@ const AllClasses: React.FC<SessionProps> = async ({ session }) => {
 
   const all_classes = await getAllClasses(session.user.id)
 
-
-
   return (
     <>
       <div className="mb-2">
