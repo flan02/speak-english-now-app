@@ -1,3 +1,4 @@
+"use server"
 import { db } from "@/db"
 
 export async function getVirtualClass(classId: string) {
@@ -13,4 +14,12 @@ export async function getVirtualClass(classId: string) {
     console.error('We can not retrieve data from this class', error)
     // return { message: 'We can not retrieve data from this class', status: 500 }
   }
+}
+
+
+export async function uploadExam(formData: FormData) {
+
+  console.log("Received formData", formData);
+  // await db.task.create({data: { title, content }})
+
 }

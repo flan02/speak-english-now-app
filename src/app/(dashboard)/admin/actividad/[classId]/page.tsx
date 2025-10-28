@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import MaxWidthWrapper from "@/components/reutilizable/MaxWidthWrapper"
-import { getVirtualClass } from "./actions"
+import { getVirtualClass, uploadExam } from "./actions"
 import { VirtualClass } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -28,6 +28,9 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
       <h1 className='text-3xl'>No tienes los permisos necesarios para acceder a esta ruta</h1>
     </MaxWidthWrapper>
   }
+
+
+
   return (
     <MaxWidthWrapper>
       {
@@ -38,7 +41,7 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
             {JSON.stringify(virtualClass, null, 2)}
           </pre>
           <div className="w-full max-w-md mx-auto">
-            <form>
+            <form action={uploadExam}>
               <FieldGroup className="font-roboto font-bold">
                 <FieldSet>
                   <FieldTitle className="text-xl font-bold">Crear nuevo examen con Inteligencia Artificial</FieldTitle>
@@ -47,22 +50,22 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                   </FieldDescription>
                   <FieldGroup>
                     <Field>
-                      <FieldLabel htmlFor="checkout-7j9-card-number-uw1">
+                      <FieldLabel>
                         Id de la clase virtual
                       </FieldLabel>
                       <Input
-                        id="checkout-7j9-card-number-uw1"
+                        name="classId"
                         defaultValue={virtualClass.id}
                         disabled
                         required
                       />
                     </Field>
                     <Field>
-                      <FieldLabel htmlFor="checkout-7j9-card-name-43j">
+                      <FieldLabel>
                         Titulo del examen
                       </FieldLabel>
                       <Input
-                        id="checkout-7j9-card-name-43j"
+                        name="title"
                         placeholder="Ingresa el titulo..."
                         className="capitalize"
                         required
@@ -70,18 +73,22 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                     </Field>
 
                     <Field>
-                      <FieldLabel htmlFor="checkout-7j9-card-number-uw1">
+                      <FieldLabel>
                         Describe el examen
                       </FieldLabel>
-                      <Textarea className="resize-none" rows={6} placeholder="Ingresa las consignas de los ejercicios..." />
+                      <Textarea
+                        name="description"
+                        className="resize-none"
+                        rows={6}
+                        placeholder="Ingresa las consignas de los ejercicios..." />
                     </Field>
 
                     <Field>
-                      <FieldLabel htmlFor="checkout-7j9-exp-year-f59">
+                      <FieldLabel>
                         Dificultad
                       </FieldLabel>
-                      <Select defaultValue="">
-                        <SelectTrigger id="checkout-7j9-exp-year-f59">
+                      <Select defaultValue="" name="difficulty">
+                        <SelectTrigger>
                           <SelectValue placeholder="" />
                         </SelectTrigger>
                         <SelectContent className="bg-white text-black">
@@ -94,24 +101,29 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                     </Field>
 
                     <Field >
-                      <FieldLabel htmlFor="checkout-7j9-card-number-uw1">
+                      <FieldLabel>
                         Modelo de examen
                       </FieldLabel>
-                      <Textarea rows={12} className="resize-none text-xs" placeholder="Pega aqui el examen en formato Markdown..." />
+                      <Textarea
+                        name="exam-content"
+                        rows={12}
+                        className="resize-none text-xs"
+                        placeholder="Pega aqui el examen en formato Markdown..." />
                     </Field>
 
                     <Field>
-                      <FieldLabel htmlFor="checkout-7j9-card-number-uw1">
+                      <FieldLabel>
                         Resolucion del examen
                       </FieldLabel>
-                      <Textarea rows={12} className="resize-none" placeholder="Pega aqui el examen en formato Markdown..." />
+                      <Textarea
+                        name="exam-response"
+                        rows={12}
+                        className="resize-none"
+                        placeholder="Pega aqui el examen en formato Markdown..." />
                     </Field>
-
                   </FieldGroup>
                 </FieldSet>
                 <FieldSeparator />
-
-
                 <Field orientation="horizontal">
                   <Button variant="default" type="submit" className="bg-black text-white w-full text-lg tracking-wide hover:bg-black/85">Enviar</Button>
                 </Field>
