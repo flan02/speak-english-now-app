@@ -54,7 +54,7 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                         Id de la clase virtual
                       </FieldLabel>
                       <Input
-                        name="classIds"
+                        name="classId"
                         defaultValue={virtualClass.id}
                         readOnly
                         required

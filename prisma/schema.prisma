@@ -48,7 +48,7 @@ enum HostType {
   invitado
 }
 
-enum ActividadStatus {
+enum ActivityStatus {
   uploaded
   pending
 }
@@ -88,26 +88,26 @@ model User {
 }
 
 model VirtualClass {
-  id                  String          @id @default(auto()) @map("_id") @db.ObjectId // classId
-  googleEventId       String          @unique // allow me to modify this event
-  bookedById          String          @db.ObjectId // same id than model User: id
+  id                  String         @id @default(auto()) @map("_id") @db.ObjectId // classId
+  googleEventId       String         @unique // allow me to modify this event
+  bookedById          String         @db.ObjectId // same id than model User: id
   accessCode          String
   startTime           DateTime
   endTime             DateTime
-  hostType            HostType        @default(anfitrion)
-  currentParticipants Int             @default(1)
+  hostType            HostType       @default(anfitrion)
+  currentParticipants Int            @default(1)
   maxParticipants     Int // studentsCount
   classType           ClassType
   classPrice          Int
   htmlLink            String
-  status              Status          @default(scheduled) // scheduled, cancelled, completed
+  status              Status         @default(scheduled) // scheduled, cancelled, completed
   summary             String
   description         String
   learningFocus       String
-  participantsIds     String[]        @default([])
-  actividad           ActividadStatus @default(pending)
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  participantsIds     String[]       @default([])
+  activityStatus      ActivityStatus @default(pending)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
   UserActivity        UserActivity[]
 }
 
@@ -125,12 +125,13 @@ model Task {
 }
 
 model UserActivity {
-  id        String        @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String        @db.ObjectId
-  taskId    String        @db.ObjectId
-  classId   String        @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  taskId    String    @db.ObjectId
+  classId   String    @db.ObjectId
   rol       classRole
-  completed Boolean       @default(false)
+  completed Boolean   @default(false)
+
   user      User?         @relation(fields: [userId], references: [id])
   task      Task?         @relation(fields: [taskId], references: [id])
   class     VirtualClass? @relation(fields: [classId], references: [id])

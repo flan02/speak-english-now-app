@@ -20,8 +20,8 @@ export async function getVirtualClass(classId: string) {
 
 export async function uploadExam(formData: FormData) {
 
+  const classId = formData.get('classId') as string
   const data: ActividadModel = {
-    classIds: [formData.get('classIds') as string],
     title: formData.get('title') as string,
     content: formData.get('content') as string,
     solvedContent: formData.get('solvedContent') as string,
@@ -31,38 +31,40 @@ export async function uploadExam(formData: FormData) {
   }
   try {
 
+    // ? Nueva tarea
     const newTask = await db.task.create({ data })
     if (newTask) {
       console.log('Activity created successfully', newTask)
     }
 
-    /* 
-    // Nueva tarea
-const newTask = await prisma.task.create({
-  data: { title, content, type, difficulty }
-});
 
-// Clase a las que se asigna la tarea
-const clase = await prisma.virtualClass.findUnique({ 
-  where: { id: classId } 
-});
 
-// Crear UserActivity para cada participante
-const userActivities = clase.participantsIds.map(userId => ({
-  userId,
-  taskId: newTask.id,
-  classId: clase.id,
-}));
+    //  ? Clase a las que se asigna la tarea
+    const classFound = await db.virtualClass.findUnique({
+      where: { id: classId }
+    });
 
-await prisma.userActivity.createMany({ data: userActivities });
+    // ? Crear UserActivity para cada participante
+    const userActivities = classFound?.participantsIds.map(userId => ({
+      userId,
+      taskId: newTask.id,
+      classId: classFound.id,
+      rol: (userId === classFound.bookedById ? 'anfitrion' : 'participante') as 'anfitrion' | 'participante',
+      completed: false,
+    }));
 
-// Marcar en la clase que ya se asignó la actividad
-await prisma.virtualClass.update({
-  where: { id: clase.id },
-  data: { actividad: 'sent' }
-});
+    if (userActivities) {
 
-    */
+      await db.userActivity.createMany({ data: userActivities });
+    }
+
+    // ? Marcar en la clase que ya se asignó la actividad
+    await db.virtualClass.update({
+      where: { id: classFound?.id },
+      data: {
+        activityStatus: 'uploaded' as 'uploaded' | 'pending',
+      }
+    });
 
 
   } catch (error) {
@@ -83,4 +85,31 @@ model UserActivity {
  @@index([classId])
 }
 
+*/
+
+/* 
+Cómo se usa después UserActivity
+
+Consultas por usuario:
+
+const actividadesUsuario = await prisma.userActivity.findMany({
+  where: { userId },
+  include: { task: true, class: true }
+});
+
+
+Consultas por clase:
+
+const actividadesClase = await prisma.userActivity.findMany({
+  where: { classId },
+  include: { user: true, task: true }
+});
+
+
+Actualización de progreso:
+
+await prisma.userActivity.update({
+  where: { id: userActivityId },
+  data: { completed: true, score: 95 }
+});
 */

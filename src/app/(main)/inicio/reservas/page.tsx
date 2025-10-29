@@ -166,7 +166,8 @@ const Reservas = (props: Props) => {
       <section className="w-full max-w-6xl mx-auto px-4 py-2">
         {
           isCalendarReady && !isLoading
-            ? <FullCalendar
+            ?
+            <FullCalendar
               allDaySlot={false} // ocultar el "All day"
               businessHours={{
                 startTime: '17:00', // hora de inicio

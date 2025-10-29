@@ -178,15 +178,14 @@ export type VirtualClass = {
   description: string
   learningFocus: string
   participantsIds: string[]
-  actividad: 'uploaded' | 'pending'
-  actividadId?: string
+  activityStatus: 'uploaded' | 'pending'
   createdAt: Date
   updatedAt: Date
 }
 
 
 export type ActividadModel = {
-  classIds: string[]
+
   title: string
   content: string
   solvedContent: string
@@ -196,29 +195,3 @@ export type ActividadModel = {
 }
 
 
-/* 
-Cómo se usa después UserActivity
-
-Consultas por usuario:
-
-const actividadesUsuario = await prisma.userActivity.findMany({
-  where: { userId },
-  include: { task: true, class: true }
-});
-
-
-Consultas por clase:
-
-const actividadesClase = await prisma.userActivity.findMany({
-  where: { classId },
-  include: { user: true, task: true }
-});
-
-
-Actualización de progreso:
-
-await prisma.userActivity.update({
-  where: { id: userActivityId },
-  data: { completed: true, score: 95 }
-});
-*/
