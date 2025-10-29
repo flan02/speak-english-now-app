@@ -48,7 +48,7 @@ enum HostType {
   invitado
 }
 
-enum Actividad {
+enum ActividadStatus {
   uploaded
   pending
 }
@@ -59,12 +59,23 @@ enum Level {
   hard
 }
 
+enum Type {
+  exam
+  audio
+  video
+  reading
+}
+
+enum classRole {
+  anfitrion
+  participante
+}
+
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
   name               String
   image              String?
-  role               Role                @default(USER)
   localidad          String?             @default("-")
   telefono           Int?                @default(0)
   nivel              NivelIngles         @default(inicial)
@@ -73,46 +84,58 @@ model User {
   billingMercadoPago billingMercadoPago?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt
+  UserActivity       UserActivity[]
 }
 
 model VirtualClass {
-  id                  String    @id @default(auto()) @map("_id") @db.ObjectId // classId
-  googleEventId       String    @unique // allow me to modify this event
-  bookedById          String    @db.ObjectId // same id than model User: id
+  id                  String          @id @default(auto()) @map("_id") @db.ObjectId // classId
+  googleEventId       String          @unique // allow me to modify this event
+  bookedById          String          @db.ObjectId // same id than model User: id
   accessCode          String
   startTime           DateTime
   endTime             DateTime
-  hostType            HostType  @default(anfitrion)
-  currentParticipants Int       @default(1)
+  hostType            HostType        @default(anfitrion)
+  currentParticipants Int             @default(1)
   maxParticipants     Int // studentsCount
   classType           ClassType
   classPrice          Int
   htmlLink            String
-  status              Status    @default(scheduled) // scheduled, cancelled, completed
+  status              Status          @default(scheduled) // scheduled, cancelled, completed
   summary             String
   description         String
   learningFocus       String
-  participantsIds     String[]  @default([])
-  actividad           Actividad @default(pending)
-  actividadId         String?   @db.ObjectId // Task id
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
+  participantsIds     String[]        @default([])
+  actividad           ActividadStatus @default(pending)
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  UserActivity        UserActivity[]
 }
 
 model Task {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  classIds      String[] // Every VirtualClass has access to this Task
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   content       String // Markdown AI
   solvedContent String // Markdown answer AI
   description   String // Short description about the task
-  type          String // quiz, writing, speaking, listening, exam
-  difficulty    Level    @default(medium)
-  classId       String[] @default([]) // Classes that have received this task
-  participants  Json? // [{ userId, status, score }]
-  //metadata    Json? // Any extra info. OPCIONAL
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  type          Type
+  difficulty    Level          @default(medium)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  UserActivity  UserActivity[]
+}
+
+model UserActivity {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String        @db.ObjectId
+  taskId    String        @db.ObjectId
+  classId   String        @db.ObjectId
+  rol       classRole
+  completed Boolean       @default(false)
+  user      User?         @relation(fields: [userId], references: [id])
+  task      Task?         @relation(fields: [taskId], references: [id])
+  class     VirtualClass? @relation(fields: [classId], references: [id])
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model billingMercadoPago {

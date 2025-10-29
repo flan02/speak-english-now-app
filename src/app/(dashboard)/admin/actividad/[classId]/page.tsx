@@ -37,14 +37,14 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
         isAdmin &&
         <section className="space-y-12">
           <LogoHablaInglesYa />
-          <pre className="absolute top-0 right-0 text-xs">
+          {/* <pre className="absolute top-0 right-0 text-xs">
             {JSON.stringify(virtualClass, null, 2)}
-          </pre>
-          <div className="w-full max-w-md mx-auto">
+          </pre> */}
+          <div className="min-w-[350px] lg:max-w-xl mx-auto">
             <form action={uploadExam}>
               <FieldGroup className="font-roboto font-bold">
                 <FieldSet>
-                  <FieldTitle className="text-xl font-bold">Crear nuevo examen con Inteligencia Artificial</FieldTitle>
+                  <FieldTitle className="text-2xl font-bold">Crear nuevo examen con Inteligencia Artificial</FieldTitle>
                   <FieldDescription>
                     Se enviaran dos versiones del examen: una sin resolver y otra resuelta
                   </FieldDescription>
@@ -54,9 +54,9 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                         Id de la clase virtual
                       </FieldLabel>
                       <Input
-                        name="classId"
+                        name="classIds"
                         defaultValue={virtualClass.id}
-                        disabled
+                        readOnly
                         required
                       />
                     </Field>
@@ -100,12 +100,30 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                       </Select>
                     </Field>
 
+                    <Field>
+                      <FieldLabel>
+                        Tipo
+                      </FieldLabel>
+                      <Select defaultValue="" name="type">
+                        <SelectTrigger>
+                          <SelectValue placeholder="" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-white text-black">
+                          <SelectItem value="exam">examen</SelectItem>
+                          <SelectItem value="audio">audio</SelectItem>
+                          <SelectItem value="video">video</SelectItem>
+                          <SelectItem value="reading">lectura</SelectItem>
+
+                        </SelectContent>
+                      </Select>
+                    </Field>
+
                     <Field >
                       <FieldLabel>
                         Modelo de examen
                       </FieldLabel>
                       <Textarea
-                        name="exam-content"
+                        name="content"
                         rows={12}
                         className="resize-none text-xs"
                         placeholder="Pega aqui el examen en formato Markdown..." />
@@ -116,7 +134,7 @@ const ActividadPage = async ({ params }: URLParamsProps) => {
                         Resolucion del examen
                       </FieldLabel>
                       <Textarea
-                        name="exam-response"
+                        name="solvedContent"
                         rows={12}
                         className="resize-none"
                         placeholder="Pega aqui el examen en formato Markdown..." />
