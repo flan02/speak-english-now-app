@@ -7,10 +7,12 @@ import { Card } from '@/components/ui/card'
 import { Session } from "next-auth"
 import { auth } from '@/auth'
 import AllTasks from '@/components/mis-actividades/AllTasks'
+import { getAllClasses } from '../mis-clases-virtuales/actions'
 type Props = {}
 
 const MisActividades = async (props: Props) => {
   const session: Session | null = await auth()
+  const all_tasks = await getAllClasses(session?.user?.id!)
   return (
     <>
       <div className='flex space-x-4 items-end'>
@@ -18,10 +20,10 @@ const MisActividades = async (props: Props) => {
         <H1 title='Mis Actividades' />
       </div>
       <h2 className='font-roboto font-bold text-base'>Nuestro tutor IA va a poner a prueba los conocimientos adquiridos en las clases virtuales.</h2>
-      <Card className='w-full flex justify-between border border-card py-4 px-4 h-screen'>
+      <Card className='w-full flex justify-between border-card border py-4 px-4'>
         {
           session?.user?.id
-            ? <AllTasks session={session} />
+            ? <AllTasks all_tasks={all_tasks} />
             : null
         }
       </Card>

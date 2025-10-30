@@ -125,13 +125,12 @@ model Task {
 }
 
 model UserActivity {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String    @db.ObjectId
-  taskId    String    @db.ObjectId
-  classId   String    @db.ObjectId
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String        @db.ObjectId
+  taskId    String?       @db.ObjectId
+  classId   String        @db.ObjectId
   rol       classRole
-  completed Boolean   @default(false)
-
+  completed Boolean?      @default(false)
   user      User?         @relation(fields: [userId], references: [id])
   task      Task?         @relation(fields: [taskId], references: [id])
   class     VirtualClass? @relation(fields: [classId], references: [id])

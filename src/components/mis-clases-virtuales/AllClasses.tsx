@@ -29,8 +29,8 @@ const AllClasses: React.FC<SessionProps> = async ({ session }) => {
       </div>
       <div className="space-y-1">
         {
-          all_classes.map((classItem, index) => (
-            <EachClass key={index} classItem={classItem} index={index} />
+          all_classes?.map((classItem, index) => (
+            <EachClass key={index} classItem={classItem.class!} index={index} />
           ))
         }
       </div>

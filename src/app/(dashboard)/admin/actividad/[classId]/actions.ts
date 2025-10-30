@@ -31,6 +31,8 @@ export async function uploadExam(formData: FormData) {
   }
   try {
 
+
+
     // ? Nueva tarea
     const newTask = await db.task.create({ data })
     if (newTask) {
@@ -41,22 +43,41 @@ export async function uploadExam(formData: FormData) {
 
     //  ? Clase a las que se asigna la tarea
     const classFound = await db.virtualClass.findUnique({
-      where: { id: classId }
+      where: {
+        id: classId
+      },
+      select: {
+        id: true,
+        participantsIds: true,
+      }
     });
 
-    // ? Crear UserActivity para cada participante
-    const userActivities = classFound?.participantsIds.map(userId => ({
-      userId,
-      taskId: newTask.id,
-      classId: classFound.id,
-      rol: (userId === classFound.bookedById ? 'anfitrion' : 'participante') as 'anfitrion' | 'participante',
-      completed: false,
-    }));
-
-    if (userActivities) {
-
-      await db.userActivity.createMany({ data: userActivities });
+    if (!classFound) {
+      throw new Error("Clase no encontrada");
     }
+
+    await db.userActivity.updateMany({
+      where: {
+        classId: classFound.id
+      },
+      data: {
+        taskId: newTask.id,
+        completed: false
+      }
+    })
+    // // ! UPDATE Crear UserActivity para cada participante
+    // const userActivities = classFound?.participantsIds.map(userId => ({
+    //   userId,
+    //   taskId: newTask.id,
+    //   classId: classFound.id,
+    //   rol: (userId === classFound.bookedById ? 'anfitrion' : 'participante') as 'anfitrion' | 'participante',
+    //   completed: false,
+    // }));
+
+    // if (userActivities) {
+
+    //   await db.userActivity.createMany({ data: userActivities });
+    // }
 
     // ? Marcar en la clase que ya se asignó la actividad
     await db.virtualClass.update({

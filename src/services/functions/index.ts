@@ -159,14 +159,26 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
 
     console.log('google calendar event arriving to save fc', googleCalendarEvent);
 
-    const response = await db.virtualClass.create({
+    const newClass = await db.virtualClass.create({
       data: saveCalendarEvent
     })
+
+    if (newClass) {
+      await db.userActivity.create({
+        data: {
+          userId: newClass.bookedById,
+          classId: newClass.id,
+          taskId: null,
+          rol: 'anfitrion',
+          completed: null,
+        }
+      })
+    }
 
     return NextResponse.json({
       success: true,
       message: 'Google Calendar event saved successfully',
-      data: response,
+      data: newClass,
       status: 200
     });
 
@@ -231,13 +243,28 @@ export async function addParticipant(event: any, userId: string) {
         return { message: "La clase ya alcanzó el número máximo de participantes" };
       }
 
-
+      // ? Create a registry in UserActivity
+      await tx.userActivity.create({
+        data: {
+          userId,
+          classId: event.id,
+          taskId: null,
+          rol: 'participante',
+          completed: false,
+        },
+      })
 
       const response = await tx.virtualClass.update({
-        where: { id: event.id },
+        where: {
+          id: event.id
+        },
         data: {
-          currentParticipants: { increment: 1 },
-          participantsIds: { push: userId },
+          currentParticipants: {
+            increment: 1
+          },
+          participantsIds: {
+            push: userId
+          },
         },
       });
 

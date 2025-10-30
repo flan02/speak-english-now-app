@@ -94,6 +94,21 @@ body {
 .border-card {
   border: 1px solid var(--border-primary);
 }
+
+.border-task {
+  border: 1px solid var(--border-primary);
+  &&:hover {
+    border-color: var(--primary);
+    opacity: 0.9;
+    cursor: pointer;
+  }
+}
+
+.fade-out {
+  mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+}
+
 .dark .btn-dark {
   background-color: #eee;
   color: #111;

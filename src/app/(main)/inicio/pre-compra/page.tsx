@@ -77,7 +77,7 @@ const PreCompraPage = () => {
                 console.log("💰 Pago completado:", paymentData);
                 // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito
 
-                // * TODO: Add real value
+                // TODO: Add real value
                 let payment = {
                   id: paymentData.id,
                   status: paymentData.status
