@@ -1,6 +1,10 @@
-import { db } from "@/db"
+import { ArrowLeftCircle } from "lucide-react"
+import Link from "next/link"
 import { notFound } from "next/navigation"
-
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import React from 'react'
+import { completeTask, getTask } from "../actions"
 
 interface Props {
   params: {
@@ -8,30 +12,101 @@ interface Props {
   }
 }
 
+type MarkdownComponents = {
+  children: React.ReactNode;
+}
+
 const ActividadPage = async ({ params }: Props) => {
   const resolvedParams = await params;
 
-  const task = await db.task.findUnique({
-    where: {
-      id: resolvedParams.actividadId
-    }
-  })
+  const task = await getTask(resolvedParams.actividadId)
+
 
   if (!task) return notFound()
 
+  const components: Record<string, React.ComponentType<any>> = {
+    // Tablas
+    table: ({ children }: MarkdownComponents) => (
+      <table className="w-full border-collapse my-4 rounded-lg overflow-hidden shadow-sm">
+        {children}
+      </table>
+    ),
+    thead: ({ children }: MarkdownComponents) => (
+      <thead className="bg-yellow-50 dark:bg-black/30 text-gray-900 dark:text-gray-100">
+        {children}
+      </thead>
+    ),
+    th: ({ children }: MarkdownComponents) => (
+      <th className="text-left font-semibold px-4 py-2 border-b border-gray-300 dark:border-gray-700">
+        {children}
+      </th>
+    ),
+    tbody: ({ children }: MarkdownComponents) => <tbody>{children}</tbody>,
+    tr: ({ children }: MarkdownComponents) => (
+      <tr className="">
+        {children}
+      </tr>
+    ),
+    td: ({ children }: MarkdownComponents) => (
+      <td className="p-4 text-sm border-b border-gray-200 dark:border-gray-700">
+        {children}
+      </td>
+    ),
+
+    // Código inline y bloques
+    code: ({ children }: MarkdownComponents) => (
+      <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-[13px] font-mono">
+        {children}
+      </code>
+    ),
+    pre: ({ children }: MarkdownComponents) => (
+      <pre className="bg-gray-900 text-gray-100 p-3 rounded-md overflow-x-auto text-sm my-3">
+        {children}
+      </pre>
+    ),
+  }
+
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-4">
-      <h1 className="text-xl font-bold text-center">{task.title}</h1>
-      <p className="text-sm text-gray-600 text-center">{task.description}</p>
-      <div className="flex justify-center mt-6">
-        <a
-          href={`/actividad/${task.id}/resolver`}
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg text-sm"
-        >
-          Comenzar actividad
-        </a>
+    <section className=" max-w-6xl py-8 px-12 mx-auto space-y-4 border border-card rounded-lg">
+      <div className="flex justify-end mr-8">
+        <Link href='/inicio/mis-actividades' className='underline'>
+          <ArrowLeftCircle />
+        </Link>
       </div>
-    </div>
+      <br />
+      <article className="h-[750px] space-y-6">
+        <h1 className="text-4xl font-bold text-center underline underline-offset-4">Actividad: {task.title}</h1>
+        <div className="space-y-5">
+          <p className="font-roboto text-lg font-bold underline underline-offset-4">Instrucciones: </p>
+          <p className="font-roboto text-base px-4">Estas por entrar a resolver la actividad, podes completarla cuando vos quieras y todas las veces que necesites. A los 90 minutos despues de iniciada la actividad tendras acceso a un documentos con las resolucion correcta para que puedas comparar tus respuestas</p>
+          <p className="font-roboto text-lg font-bold underline underline-offset-4">Descripciones: </p>
+          <div className="text-lg font-roboto px-4">
+            <ReactMarkdown
+              components={components}
+              remarkPlugins={[remarkGfm]}
+            >
+              {task.description}
+            </ReactMarkdown>
+          </div>
+          <div className="flex">
+            <p className="font-roboto text-lg font-bold underline underline-offset-4">Dificultad:</p>
+            <p className="text-lg font-roboto px-4 capitalize -ml-1">{task.difficulty}</p>
+          </div>
+          <div className="flex">
+            <p className="font-roboto text-lg font-bold underline underline-offset-4">Tipo:</p>
+            <p className="text-lg font-roboto px-4 capitalize -ml-1">{task.type}</p>
+          </div>
+        </div>
+        <div className="flex justify-center mt-2">
+          <a
+            href={`/actividad/${task.id}/resolver`}
+            className="bg-black hover:bg-black/80 text-white dark:text-black dark:bg-gray-200 dark:hover:bg-gray-200/90 py-2 px-6 rounded-lg text-xs tracking-wide"
+          >
+            Comenzar actividad
+          </a>
+        </div>
+      </article>
+    </section>
   );
 }
 
