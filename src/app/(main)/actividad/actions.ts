@@ -50,3 +50,22 @@ export async function completeTask(taskId: string) {
   }
 
 }
+
+
+export async function getResponse(formData: FormData) {
+  try {
+
+    const taskId = formData.get('taskId') as string;
+
+    const isComplete = await db.task.findFirst({
+      where: {
+        id: taskId,
+      },
+      select: {
+        solvedContent: true
+      }
+    })
+  } catch (error) {
+    console.error('We could not retrieve the responses for this task', error)
+  }
+}

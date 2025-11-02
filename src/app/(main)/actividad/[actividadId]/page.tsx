@@ -1,10 +1,13 @@
+"use server"
 import { ArrowLeftCircle } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import React from 'react'
-import { completeTask, getTask } from "../actions"
+import { completeTask, getResponse, getTask } from "../actions"
+import { Button } from "@/components/ui/button"
+
 
 interface Props {
   params: {
@@ -68,6 +71,10 @@ const ActividadPage = async ({ params }: Props) => {
 
   return (
     <section className=" max-w-6xl py-8 px-12 mx-auto space-y-4 border border-card rounded-lg">
+      <form action={getResponse}>
+        <input type="hidden" name="taskId" value={task.id} />
+        <Button type="submit">Respuestas</Button>
+      </form>
       <div className="flex justify-end mr-8">
         <Link href='/inicio/mis-actividades' className='underline'>
           <ArrowLeftCircle />
