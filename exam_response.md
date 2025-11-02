@@ -38,11 +38,11 @@ A continuación están las respuestas sugeridas. Algunas oraciones admiten varia
 
 ## Ejercicio 3 — Preguntas y respuestas cortas
 
-1. - Question: **Has she ever met the president?** - Short answer: **No, she hasn't.** / **Yes, she has.** (dependiendo del contexto de la clase)
+1. Question: **Has she ever met the president?** - Short answer: **No, she hasn't.** / **Yes, she has.** (dependiendo del contexto de la clase)
 
-2. - Question: **Have you finished your project?** - Short answer: **Yes, I have.** / **No, I haven't.**
+2. Question: **Have you finished your project?** - Short answer: **Yes, I have.** / **No, I haven't.**
 
-3. - Question: **Have they seen that movie yet?** - Short answer: **Yes, they have.** / **No, they haven't.**
+3. Question: **Have they seen that movie yet?** - Short answer: **Yes, they have.** / **No, they haven't.**
 
 ---
 
