@@ -1,11 +1,11 @@
 'use client'
 import H1 from '@/components/html/h1'
 import { BookAIcon, MouseIcon, PenBoxIcon } from 'lucide-react'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
-import { ClassMedatadataProps, FullCalendarProps, metodos_pago, ScheduleClassProps } from '@/lib/types'
+import { metodos_pago, ScheduleClassProps } from '@/lib/types'
 import useCalendar from '@/hooks/useCalendar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { MetodoDePagoBadge } from '@/components/reutilizable/MetodoDePagoBadge'
@@ -17,7 +17,7 @@ import { storePaymentData } from '@/zustand/store'
 import { Textarea } from '@/components/ui/textarea'
 import { KY, Method } from '@/services/api'
 import { cutId } from '@/lib/utils'
-
+import pricing from '@/config/pricing.json'
 
 
 type Props = {}
@@ -106,7 +106,7 @@ const Reservas = (props: Props) => {
       ...classMetadata,
       type: isGroup ? "grupal" : "individual",
       studentsCount: isGroup ? classMetadata.studentsCount : 1,
-      price: isGroup ? classMetadata.price : 12000
+      price: isGroup ? classMetadata.price : pricing.basePrice
     })
   }, [setIsGroupClass, setClassMetadata, classMetadata])
 
@@ -267,10 +267,10 @@ const Reservas = (props: Props) => {
                       }}
                       className='dark:bg-black px-1 border-card rounded-lg'>
                       <option value="0"></option>
-                      <option value="24000">2</option>
-                      <option value="30000">3</option>
-                      <option value="40000">4</option>
-                      <option value="50000">5</option>
+                      <option value={pricing.perStudent["2"]}>2</option>
+                      <option value={pricing.perStudent["3"]}>3</option>
+                      <option value={pricing.perStudent["4"]}>4</option>
+                      <option value={pricing.perStudent["5"]}>5</option>
                     </select>
                   </div> : null
                 }
@@ -310,36 +310,3 @@ const Reservas = (props: Props) => {
 }
 
 export default Reservas
-
-// const fullCalendarContent = useCallback((arg: any) => {
-
-//   return (
-//     <>
-//       {
-//         upcomingClasses && upcomingClasses.map((meeting) => {
-//           <div className="text-xs px-2 py-2 text-gray-500">
-//             <p className='font-roboto capitalize'>Tipo: {meeting.type}</p>
-//             <p className='font-roboto capitalize'>Participantes: {meeting.participants}</p>
-//             <p className='font-roboto capitalize'>Estado: {meeting.status}</p>
-//             <p className='font-roboto capitalize'>Id: {meeting.id}</p>
-//           </div>
-//         })
-//       }
-//     </>
-//   );
-// }, [])
-
-// const fullCalendarEvents: FullCalendarProps[] = useMemo(() => (
-//   events?.map((slot) => ({
-//     title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
-//     start: slot.start.dateTime,
-//     end: slot.end.dateTime,
-//     color: slot.status === 'confirmed' ? '#F0ED90' : 'red',
-//   }))), [events]);
-
-/*
-      id: true,
-      classType: true,
-      maxParticipants: true,
-      status: true
-*/

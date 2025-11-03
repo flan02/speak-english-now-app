@@ -5,7 +5,6 @@ import AccessCode from './AccessCode'
 import JoinClass from './JoinClass'
 import { auth } from '@/auth'
 
-
 type Props = {
   index: number
   classItem: CalendarEvent

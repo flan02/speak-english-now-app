@@ -17,6 +17,7 @@ declare module "next-auth" {
 
   interface User extends DefaultUser {
     id: string; // El ID del usuario (necesario si lo incluyes en el token)
+    totalClasses: number;
   }
 }
 

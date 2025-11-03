@@ -20,8 +20,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     authorization: {
       params: {
         scope: "openid email profile https://www.googleapis.com/auth/calendar.events",
-        access_type: "offline",
-        prompt: "consent"
+        access_type: "offline"
+        // prompt: "consent"
       }
     }
   })],
@@ -58,6 +58,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const user = await db.user.findUnique({
           where: {
             email: profile.email!
+          },
+          select: {
+            id: true,
+            totalClasses: true
           }
         })
         if (user) {
@@ -67,8 +71,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           token.accessToken = account.access_token
           token.refreshToken = account.refresh_token
-
-          console.log('THIS IS THE refresh_token', token.refreshToken);
+          //console.log('THIS IS THE refresh_token', token.refreshToken);
 
           // const now = Math.floor(Date.now() / 1000);
           // const timeUntilExpiration = token.exp - now; // Si el token tiene menos de 5 minutos antes de expirar, renovarlo
@@ -87,7 +90,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.jti = String(token.jti) // Unique identifier for the JWT
         session.user.iat = String(token.iat)
         session.user.exp = String(token.exp)
-
         session.user.accessToken = token.accessToken
         session.user.refreshToken = token.refreshToken
 

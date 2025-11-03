@@ -81,6 +81,7 @@ model User {
   nivel              NivelIngles         @default(inicial)
   status             Boolean             @default(false)
   newsletter         String              @default("no")
+  totalClasses       Int                 @default(0)
   billingMercadoPago billingMercadoPago?
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @updatedAt

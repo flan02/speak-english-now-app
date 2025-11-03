@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
+import pricing from "@/config/pricing.json";
 
 // * Checkout ReAddressable (external URL)
 // back_urls: {
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       items: [
         {
           id: "english-class-reservation", // * Check it later. Possible uses for id
-          title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / 10000)}`,
+          title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / pricing.groupPrice)}`,
           quantity: 1,
           unit_price: 1000, //Number(price), // precio en ARS
           currency_id: "ARS"

@@ -10,6 +10,7 @@ import { ArrowLeftCircle, CreditCard, PenTool } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
+import pricing from '@/config/pricing.json';
 
 type Props = {}
 
@@ -18,6 +19,9 @@ const PreCompraPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
   const router = useRouter();
+
+  console.log("This is the current price", price);
+  console.log("This is the current students count", studentsCount);
 
   // * CALL CHECKOUT BRICKS FROM MERCADO PAGO
   const handlePayment = async () => {
@@ -137,6 +141,8 @@ const PreCompraPage = () => {
         price: studentsCount > 2 ? (studentsCount) : price
       }
 
+      console.log("This is the current metadata", classMetadata);
+
 
       const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
         json: classMetadata
@@ -187,7 +193,7 @@ const PreCompraPage = () => {
 
             <div className='space-y-8 px-8'>
               <p className='font-roboto text-3xl'>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
-              <p className='font-roboto text-3xl'>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / 10000)}</span></p>
+              <p className='font-roboto text-3xl'>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / pricing.groupPrice)}</span></p>
               <p className='font-roboto text-3xl'>Fecha: <span className='font-extrabold'>{selectedDate}</span></p>
               <p className='font-roboto text-3xl'>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
               <p className='font-roboto text-3xl'>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>

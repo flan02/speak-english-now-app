@@ -1,11 +1,11 @@
 import { BookAIcon, Bot, Calendar, Computer, Home, Settings } from "lucide-react"
 import { Session } from "next-auth"
-
+import pricing from "@/config/pricing.json"
 
 export const marquee_banners = [
   "🌟 La clase dura 2hs, la primera es virtual y la segunda una evaluación integradora —",
-  "💲 $12,000$ hasta 2 personas (cada uno) y 10,000$ hasta 5 personas (cada uno) —",
-  "📆 ¡Agenda tu clase en nuestro calendario!  —",
+  `💲 $${pricing.basePrice}$ hasta 2 personas (cada uno) y $${pricing.groupPrice}$ hasta 5 personas (cada uno) —`,
+  "📆 ¡Agenda tu clase en la seccion reservas  —",
   "📞 Hablanos por whatsapp o website para mas info  —",
   "✉️ Suscribite a nuestro boletín para novedades!!!"
 ]
@@ -157,6 +157,7 @@ export type User = {
   name: string
   email: string
   image: string
+  totalClasses: number
 }
 
 

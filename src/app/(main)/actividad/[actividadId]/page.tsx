@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import React from 'react'
-import { getTask } from "../actions"
+import { completedClass, getTask } from "../actions"
 
 
 
@@ -24,6 +24,7 @@ const ActividadPage = async ({ params }: Props) => {
 
   const task = await getTask(resolvedParams.actividadId)
 
+  await completedClass()
 
   if (!task) return notFound()
 

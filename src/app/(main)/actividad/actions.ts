@@ -70,3 +70,21 @@ export async function getResponse(formData: FormData) {
     console.error('We could not retrieve the responses for this task', error)
   }
 }
+
+
+export async function completedClass() {
+  const session = await auth()
+  const userId = session?.user.id;
+  try {
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        totalClasses: {
+          increment: 1
+        }
+      }
+    })
+  } catch (error) {
+    console.error('We could not complete the class', error)
+  }
+}

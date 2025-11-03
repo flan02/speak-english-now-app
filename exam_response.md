@@ -2,8 +2,6 @@
 
 A continuación están las respuestas sugeridas. Algunas oraciones admiten variaciones (por ejemplo, diferente adverbio de frecuencia o pequeña reordenación), pero las respuestas aquí son las esperadas / más naturales.
 
----
-
 ## Ejercicio 1 — Soluciones
 
 1. I **have visited** Paris three times.
@@ -17,8 +15,6 @@ A continuación están las respuestas sugeridas. Algunas oraciones admiten varia
 5. He **has broken** his phone twice this year.
 
 6. We **have not received** the package so far. (We **haven't received** the package so far.)
-
----
 
 ## Ejercicio 2 — Soluciones (phrasal verbs)
 
@@ -34,8 +30,6 @@ A continuación están las respuestas sugeridas. Algunas oraciones admiten varia
 
 6. I **have looked up** the address online.
 
----
-
 ## Ejercicio 3 — Preguntas y respuestas cortas
 
 1. Question: **Has she ever met the president?** - Short answer: **No, she hasn't.** / **Yes, she has.** (dependiendo del contexto de la clase)
@@ -43,8 +37,6 @@ A continuación están las respuestas sugeridas. Algunas oraciones admiten varia
 2. Question: **Have you finished your project?** - Short answer: **Yes, I have.** / **No, I haven't.**
 
 3. Question: **Have they seen that movie yet?** - Short answer: **Yes, they have.** / **No, they haven't.**
-
----
 
 ## Ejercicio 4 — Ejemplos de respuestas
 

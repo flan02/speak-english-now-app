@@ -1,11 +1,12 @@
 "use server"
 
+import { auth } from "@/auth";
 import { db } from "@/db";
 import { CalendarEvent } from "@/lib/types";
 import { $Enums, Status } from "@prisma/client";
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
-
+import pricing from "@/config/pricing.json";
 
 export async function getUserData({ id }: { id: string }) {
   try {
@@ -84,7 +85,6 @@ export async function listEvents() {
 
 
 export async function createGoogleCalendarEvent(calendarId: string, calendar: any, eventData: any, userData: any) {
-
   const { start, end, isGroupClass, studentsCount } = eventData;
 
   const bookingClass = {
@@ -141,7 +141,7 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
     accessCode: randomCode,
     startTime: new Date(googleCalendarEvent.start.dateTime),
     endTime: new Date(googleCalendarEvent.end.dateTime),
-    maxParticipants: studentsCount == 0 ? 1 : studentsCount / 10000,
+    maxParticipants: studentsCount == 0 ? 1 : studentsCount / pricing.groupPrice,
     currentParticipants: 1,
     classPrice: price,
     htmlLink: googleCalendarEvent.conferenceData.entryPoints[0].uri,
@@ -157,7 +157,7 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
 
   try {
 
-    console.log('google calendar event arriving to save fc', googleCalendarEvent);
+    //console.log('google calendar event arriving to save fc', googleCalendarEvent);
 
     const newClass = await db.virtualClass.create({
       data: saveCalendarEvent
@@ -173,6 +173,17 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
           completed: null,
         }
       })
+
+      // await db.user.update({
+      //   where: { id: userId },
+      //   data: {
+      //     totalClasses: {
+      //       increment: 1
+      //     }
+      //   }
+      // })
+
+
     }
 
     return NextResponse.json({
@@ -267,6 +278,15 @@ export async function addParticipant(event: any, userId: string) {
           },
         },
       });
+
+      // await tx.user.update({
+      //   where: { id: userId },
+      //   data: {
+      //     totalClasses: {
+      //       increment: 1
+      //     }
+      //   }
+      // });
 
       return response;
     });

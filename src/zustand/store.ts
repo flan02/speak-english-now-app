@@ -1,5 +1,6 @@
-import { ClassMedatadataProps, ScheduleTimeProps } from "@/lib/types"
+import { ClassMedatadataProps } from "@/lib/types"
 import { create } from "zustand"
+import pricing from "@/config/pricing.json"
 
 interface PremiumModalState {
   open: boolean
@@ -19,7 +20,7 @@ export const storeAddPhoto = create<AddPhotoState>((set) => ({ showImage: true, 
 const initData: ClassMedatadataProps = {
   type: "individual",
   studentsCount: 0,
-  price: 12000
+  price: Number(pricing.basePrice)
 }
 
 
@@ -42,6 +43,13 @@ interface PaymentData {
   setClassMetadata: (metadata: ClassMedatadataProps) => void
 }
 
+interface ScheduleTimeProps {
+  start: Date | null
+  end: Date | null
+}
+
+const initialScheduledTime: ScheduleTimeProps = { start: null, end: null }
+
 export const storePaymentData = create<PaymentData>((set) => ({
   payment: false,
   setPayment: (payment: boolean) => set({ payment }),
@@ -51,9 +59,9 @@ export const storePaymentData = create<PaymentData>((set) => ({
   setSelectedDate: (date: string | null) => set({ selectedDate: date }),
   studentsCount: 0,
   setStudentsCount: (count: number) => set({ studentsCount: count }),
-  price: 12000,
+  price: Number(pricing.basePrice),
   setPrice: (price: number) => set({ price }),
-  scheduledTime: { start: null, end: null },
+  scheduledTime: initialScheduledTime,
   setScheduledTime: (time: ScheduleTimeProps) => set({ scheduledTime: time }),
   text: "",
   setText: (text: string) => set({ text }),
