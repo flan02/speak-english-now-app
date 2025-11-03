@@ -7,6 +7,7 @@ import { getAllClasses } from '@/app/(main)/inicio/mis-clases-virtuales/actions'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import Link from 'next/link'
+import P from '../reutilizable/P'
 
 
 type SessionProps = {
@@ -29,24 +30,23 @@ const AllTasks = ({ all_tasks }: SessionProps) => {
                     <p className='text-xs'>Fecha: {item.class?.startTime.toLocaleDateString()}</p>
                     <p className='text-xs'>Participantes: {item.class?.participantsIds.length}</p>
                   </div>
-                  {/* <p className='text-[10px] h-[410px] font-roboto overflow-hidden'>{item.task?.content}</p> */}
+
                   <div className='text-[8px] h-[410px] font-roboto overflow-y-hidden fade-out'>
                     <ReactMarkdown remarkPlugins={[remarkGfm]}>
                       {item.task?.content || ''}
                     </ReactMarkdown>
                   </div>
+
                 </Card>
               </Link>
             ))
         }
       </section>
-      <section className='w-max space-y-12'>
-        <Image src={Robot} alt="Robot" width={300} height={300} />
-        <article className='w-full space-y-4'>
-          <h2 className='font-roboto font-bold text-4xl text-center'>Sabias que...?</h2>
-          <div className='h-[250px] border border-card rounded-md p-4'>
-            <p className='text-sm font-roboto font-bold'>I'm gonna = I'm going to</p>
-          </div>
+      <section className='space-y-12'>
+        <Image src={Robot} alt="Robot" width={300} height={300} className='mx-auto' />
+        <article className='border border-card font-roboto rounded-md py-2 space-y-2'>
+          <h2 className='font-roboto font-bold text-3xl text-center mb-4'>Sabias que...?</h2>
+          <P />
         </article>
       </section>
     </div>

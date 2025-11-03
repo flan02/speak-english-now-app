@@ -48,6 +48,26 @@ export const socialMediaUrlHablaIngles: string[] = [
   "https://curriculumvitae-woad.vercel.app/"
 ]
 
+export const reduccionesColoquiales = [
+  "Gonna = Going to",
+  "Imma = I am going to",
+  "Wanna = Want to",
+  "Gotta = Got to",
+  "Gotcha = Got you",
+  "Kinda = Kind of",
+  "Lemme = Let me",
+  "Dunno = Don't know",
+  "Outta = Out of",
+  "Coulda = Could have",
+  "Shoulda = Should have",
+  "Woulda = Would have",
+  "Y'all = You all",
+  "Cuz = Because",
+  "Betcha = Bet you",
+  "Tryna = Trying to",
+  "Finna = Fixing to",
+  "Ain't = Am not / Is not / Are not / Has not / Have not"
+]
 
 type DateString = {
   dateTime: string

@@ -78,3 +78,25 @@ export function cutId(id: string): string {
   if (!id || id.length < 10) return id; // por seguridad
   return id.slice(-10); // toma los últimos 10 caracteres
 }
+
+export function calcularTiempoRestante(fechaFutura: Date): string {
+  const ahora = new Date();
+  const diferencia = fechaFutura.getTime() - ahora.getTime();
+
+  if (diferencia <= 0) {
+    return "La clase ya ha comenzado";
+  }
+
+  const minutosTotales = Math.floor(diferencia / (1000 * 60));
+  const dias = Math.floor(minutosTotales / (60 * 24));
+  const horas = Math.floor((minutosTotales % (60 * 24)) / 60);
+  const minutos = minutosTotales % 60;
+
+  // Construir el mensaje dinámicamente
+  let partes: string[] = [];
+  if (dias > 0) partes.push(`${dias} día${dias > 1 ? "s" : ""}`);
+  if (horas > 0) partes.push(`${horas} hora${horas > 1 ? "s" : ""}`);
+  if (minutos > 0) partes.push(`${minutos} minuto${minutos > 1 ? "s" : ""}`);
+
+  return `Faltan ${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}`;
+}

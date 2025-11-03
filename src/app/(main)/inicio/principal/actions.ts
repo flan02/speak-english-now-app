@@ -19,3 +19,21 @@ export const getTotalClass = cache(async () => {
     console.error("We could not retrieve total classes for this user", error)
   }
 })
+
+export const getLastClass = cache(async () => {
+  const session = await auth()
+
+  try {
+    const response = await db.virtualClass.findFirst({
+      where: {
+        bookedById: session?.user.id
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+    return response
+  } catch (error) {
+    console.error("We could not retrieve last class for this user", error)
+  }
+})

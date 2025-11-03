@@ -12,9 +12,9 @@ const Section2 = (props: Props) => {
         <h2 className="mb-0 text-3xl py-16 lg:text-5xl font-bold lg:mb-16 lg:py-0 text-center tracking-wider">Cómo Enseñamos Inglés</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 -mt-4 md:mt-0">
           <Card title="Enfoque Personalizado" description="Clases adaptadas a tu nivel, ritmo y objetivos para aprender de forma eficiente" />
-          <Card title="Usamos la Forma Débil" description="Aprende estructuras del idioma de manera natural y práctica, sin memorizar reglas aisladas." />
-          <Card title="En Pequeños Grupos" description="Grupos reducidos de hasta 4 personas para garantizar atención personalizada y práctica constante." />
+          <Card title="En Pequeños Grupos" description="Grupos reducidos de hasta 5 personas para garantizar atención personalizada y práctica constante." />
           <Card title="Dinámicas Interactivas" description="Clases virtuales con ejercicios, materiales personalizados y seguimiento de tu progreso." />
+          <Card title="Usamos la Forma Débil" description="Aprende estructuras del idioma de manera natural y práctica, sin memorizar reglas aisladas." />
         </div>
 
       </div>
