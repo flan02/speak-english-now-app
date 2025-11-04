@@ -58,3 +58,5 @@ Make it free for all and other paid version using Stripe
 - `ThisType<T>`: ThisType is used to specify the type of `this` in the body of a function
 
 ### Falta agregar lecturas para practicar en distintos niveles de ingles (depende del vocabulario)
+
+### Mobile dev responsive measure 350x660

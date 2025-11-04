@@ -24,7 +24,7 @@ const ActividadPage = async ({ params }: Props) => {
 
   const task = await getTask(resolvedParams.actividadId)
 
-  await completedClass()
+  // await completedClass()
 
   if (!task) return notFound()
 

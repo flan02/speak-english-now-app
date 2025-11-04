@@ -1,5 +1,3 @@
-import BackgroundMultiDots from "@/components/reutilizable/BackgroundMultiDots";
-
 import Navbar from "./Navbar";
 import { auth } from "@/auth";
 import SignIn from "@/components/reutilizable/sign-in";
@@ -12,7 +10,7 @@ import MaxWidthWrapper from "@/components/reutilizable/MaxWidthWrapper";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
   const session = await auth()
-  //console.log(session?.user.id)
+
   if (!session?.user?.name) {
     return <SignIn />
   }
@@ -29,7 +27,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           <SidebarProvider className="">
             <AppSidebar />
 
-            <MaxWidthWrapper className="max-w-7xl md:px-0 lg:py-2">
+            <MaxWidthWrapper className="xl:mr-12 2xl:mx-auto xl:max-w-5xl 2xl:max-w-7xl md:px-0 lg:py-2 border border-purple-500">
               <SidebarTrigger className="lg:hidden fixed right-2" />
               <MaxWidthWrapper className="lg:px-4 lg:py-12 space-y-8">
                 {children}

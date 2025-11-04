@@ -1,10 +1,11 @@
 "use server"
-import { completeTask, getTask } from "../../actions";
+import { completedClass, completeTask, getTask } from "../../actions";
 import ExamMarkdown from "./ExamMarkdown";
 
 import AnswerSidebar from "./AnswerSidebar";
 import { ArrowLeftCircle } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/db";
 
 interface Props {
   params: {
@@ -17,8 +18,23 @@ const ResolverActividad = async ({ params }: Props) => {
 
   const task = await getTask(resolvedParams.actividadId)
 
+  const response = await db.userActivity.findFirst({
+    where: {
+      taskId: resolvedParams.actividadId
+    },
+    select: {
+      id: true,
+      completed: true
+    }
+  })
 
-  await completeTask(resolvedParams.actividadId);
+  if (response?.completed == false) {
+    console.log('Actividad completada correctamente.');
+    await completeTask(resolvedParams.actividadId);
+    await completedClass()
+  } else {
+    console.log('La actividad ya estaba completada.');
+  }
 
 
   return (

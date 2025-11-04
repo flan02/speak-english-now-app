@@ -2,6 +2,7 @@
 import { Copy } from "lucide-react";
 import { useState } from "react";
 
+
 type Props = {
   code: string
   classType: 'individual' | 'grupal'

@@ -30,21 +30,18 @@ const Configuracion = async (props: Props) => {
       </div>
       <section className='space-y-4'>
         <Card className='w-full border border-card py-8 space-y-4'>
-          {/* <CardTitle className='font-roboto px-6 text-sm'>MODO OSCURO:</CardTitle> */}
+
           <CardContent className='space-y-4'>
             <ToggleClient />
             <div className='flex space-x-2'>
-
               <p className='font-roboto underline font-bold uppercase text-xs'>id de usuario:</p>
               <span className='!no-underline !lowercase text-xs font-roboto mt-0.25'>#{session?.user.id}</span>
             </div>
             <div className='flex space-x-2'>
-
               <p className='font-roboto underline font-bold uppercase text-xs'>nombre de usuario:</p>
               <span className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{session?.user.name}</span>
             </div>
             <div className='flex space-x-2'>
-
               <p className='font-roboto underline font-bold uppercase text-xs'>email de usuario:</p>
               <span className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{session?.user.email}</span>
             </div>

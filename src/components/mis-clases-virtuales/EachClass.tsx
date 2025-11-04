@@ -4,6 +4,8 @@ import { Card } from '../ui/card'
 import AccessCode from './AccessCode'
 import JoinClass from './JoinClass'
 import { auth } from '@/auth'
+import AccessCodeClient from './AccessCodeClient'
+
 
 type Props = {
   index: number
@@ -42,12 +44,9 @@ const EachClass = async ({ classItem, index }: Props) => {
       <p className='w-[65px] flex items-center capitalize justify-center'>{classItem.bookedById == session?.user?.id ? 'anfitrion' : 'invitado'}</p>
       <p className='w-[75px] flex items-center justify-center'>{estado}</p>
       <p className='w-[105px] flex items-center justify-center'>No Realizada</p>
-      {/* {!classItem.participantsIds.includes(session?.user?.id!) && classItem.status !== 'completed' ? (
-        <AccessCode code={classItem.accessCode} classType={classItem.classType} />
-      ) : <div className='w-[90px] justify-center'></div>} */}
-
       {classItem.bookedById == session?.user?.id ? (
-        <AccessCode code={classItem.accessCode} classType={classItem.classType} />
+        // <AccessCode code={classItem.accessCode} classType={classItem.classType} />
+        <AccessCodeClient code={classItem.accessCode} classType={classItem.classType} />
       ) : <div className='w-[90px] justify-center'></div>}
 
       <JoinClass link={classItem.htmlLink} status={classItem.status} />

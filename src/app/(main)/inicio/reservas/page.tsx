@@ -298,7 +298,7 @@ const Reservas = (props: Props) => {
       </section>
 
       <section className='mt-8'>
-        <p className='text-sm italic'>* Luego de abonar la clase se crea el evento en el calendario de google y podras ver el acceso a la clase desde la seccion Clases Virtuales.</p>
+        <p className='text-sm italic'>* Luego de abonar la clase se crea el evento en el calendario de google y podras ver el codigo de acceso a la clase desde la seccion Clases Virtuales.</p>
         <p className='text-sm italic'>* Si necesitas un horario especial o tienes alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o por email a chanivetdan@hotmail.com</p>
       </section>
 
