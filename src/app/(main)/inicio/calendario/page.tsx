@@ -9,17 +9,18 @@ type Props = {}
 const Calendario = (props: Props) => {
   return (
     <>
-      <div className='flex space-x-4 items-end'>
+      {/* <div className='flex space-x-4 items-end'> */}
+      <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>
         <Calendar1 className='mb-0.5' />
         <H1 title='Calendario' />
       </div>
       <div className='flex flex-col space-x-2'>
-        <article className='min-w-[350px] lg:w-full lg:space-x-4 lg:flex xl:flex-col 2xl:flex-row flex flex-col'>
+        <article className='w-[350px] lg:w-full space-y-8 xl:space-y-0 2xl:space-y-0 lg:space-x-4 lg:flex xl:flex-col 2xl:flex-row flex flex-col'>
           <div className=''>
-            <h2 className="mb-4 text-3xl lg:text-xl font-bold text-left tracking-wider">Horario de Reservas (17hs a 21hs)</h2>
+            <h2 className="mb-4 text-base px-4 xl:px-0 2xl:px-0 xl:text-3xl 2xl:text-3xl font-bold text-left tracking-wider">Horario de Reservas (17hs a 21hs)</h2>
             <Calendar />
           </div>
-          <Card className='dark:border dark:border-gray-600/30 h-max xl:mt-4 xl:mx-auto'>
+          <Card className='border border-card h-max mb-6 xl:mb-0 2xl:mb-0 xl:mt-12 2xl:mt-12 xl:mx-auto'>
             <CardTitle className='text-center p-4 lg:text-left lg:p-6'>Instrucciones para reservar tu clase</CardTitle>
             <CardContent>
               <div className='space-y-2'>

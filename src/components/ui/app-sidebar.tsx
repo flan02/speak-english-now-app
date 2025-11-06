@@ -20,12 +20,10 @@ import { Dot } from "lucide-react"
 
 export async function AppSidebar() {
   const session = await auth()
-  //const image = session?.user?.image! || null
 
   if (!session?.user?.name) {
     return <SignIn />
   }
-
 
   return (
     <Sidebar className="lg:absolute lg:top-2 lg:left-0 lg:h-[768px] xl:w-[220px] 2xl:w-[240px] lg:z-30 lg:mt-24 border-r border-r-gray-200 dark:border-r dark:border-r-gray-600/30">
@@ -33,7 +31,7 @@ export async function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>
             <span className="hidden lg:block lg:mb-4">Menu</span>
-            <SidebarTrigger className="lg:hidden absolute right-2 top-2" />
+            <SidebarTrigger className="lg:hidden absolute right-2 top-2 dark:bg-white dark:text-black bg-gray-900 text-white" />
 
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -43,7 +41,7 @@ export async function AppSidebar() {
                   <SidebarMenuButton asChild className="xl:w-[210px] 2xl:w-[230px] hover:text-white hover:bg-black dark:hover:bg-white dark:hover:text-black font-roboto">
                     <a href={item.url} className="">
                       <item.icon className="" />
-                      <span className="lg:text-lg text-xl tracking-wide">{item.title}</span>
+                      <span className="lg:text-lg text-xl tracking-wider font-bold xl:font-medium 2xl:font-medium">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

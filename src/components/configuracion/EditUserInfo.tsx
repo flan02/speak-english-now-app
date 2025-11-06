@@ -62,7 +62,7 @@ const EditUserInfo = (props: Props) => {
     async function fetchData() {
       try {
         const res = await KY(Method.GET, 'http://localhost:3000/api/user-data');
-        console.log('user data fetched:', res);
+        //console.log('user data fetched:', res);
         if (res) {
           setIsEditing({
             ...isEditing,
@@ -104,7 +104,7 @@ const EditUserInfo = (props: Props) => {
           !isEditing.status ?
             <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.nivel || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
             :
-            <select className='text-xs font-roboto border border-gray-400 border-card rounded-md !p-1' value={isEditing.nivel} onChange={(e) => setIsEditing({ ...isEditing, nivel: (e.target.value as NivelIngles) })}>
+            <select className='text-xs font-roboto border border-gray-400 border-card rounded-md !p-1 dark:bg-black' value={isEditing.nivel} onChange={(e) => setIsEditing({ ...isEditing, nivel: (e.target.value as NivelIngles) })}>
               <option value="inicial" >inicial</option>
               <option value="basico">basico</option>
               <option value="intermedio">intermedio</option>
@@ -123,7 +123,7 @@ const EditUserInfo = (props: Props) => {
             />
         }
       </div>
-      <div className='flex space-x-2 items-end'>
+      <div className='flex space-x-2 items-end mb-12 xl:mb-4 2xl:mb-4'>
         <p className='font-roboto underline font-bold uppercase text-xs mt-2'>¿Recibir boletin?</p>
         {
           !isEditing.status ?
@@ -142,8 +142,8 @@ const EditUserInfo = (props: Props) => {
         </Link>
       </Button>
       <div className='w-full text-center space-x-2'>
-        <Button onClick={handleEditButton} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto btn-red text-xs bg-red-500 hover:bg-red-500/80'>
-          Editar
+        <Button onClick={handleEditButton} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-xs bg-red-500 hover:bg-red-500/80'>
+          editar
         </Button>
         {
           isEditing.status &&

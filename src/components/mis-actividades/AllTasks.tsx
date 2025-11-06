@@ -2,7 +2,7 @@
 import Image from 'next/image'
 import React from 'react'
 import { Card } from '../ui/card'
-import Robot from '../../../public/robot.png'
+// import Robot from '../../../public/robot.png'
 import { getAllClasses } from '@/app/(main)/inicio/mis-clases-virtuales/actions'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -18,8 +18,8 @@ const AllTasks = ({ all_tasks }: SessionProps) => {
 
   return (
 
-    <div className='flex w-full min-w-[350px] justify-between'>
-      <section className='flex flex-wrap space-x-1 space-y-1 h-[1020px]'>
+    <div className='flex xl:w-full 2xl:w-full w-[350px] justify-between'>
+      <section className='flex flex-wrap space-x-1 space-y-1 xl:h-[1020px] 2xl:h-[1020px]'>
         {
           all_tasks?.filter(item => item.taskId !== null)
             .map((item, index) => (
@@ -42,8 +42,8 @@ const AllTasks = ({ all_tasks }: SessionProps) => {
             ))
         }
       </section>
-      <section className='space-y-12'>
-        <Image src={Robot} alt="Robot" width={300} height={300} className='mx-auto' />
+      <section className='space-y-12 hidden xl:block 2xl:block'>
+        <img src="/robot.png" alt="Robot" width={300} height={300} className='mx-auto' />
         <article className='border border-card font-roboto rounded-md py-2 space-y-2'>
           <h2 className='font-roboto font-bold text-3xl text-center mb-4'>Sabias que...?</h2>
           <P />

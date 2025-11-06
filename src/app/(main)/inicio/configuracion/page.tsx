@@ -24,13 +24,12 @@ const Configuracion = async (props: Props) => {
   const session = await auth()
   return (
     <>
-      <div className='flex space-x-4 items-end lg:mt-0 mt-2'>
+      <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>
         <Settings className='mb-0.5' />
         <H1 title='Configuracion' />
       </div>
       <section className='space-y-4'>
         <Card className='w-full border border-card py-8 space-y-4'>
-
           <CardContent className='space-y-4'>
             <ToggleClient />
             <div className='flex space-x-2'>

@@ -6,7 +6,7 @@ export default function Marquee({ time = 8, banners }: { time?: number, banners?
   return (
     <div className="overflow-hidden min-w-[350px] sticky top-0 z-50 whitespace-nowrap bg-black bg-marquee w-full py-2 -mt-4 animate-flashColors">
       <motion.div
-        className="inline-block text-base uppercase font-roboto relative z-0"
+        className="inline-block text-xs xl:text-base 2xl:text-base uppercase font-roboto relative z-0"
         animate={{ x: ["0%", "-100%"] }} // va de derecha a izquierda
         transition={{
           repeat: Infinity,    // 🔁 infinito

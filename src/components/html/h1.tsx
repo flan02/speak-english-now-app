@@ -6,7 +6,7 @@ type Props = {
 
 const H1 = ({ title }: Props) => {
   return (
-    <h1 className="lg:text-2xl font-bold font-geist-mono underline">{title}</h1>
+    <h1 className="text-xl lg:text-2xl font-bold font-geist-mono underline">{title}</h1>
   )
 }
 

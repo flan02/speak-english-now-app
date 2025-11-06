@@ -20,15 +20,6 @@ type ModalDayCalendarProps = {
 
 export function ModalDayCalendar({ setOpen, setSelectedDate, selectedDate, open, events }: ModalDayCalendarProps) {
 
-  const filteredByDayEvents = selectedDate
-    ? events.filter((ev) => {
-      const eventDate = new Date(ev.start).toISOString().split('T')[0]
-
-      return eventDate === selectedDate
-    })
-    : []
-
-
   const slots = [
     { start: 17, end: 18 },
     { start: 18, end: 19 },
@@ -60,7 +51,7 @@ export function ModalDayCalendar({ setOpen, setSelectedDate, selectedDate, open,
   return (<Dialog open={open} onOpenChange={setOpen}>
     <DialogContent className="lg:max-w-2xl px-1 lg:px-12 py-8 lg:py-16 bg-modal rounded-lg">
       <DialogHeader>
-        <DialogTitle className="text-[10px] text-left lg:text-base lg:text-center">
+        <DialogTitle className="text-xs text-center lg:text-base lg:text-center">
           ver horarios disponibles
         </DialogTitle>
       </DialogHeader>
@@ -77,7 +68,7 @@ export function ModalDayCalendar({ setOpen, setSelectedDate, selectedDate, open,
             eventContent={(arg) => {
               const isReserved = arg.event.title === "RESERVADO";
               return (
-                <div className={`w-full text-center text-xs font-semibold rounded-md tracking-wide py-1 mt-0 ${isReserved ? "bg-red-500 text-white" : "bg-green-500 text-white"}`}>
+                <div className={`w-full text-center text-xs font-semibold rounded-md tracking-wide -mt-0.25 py-0 xl:py-1 2xl:py-1 xl:mt-0 2xl:mt-0 ${isReserved ? "bg-red-500 text-white dark:text-gray-500" : "bg-green-500 text-white dark:text-gray-500"}`}>
                   {arg.event.title}
                 </div>
               );
@@ -97,11 +88,12 @@ export function ModalDayCalendar({ setOpen, setSelectedDate, selectedDate, open,
             allDaySlot={false}
             selectable={true}
             select={(info) => {
-              // alert(`Reserva desde ${info.startStr} hasta ${info.endStr}`);
               setOpen(true);
-              // setSelectedDate(info.startStr);
             }}
             height="28vh"
+            validRange={{
+              start: new Date().toISOString().split("T")[0], // restringe desde hoy en adelante
+            }}
           />
         )
       }

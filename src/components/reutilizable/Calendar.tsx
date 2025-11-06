@@ -85,7 +85,7 @@ const Calendar = () => {
   }, [events]);
 
   return (
-    <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs" >
+    <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs">
       {
         isCalendarReady ?
           <FullCalendar
@@ -110,7 +110,12 @@ const Calendar = () => {
           />
           : <Skeleton className="h-[585px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
       }
-      <ModalDayCalendar setSelectedDate={setSelectedDate} setOpen={setOpen} selectedDate={selectedDate} open={open} events={fullCalendarEvents} />
+      <ModalDayCalendar
+        setSelectedDate={setSelectedDate}
+        setOpen={setOpen}
+        selectedDate={selectedDate}
+        open={open}
+        events={fullCalendarEvents} />
     </div>
   );
 };
