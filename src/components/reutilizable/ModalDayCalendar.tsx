@@ -4,8 +4,6 @@ import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { FullCalendarProps } from "@/lib/types";
-import { start } from "repl";
-import { title } from "process";
 
 
 

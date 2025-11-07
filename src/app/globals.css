@@ -198,8 +198,9 @@ body {
 /* ! FULLCALENDAR CLASS */
 
 .fc {
-  min-width: 350px;
+  min-width: 345px;
   min-height: 450px;
+  /* border: 1px solid green; */
 }
 
 /* Fondo y borde del evento */
@@ -390,10 +391,6 @@ body {
 /* ! MEDIA QUERIES STYLES */
 
 @media (max-width: 768px) {
-  /* .fc .fc-event {
-    
-  } */
-
   .bg-modal {
     width: 340px !important;
     height: 300px !important;
@@ -423,12 +420,46 @@ body {
   .bg-modal {
     height: 320px !important;
   }
+  .dark .bg-modal {
+    height: 320px !important;
+    border: 1px solid #2e1747;
+  }
   .fc-toolbar-title {
-    padding-left: 15px;
+    padding-left: 12px;
+    /* border: 1px solid blue; */
   }
   .fc-scrollgrid-section {
     height: 25px !important;
   }
+  .fc-dayGridMonth-view {
+    width: 345px !important;
+    /* margin-left: 3px; */
+    /* border: 1px solid green; */
+  }
+  .fc-media-screen {
+    width: 344px !important;
+    /* border: 1px solid green; */
+    /* margin-left: 5px; */
+  }
+  /* .fc-header-toolbar {
+    
+  } */
+  .fc-toolbar {
+    width: 335px !important;
+    /* border: 1px solid blue; */
+  }
+}
+
+/* fc-view-harness fc-view-harness-active */
+/* fc-header-toolbar fc-toolbar fc-toolbar-ltr */
+
+.fc-timeGridWeek-button.fc-button.fc-button-primary.fc-button-active {
+  font-size: 12px;
+}
+
+.dark .fc-timeGridWeek-button.fc-button.fc-button-primary.fc-button-active {
+  font-size: 12px;
+  margin-right: 5px;
 }
 
 /* ! Chrome styling for scrollbar */

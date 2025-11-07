@@ -52,7 +52,7 @@ const ActividadPage = async ({ params }: Props) => {
       </tr>
     ),
     td: ({ children }: MarkdownComponents) => (
-      <td className="p-4 text-sm border-b border-gray-200 dark:border-gray-700">
+      <td className="p-4 text-xs xl:text-sm 2xl:text-sm border-b border-gray-200 dark:border-gray-700">
         {children}
       </td>
     ),
@@ -71,18 +71,18 @@ const ActividadPage = async ({ params }: Props) => {
   }
 
   return (
-    <section className=" max-w-6xl py-8 px-12 mx-auto space-y-4 border border-card rounded-lg">
-      <div className="flex justify-end mr-8">
+    <section className="border border-card max-w-6xl mb-8 xl:mb-0 2xl:mb-0 px-2 py-4 xl:py-8 2xl:py-8 xl:px-12 2xl:px-12 mx-auto space-y-4 rounded-lg">
+      <div className="flex justify-end mr-1 xl:mr-8 2xl:mr-8">
         <Link href='/inicio/mis-actividades' className='underline'>
           <ArrowLeftCircle />
         </Link>
       </div>
-      <br />
-      <article className="h-[750px] space-y-6">
-        <h1 className="text-4xl font-bold text-center underline underline-offset-4">Actividad: {task.title}</h1>
+      {/* <br /> */}
+      <article className="h-full xl:h-[750px] 2xl:h-[750px] space-y-12 xl:space-y-6 2xl:space-y-6">
+        <h1 className="text-xl xl:text-3xl 2xl:text-3xl font-bold text-center underline underline-offset-4">Actividad: {task.title}</h1>
         <div className="space-y-5">
           <p className="font-roboto text-lg font-bold underline underline-offset-4">Instrucciones: </p>
-          <p className="font-roboto text-base px-4">Estas por entrar a resolver la actividad, podes completarla cuando vos quieras y todas las veces que necesites. A los 90 minutos despues de iniciada la actividad tendras acceso a un documentos con las resolucion correcta para que puedas comparar tus respuestas</p>
+          <p className="font-roboto text-sm xl:text-base 2xl:text-base px-2 xl:px-4 2xl:px-4">Estas por entrar a resolver la actividad, podes completarla cuando vos quieras y todas las veces que necesites. A los 90 minutos despues de iniciada la actividad tendras acceso a un documentos con las resolucion correcta para que puedas comparar tus respuestas</p>
           <p className="font-roboto text-lg font-bold underline underline-offset-4">Descripciones: </p>
           <div className="text-lg font-roboto px-4">
             <ReactMarkdown

@@ -85,7 +85,7 @@ const Calendar = () => {
   }, [events]);
 
   return (
-    <div className="w-[350px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs">
+    <div className="min-w-[340px] lg:w-[800px] -ml-2 lg:mx-auto text-[10px] lg:text-xs">
       {
         isCalendarReady ?
           <FullCalendar
