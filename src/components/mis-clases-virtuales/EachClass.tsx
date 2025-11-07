@@ -30,15 +30,13 @@ const EachClass = async ({ classItem, index }: Props) => {
 
 
   return (
-    <Card key={index} className='flex w-full border border-card py-4 px-4 text-xs'>
-      <p className='w-[80px] flex items-center justify-center'>{new Date(classItem.startTime).toLocaleDateString()}</p>
+    <Card key={index} className='flex flex-col xl:flex-row 2xl:flex-row py-4 px-4 text-xs border border-card'>
+      <p className='font-bold text-base xl:w-[80px] 2xl:w-[80px] flex items-center justify-center'><span className='block lg:hidden'>Dia: </span>{new Date(classItem.startTime).toLocaleDateString()}</p>
       <div className='flex space-x-1 w-[110px] items-center justify-center'>
-        <p>{parsedStartTime}
-        </p>
-        <p>a</p>
-        <p>{parsedEndTime}
-        </p>
-        <p>hs</p>
+        <p>{parsedStartTime} a {parsedEndTime} hs</p>
+        {/* <p>a</p>
+        <p>{parsedEndTime}</p>
+        <p>hs</p> */}
       </div>
       <p className='w-[80px] capitalize flex items-center justify-center'>{classItem.classType} {classItem.classType == 'grupal' && `(${classItem.currentParticipants}/${classItem.maxParticipants})`}</p>
       <p className='w-[65px] flex items-center capitalize justify-center'>{classItem.bookedById == session?.user?.id ? 'anfitrion' : 'invitado'}</p>

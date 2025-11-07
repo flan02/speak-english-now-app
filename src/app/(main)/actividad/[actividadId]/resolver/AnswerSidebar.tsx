@@ -43,34 +43,30 @@ const AnswerSidebar = ({ taskSolved, updatedAt }: Props) => {
 
 
   return (
-    <div className="absolute top-24 right-8">
-
+    <div className="absolute top-24 left-4 xl:top-24 xl:right-8 2xl:top-24 2xl:right-8">
       <Button
         disabled={!canView}
         onClick={() => setOpen(true)}
-        className="font-bold text-xs dark:bg-gray-100 dark:hover:bg-gray-100/90 dark:text-gray-800 mb-4"
+        className="font-bold text-[10px] xl:text-xs 2xl:text-xs bg-black text-white dark:bg-white dark:hover:bg-gray-100/90 dark:text-gray-900 mb-4"
       >
         <Reply />
-        <span>Ver Respuestas</span>
+        <span className=''>Ver Respuestas</span>
       </Button>
 
-      {open && (
-        <aside className="border border-card fixed top-36 right-0 rounded-md w-80 h-[calc(100vh-9rem)] bg-white dark:bg-[rgba(50,50,50,0.2)] shadow-lg p-4 overflow-y-auto z-50 transition-transform">
-          <button
-            onClick={() => setOpen(false)}
-            className="text-lg dark:text-red-500 font-bold -mb-12 hover:underline"
-          >
-            X
-          </button>
-          <div className="whitespace-pre-wrap text-xs px-0">
-            <ReactMarkdown
-              components={components}
-              remarkPlugins={[remarkGfm]}
-            >{taskSolved}</ReactMarkdown>
-          </div>
+      {
+        open && (
+          <aside className="border border-card fixed top-36 right-0 rounded-md xl:w-80 2xl:w-80 h-[calc(100vh-9rem)] bg-white dark:bg-[rgba(50,50,50,0.2)] shadow-lg p-2 overflow-y-auto z-50 transition-transform">
+            <button onClick={() => setOpen(false)} className="text-lg rounded-full px-2 bg-black text-white dark:bg-white dark:text-black font-bold -mb-12 hover:underline">X</button>
+            <div className="whitespace-pre-wrap text-xs px-0 mt-4 xl:mt-0">
+              <ReactMarkdown
+                components={components}
+                remarkPlugins={[remarkGfm]}
+              >{taskSolved}</ReactMarkdown>
+            </div>
 
-        </aside>
-      )}
+          </aside>
+        )
+      }
     </div>
 
 

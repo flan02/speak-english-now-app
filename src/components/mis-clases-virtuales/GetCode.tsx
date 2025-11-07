@@ -13,12 +13,12 @@ const GetCode = (props: Props) => {
   const [error, setError] = useState<string>("")
 
   const handleAccessCode = async (accessCode: string) => {
-    console.log('AccessCode in our frontend', accessCode);
+    //console.log('AccessCode in our frontend', accessCode);
     try {
       const response = await KY(Method.POST, 'http://localhost:3000/api/access-code', { json: accessCode })
       const data = await response.json();
 
-      console.log("Google link obtained", data);
+      //console.log("Google link obtained", data);
       if (data.response.message) {
         setError(data.response.message);
       }
@@ -39,12 +39,12 @@ const GetCode = (props: Props) => {
 
 
   return (
-    <div className='flex items-center space-x-2'>
+    <div className='flex flex-col xl:flex-row xl:items-center 2xl:flex-row 2xl:items-center px-2 xl:px-0 2xl:px-0 space-x-2 space-y-2 xl:space-y-0 2xl:space-y-0'>
       <p className='font-roboto text-sm'>Unirme a una clase como invitado:</p>
       <Input
         value={accessCode}
         onChange={(e) => setAccessCode(e.target.value.toUpperCase())}
-        className='w-[120px] font-bold text-lg uppercase'
+        className='w-[145px] xl:w-[120px] 2xl:w-[120px] font-bold text-lg uppercase'
         maxLength={8}
         placeholder='CODIGO' />
       <Button
@@ -53,7 +53,9 @@ const GetCode = (props: Props) => {
         className='bg-black text-white dark:bg-white dark:text-black tracking-wider text-sm'>
         <ExternalLink />
       </Button>
-      {error && <p className="text-red-500 text-xs ml-4">{error}</p>}
+      {
+        error && <p className="text-red-500 text-xs ml-4">{error}</p>
+      }
     </div>
 
   )

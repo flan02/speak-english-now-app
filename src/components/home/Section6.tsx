@@ -33,7 +33,7 @@ const Section6 = (props: Props) => {
           <input type="submit" value="Enviar" className='border rounded-md py-0.5 w-1/3 lg:w-1/4 mx-auto hover:bg-slate-200/70 bg-slate-100 btn-send font-bold' />
         </div>
       </article>
-      <MetodoDePagoBadge title={metodos_pago} color="metodopago text-[9px] lg:text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" />
+      <MetodoDePagoBadge title={metodos_pago} color="metodopago text-[9px] lg:text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" margin="-ml-2" />
     </MaxWidthWrapper>
   )
 }

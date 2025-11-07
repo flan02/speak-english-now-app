@@ -16,7 +16,7 @@ const AllClasses: React.FC<SessionProps> = async ({ session }) => {
 
   return (
     <>
-      <div className="mb-2">
+      <div className="hidden lg:block mb-2 border border-red-500">
         <Card className='flex font-bold w-full border border-card rounded-none p-4 space-y-1 bg-black dark:bg-white text-white dark:text-black'>
           <p className="w-[80px] text-center">Dia</p>
           <p className="w-[110px] text-center">Horario</p>

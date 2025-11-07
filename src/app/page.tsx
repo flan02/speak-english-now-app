@@ -24,7 +24,6 @@ export default async function Home() {
 
   return (
     <main className="relative flex flex-col items-center justify-center gap-6 py-4 text-center">
-
       <Marquee time={30} banners={marquee_banners} />
       <BackgroundMultiDots />
       <Section1 />

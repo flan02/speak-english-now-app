@@ -173,40 +173,42 @@ const PreCompraPage = () => {
 
   return (
     <>
-      <div className='flex space-x-4 justify-between items-end'>
+      {/* <div className='flex space-x-4 justify-between items-end'> */}
+      <div className='flex px-1 xl:px-0 2xl:px-0 mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-between xl:justify-between 2xl:justify-between'>
         <div className='flex items-end space-x-2'>
           <CreditCard className='mb-0.5' />
-          <H1 title='Revisa y abona tu reserva' />
+          <H1 title='Verifica tu reserva' />
         </div>
-        <Link href='/inicio/reservas' className='underline'>
+        <Link href='/inicio/reservas' className='absolute top-28 mt-0.5 right-4 xl:static 2xl:static underline'>
           <ArrowLeftCircle />
         </Link>
       </div>
-      <article className='flex space-x-2 items-end'>
-        <PenTool />
+      {/* <article className='flex space-x-2 items-end'> */}
+      <article className='flex space-x-1 items-center xl:items-end 2xl:items-end px-2 xl:px-0 2xl:px-0'>
+        <PenTool className='px-1 xl:px-0 2xl:px-0' />
         <h2 className='font-roboto uppercase font-bold text-xs'>Esta es la información de la clase a reservar:</h2>
       </article>
-      <section className="w-full max-w-6xl mx-auto px-4 py-2">
+      <section className="w-full max-w-6xl mx-auto px-1 xl:px-4 2xl:px-4 py-2">
         <Card className='w-full h-[600px] border border-card py-4 px-4'>
 
           <div className='space-y-4 py-8'>
 
-            <div className='space-y-8 px-8'>
-              <p className='font-roboto text-3xl'>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
-              <p className='font-roboto text-3xl'>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / pricing.groupPrice)}</span></p>
-              <p className='font-roboto text-3xl'>Fecha: <span className='font-extrabold'>{selectedDate}</span></p>
-              <p className='font-roboto text-3xl'>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
-              <p className='font-roboto text-3xl'>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
+            <div className='space-y-6 xl:space-y-8 2xl:space-y-8 px-1 xl:px-8 2xl:px-8 font-roboto text-sm xl:text-3xl 2xl:text-3xl'>
+              <p className=''>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
+              <p className=''>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / pricing.groupPrice)}</span></p>
+              <p className=''>Fecha: <span className='font-extrabold'>{selectedDate}</span></p>
+              <p className=''>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
+              <p className=''>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
               {text && text != '' &&
-                <div className='space-y-2'>
-                  <p className='font-roboto text-3xl'>Tema a tratar en la clase: </p>
-                  <p className='font-extrabold text-sm ml-4'>{text}</p>
+                <div className=''>
+                  <p className='font-roboto text-sm xl:text-3xl 2xl:text-3xl'>Tema a tratar en la clase: </p>
+                  <p className='font-extrabold text-sm ml-4 mt-2 xl:mt-0 2xl:mt-0'>{text}</p>
                 </div>
               }
             </div>
             <br />
             <div className='w-full text-center'>
-              <Button onClick={simulateSuccessPayment} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-base'>Confirmar ...</Button>
+              <Button onClick={simulateSuccessPayment} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-xs xl:text-base 2xl:text-base'>Confirmar ...</Button>
             </div>
             {
               isConfirm && <div>

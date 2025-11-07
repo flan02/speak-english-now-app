@@ -88,3 +88,30 @@ export async function completedClass() {
     console.error('We could not complete the class', error)
   }
 }
+
+
+export const markTaskComplete = async (actividadId: string) => {
+  const userActivity = await getUserActivity(actividadId)
+  if (!userActivity?.completed) {
+    await completeTask(actividadId)
+    await completedClass()
+  }
+}
+
+
+export async function getUserActivity(taskId: string) {
+  try {
+    const response = await db.userActivity.findFirst({
+      where: {
+        taskId: taskId
+      },
+      select: {
+        id: true,
+        completed: true
+      }
+    })
+    return response
+  } catch (error) {
+    console.error(error)
+  }
+}

@@ -18,7 +18,7 @@ const Section5 = (props: Props) => {
         <p className='font-orbitron text-xs leading-4.5 lg:leading-6 lg:text-lg text-left py-4'>Construí esta plataforma como una solución de bajo costo para ayudar a niños, adolescentes y adultos a aprender lograr comunicarse en inglés de una manera sencilla. Ya sea apoyo escolar, preparar entrevistas laborales o clases conversacionales sobre diversos temas, dispongo de varias horas semanales para brindarte la ayuda que necesites.</p>
         <p className='font-orbitron text-xs leading-4.5 lg:leading-6 lg:text-lg text-left lg:mt-2'>Continuo diariamente con mi formación en la programación con inteligencia artificial así como en el inglés. Si queres conocer más sobre mí te comparto los siguientes enlaces donde verás proyectos que he realizado y mis certificaciones obtenidas como programador:</p>
       </section>
-      <article className='min-w-[350px] lg:w-1/3 -ml-1 lg:mx-auto space-y-2 lg:space-y-4'>
+      <article className='min-w-[340px] lg:w-1/3 -ml-1 lg:mx-auto space-y-2 lg:space-y-4'>
 
         <MyWebsiteButton />
         <LinkedInButton />

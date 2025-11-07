@@ -2,9 +2,6 @@ import React from 'react'
 import ThemeToggle from '../reutilizable/ThemeToggle'
 import { LanguagesIcon } from 'lucide-react'
 import SignIn from '../reutilizable/sign-in'
-import Image from 'next/image'
-
-import HeroImage from '../../../public/hablainglesya3.png'
 
 
 type Props = {}
@@ -12,7 +9,6 @@ type Props = {}
 const Section1 = (props: Props) => {
   return (
     <section className="gap-6 lg:px-5 lg:py-40 min-w-[350px] py-16 text-center md:text-left md:flex justify-center items-center lg:gap-12">
-
       <div className="absolute right-3 top-2 space-x-2 mt-10 z-30">
         <span className="font-bold uppercase text-xs">cambiar tema</span>
         <ThemeToggle />

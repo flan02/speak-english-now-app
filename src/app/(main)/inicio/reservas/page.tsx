@@ -87,11 +87,10 @@ const Reservas = (props: Props) => {
   }))
 
   const fullCalendarContent = useCallback((arg: any) => {
-    //console.log("Argumentos", arg);
     const { title, extendedProps } = arg.event;
 
     return (
-      <div className="text-xs px-2 py-2 text-gray-500">
+      <div className="text-xs px-0 py-0 xl:px-2 xl:py-2 2xl:px-2 2xl:py-2 text-gray-500">
         <p className="font-roboto capitalize">Tipo: {title}</p>
         <p className="font-roboto capitalize">Participantes: {extendedProps.participants}</p>
         <p className="font-roboto capitalize">Estado: {extendedProps.status}</p>
@@ -179,39 +178,71 @@ const Reservas = (props: Props) => {
           isCalendarReady && !isLoading
             ?
             isMobile ?
-              // <FullCalendarMobile events={fullCalendarEvents} />
               <FullCalendar
-                plugins={[timeGridPlugin, interactionPlugin]}
+                allDaySlot={false}
+                aspectRatio={isMobile ? 0.8 : 1.35}
                 initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
                 headerToolbar={{
                   left: "prev,next today",
                   center: "title",
                   right: "",
                 }}
-                allDaySlot={false}
-                nowIndicator
-
-                slotLabelFormat={{
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
+                dateClick={(info) => {
+                  scheduleClass({ info, setOpen, setSelectedDate })
+                  const start = new Date(info.date);
+                  const end = new Date(start.getTime() + 60 * 60 * 1000); // +1h
+                  //console.log("Seleccionaste (auto 1h):", start, "→", end);
+                  setScheduledTime({ start: start, end: end });
                 }}
-                height={isMobile ? "auto" : "auto"}
+                // dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
+                dayCellClassNames={removePastDays}
+                datesSet={() => setIsCalendarReady(true)}
+                dayHeaderFormat={{
+                  weekday: isMobile ? "long" : "short",
+                }}
+
+                eventDidMount={(info) => {
+                  if (info.event.extendedProps?.status === 'confirmed') {
+                    info.el.style.border = '1px solid #000';
+                  } else {
+                    info.el.style.border = '1px solid #777';
+                  }
+                  setIsCalendarReady(true)
+                }}
                 events={fullCalendarEvents}
+                eventContent={fullCalendarContent}
                 eventTimeFormat={{
                   hour: "2-digit",
                   minute: "2-digit",
                   hour12: false,
                 }}
                 expandRows
-                dayHeaderFormat={{
-                  weekday: isMobile ? "long" : "short",
+                height={isMobile ? "auto" : "auto"}
+                initialDate={new Date()}
+                locale={esLocale}
+                nowIndicator={true}
+                plugins={[timeGridPlugin, interactionPlugin]}
+                selectConstraint={{
+                  start: "17:00:00",
+                  end: "21:00:00",
                 }}
-                aspectRatio={isMobile ? 0.8 : 1.35}
                 slotMinTime="17:00:00"
                 slotMaxTime="21:00:00"
-                validRange={{ start: new Date() }}
-
+                slotDuration="01:00:00"
+                selectable={true}
+                slotLabelInterval="01:00"
+                slotLabelFormat={{
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                }}
+                select={(info) => {
+                  console.log("Seleccionaste:", info.start, "→", info.end)
+                  //setScheduledTime({ start: info.start, end: info.end })
+                }}
+                validRange={{
+                  start: new Date().toISOString().split("T")[0],
+                }}
               />
               :
               <FullCalendar
@@ -333,8 +364,9 @@ const Reservas = (props: Props) => {
               <div className='space-y-2'>
                 <p className='underline underline-offset-4'>Objetivo de la clase:</p>
                 <Textarea
+                  className='text-xs xl:text-base 2xl:text-base'
                   maxLength={100}
-                  placeholder='Describe el tema que necesitas ver durante la clase (opcional)...'
+                  placeholder='Describe el tema que necesitas tratar durante la clase (opcional)...'
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                 />
@@ -357,9 +389,9 @@ const Reservas = (props: Props) => {
         <p className='text-sm italic'>* Si necesitas un horario especial o tienes alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o por email a chanivetdan@hotmail.com</p>
       </section>
 
-      <br /><br /><br />
-      <MetodoDePagoBadge title={metodos_pago} color="metodopago text-[9px] lg:text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" />
-      <br /><br /><br />
+      <br />
+      <MetodoDePagoBadge title={metodos_pago} color="metodopago text-[9px] lg:text-xs text-yellow-700 bg-yellow-100 border-2 border-yellow-300 rounded-lg" margin="-ml-4" />
+      <br />
     </>
   )
 }

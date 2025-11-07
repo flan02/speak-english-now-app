@@ -98,15 +98,15 @@ const Calendar = () => {
             eventContent={(fullCalendarContent)}
             initialView="dayGridMonth"
             moreLinkClick={(arg) => {
-
               arg.jsEvent.preventDefault();
-
               setSelectedDate(arg.date.toISOString().slice(0, 10));
               setOpen(true);
             }}
             locale={esLocale}
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, googleCalendarPlugin]}
-
+            validRange={{
+              start: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            }}
           />
           : <Skeleton className="h-[585px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
       }

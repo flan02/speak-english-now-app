@@ -21,7 +21,7 @@ const MisClasesVirtuales = async (props: Props) => {
         <Computer className='mb-0.5' />
         <H1 title='Mis Clases Virtuales' />
       </div>
-      <h2 className='font-roboto font-bold text-base'>Aqui veras las clases virtuales que has tomado y las clases futuras que tengas reservadas</h2>
+      <h2 className='font-roboto font-bold px-2 xl:px-0 2xl:px-0 text-xs xl:text-base 2xl:text-base'>Aqui veras las clases virtuales que has tomado y las clases futuras que tengas reservadas</h2>
       <GetCode />
 
       <Card className='w-full border border-card py-4 px-4 h-screen'>

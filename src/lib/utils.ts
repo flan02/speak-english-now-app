@@ -100,3 +100,12 @@ export function calcularTiempoRestante(fechaFutura: Date): string {
 
   return `Faltan ${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}`;
 }
+
+export const customDate = (date: Date) => {
+  const d = date.getDate().toString().padStart(2, "0")
+  const m = (date.getMonth() + 1).toString().padStart(2, "0")
+  const y = date.getFullYear()
+  const h = date.getHours().toString().padStart(2, "0")
+  const min = date.getMinutes().toString().padStart(2, "0")
+  return `${d}/${m}/${y} - ${h}:${min} hs`
+}

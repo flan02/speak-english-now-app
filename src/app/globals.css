@@ -47,6 +47,7 @@ body {
     --sidebar-ring: oklch(0.708 0 0);
 
     --border-primary: var(--color-gray-200);
+    --calendar-btn: black;
   }
 
   /* :root.dark { */
@@ -88,6 +89,7 @@ body {
     --sidebar-ring: oklch(0.439 0 0);
 
     --border-primary: oklch(0.339 0 0);
+    --calendar-btn: white;
   }
 }
 
@@ -147,7 +149,7 @@ body {
   color: var(--metodopago) !important;
   border: 1px solid var(--card);
   background: oklch(23.013% 0.10308 294.18);
-  padding: 8px;
+  /* padding: 8px; */
 }
 .dark .bg-footer {
   background-color: oklch(14.031% 0.02303 302.764);
@@ -239,7 +241,8 @@ body {
 }
 
 .fc-day-today {
-  background-color: #f7f5b9 !important; /* rojo */
+  background-color: #f7f5b9 !important;
+  opacity: 0.6;
   color: black;
   position: relative;
   z-index: 1;
@@ -303,7 +306,8 @@ body {
 }
 
 .dark .fc-day-today {
-  background-color: rgba(43, 12, 83, 0.5) !important; /* morado oscuro */
+  background-color: rgba(43, 12, 83, 0.5) !important;
+  color: gray;
 }
 
 .dark .fc,
@@ -380,10 +384,14 @@ body {
   z-index: 1;
 }
 
-/* .fc-col-header-cell,
-.fc-day,
-.fc-day-tue,
-} */
+.fc-today-button.fc-button.fc-button-primary,
+.fc-prev-button.fc-button.fc-button-primary,
+.fc-next-button.fc-button.fc-button-primary {
+  background-color: var(--calendar-btn) !important;
+  color: var(--sidebar) !important;
+  opacity: 0.9;
+}
+
 .fc-day-disabled {
   background-color: #eeeeee !important;
 }
@@ -395,19 +403,6 @@ body {
     width: 340px !important;
     height: 300px !important;
     /* margin-left: -5px; */
-  }
-
-  .fc-toolbar-title {
-    font-size: 1.1rem !important; /* Ajusta el tamaño de fuente según sea necesario */
-    font-family: var(--font-roboto) !important;
-    text-transform: capitalize;
-  }
-
-  .fc-timegrid {
-    color: #444;
-    font-size: 12px;
-    width: 330px !important;
-    height: 120px !important;
   }
 
   .fc-daygrid-day-events {
@@ -425,33 +420,70 @@ body {
     border: 1px solid #2e1747;
   }
   .fc-toolbar-title {
+    font-size: 0.9rem !important; /* Ajusta el tamaño de fuente según sea necesario */
+    font-family: var(--font-roboto) !important;
+    text-transform: capitalize;
     padding-left: 12px;
-    /* border: 1px solid blue; */
   }
   .fc-scrollgrid-section {
     height: 25px !important;
   }
   .fc-dayGridMonth-view {
-    width: 345px !important;
-    /* margin-left: 3px; */
-    /* border: 1px solid green; */
+    width: 330px !important;
+    /* margin-left: 10px; */
   }
   .fc-media-screen {
     width: 344px !important;
-    /* border: 1px solid green; */
-    /* margin-left: 5px; */
   }
-  /* .fc-header-toolbar {
-    
-  } */
+
   .fc-toolbar {
     width: 335px !important;
-    /* border: 1px solid blue; */
+  }
+
+  .fc-button-group {
+    padding: 0 2px;
+    font-size: 10px;
+  }
+
+  .fc-today-button.fc-button.fc-button-primary {
+    background-color: var(--calendar-btn) !important;
+    color: var(--sidebar) !important;
+    opacity: 0.9;
+    font-size: 10px;
+  }
+
+  .fc-timegrid {
+    color: #444;
+    font-size: 12px;
+    width: 330px !important;
+    height: 200px !important; /* 350px */
+  }
+
+  .fc-timegrid-now-indicator-container {
+    height: 280px !important;
+  }
+
+  .fc-timegrid-body,
+  .fc-timegrid-col-frame {
+    height: 280px !important;
+  }
+
+  .fc-scrollgrid-sync-inner {
+    font-size: 12px;
+    text-transform: uppercase;
+    background-color: transparent !important;
+  }
+
+  .fc-col-header {
+    background-color: var(--sidebar) !important;
+    opacity: 1;
+    border: 1px solid #222 !important;
+  }
+
+  .fc-scrollgrid {
+    margin: 0 2px !important;
   }
 }
-
-/* fc-view-harness fc-view-harness-active */
-/* fc-header-toolbar fc-toolbar fc-toolbar-ltr */
 
 .fc-timeGridWeek-button.fc-button.fc-button-primary.fc-button-active {
   font-size: 12px;
