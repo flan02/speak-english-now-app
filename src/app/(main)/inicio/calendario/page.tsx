@@ -9,7 +9,6 @@ type Props = {}
 const Calendario = (props: Props) => {
   return (
     <>
-      {/* <div className='flex space-x-4 items-end'> */}
       <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>
         <Calendar1 className='mb-0.5' />
         <H1 title='Calendario' />

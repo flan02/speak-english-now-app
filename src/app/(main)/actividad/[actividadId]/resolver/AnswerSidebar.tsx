@@ -41,7 +41,6 @@ const AnswerSidebar = ({ taskSolved, updatedAt }: Props) => {
     ),
   }
 
-
   return (
     <div className="absolute top-24 left-4 xl:top-24 xl:right-8 2xl:top-24 2xl:right-8">
       <Button
@@ -55,7 +54,7 @@ const AnswerSidebar = ({ taskSolved, updatedAt }: Props) => {
 
       {
         open && (
-          <aside className="border border-card fixed top-36 right-0 rounded-md xl:w-80 2xl:w-80 h-[calc(100vh-9rem)] bg-white dark:bg-[rgba(50,50,50,0.2)] shadow-lg p-2 overflow-y-auto z-50 transition-transform">
+          <aside className="border border-card fixed top-36 right-0 rounded-md xl:w-80 2xl:w-80 h-[calc(100vh-9rem)] bg-white dark:bg-[#111] shadow-lg p-2 overflow-y-auto z-50 transition-transform">
             <button onClick={() => setOpen(false)} className="text-lg rounded-full px-2 bg-black text-white dark:bg-white dark:text-black font-bold -mb-12 hover:underline">X</button>
             <div className="whitespace-pre-wrap text-xs px-0 mt-4 xl:mt-0">
               <ReactMarkdown
@@ -68,8 +67,6 @@ const AnswerSidebar = ({ taskSolved, updatedAt }: Props) => {
         )
       }
     </div>
-
-
   )
 }
 

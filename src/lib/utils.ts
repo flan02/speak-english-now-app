@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { ScheduleClassProps } from "./types";
 
 
 
@@ -108,4 +109,60 @@ export const customDate = (date: Date) => {
   const h = date.getHours().toString().padStart(2, "0")
   const min = date.getMinutes().toString().padStart(2, "0")
   return `${d}/${m}/${y} - ${h}:${min} hs`
+}
+
+export const validateMeetingDate = (date: string, startTime: string, endTime: string): boolean => {
+
+  const [day, month, year] = date.split('/').map(Number);
+  const [startHour, startMinute] = startTime.split(':').map(Number);
+  const [endHour, endMinute] = endTime.split(':').map(Number);
+
+  const meetingStart = new Date(year, month - 1, day, startHour, startMinute);
+  const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
+  const now = new Date();
+
+  const oneHourBefore = new Date(meetingStart.getTime() - (60 * 60 * 1000));
+
+  if (now < oneHourBefore || now > meetingEnd) {
+    return true
+  } else {
+    return false
+  }
+}
+
+export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
+  const clicked = info.date; // es un objeto Date de FullCalendar
+  const today = new Date();
+
+  // Comparamos solo año, mes y día
+  const clickedYMD = clicked.getFullYear() * 10000 + (clicked.getMonth() + 1) * 100 + clicked.getDate();
+  const todayYMD = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
+  // Bloqueamos solo si es anterior a hoy
+  if (clickedYMD < todayYMD) return;
+
+  // Bloquear domingos
+  if (clicked.getDay() === 0) return;
+
+  // Día válido → abrir modal
+  setSelectedDate(info.date.toISOString().slice(0, 10));
+  setOpen(true);
+}
+
+export const removePastDays = (arg: any) => {
+  const cellDate = new Date(arg.date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  cellDate.setHours(0, 0, 0, 0);
+
+  if (cellDate < today) {
+    return ["bg-gray-600/10 bg-previous-day", "pointer-events-none"]; // gris y deshabilitado
+  }
+  return [];
+}
+
+
+export const formattedDate = (date: string): string => {
+  const formatted = new Date(date).toLocaleDateString('es-AR', { timeZone: 'UTC' })
+  return formatted
 }

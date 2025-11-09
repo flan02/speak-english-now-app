@@ -1,4 +1,3 @@
-import MaxWidthWrapper from '@/components/reutilizable/MaxWidthWrapper'
 import { ArrowLeftCircle } from 'lucide-react'
 import Link from 'next/link'
 

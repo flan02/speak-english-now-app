@@ -1,9 +1,8 @@
 "use server"
 
-import { auth } from "@/auth";
 import { db } from "@/db";
 import { CalendarEvent } from "@/lib/types";
-import { $Enums, Status } from "@prisma/client";
+import { $Enums } from "@prisma/client";
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
 import pricing from "@/config/pricing.json";
@@ -156,9 +155,6 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
   }
 
   try {
-
-    //console.log('google calendar event arriving to save fc', googleCalendarEvent);
-
     const newClass = await db.virtualClass.create({
       data: saveCalendarEvent
     })
@@ -173,17 +169,6 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
           completed: null,
         }
       })
-
-      // await db.user.update({
-      //   where: { id: userId },
-      //   data: {
-      //     totalClasses: {
-      //       increment: 1
-      //     }
-      //   }
-      // })
-
-
     }
 
     return NextResponse.json({
@@ -278,16 +263,6 @@ export async function addParticipant(event: any, userId: string) {
           },
         },
       });
-
-      // await tx.user.update({
-      //   where: { id: userId },
-      //   data: {
-      //     totalClasses: {
-      //       increment: 1
-      //     }
-      //   }
-      // });
-
       return response;
     });
 

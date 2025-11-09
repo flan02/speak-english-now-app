@@ -2,7 +2,6 @@
 import { ToggleLeftIcon, ToggleRightIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-
 import { useEffect, useState } from "react";
 
 export default function ToggleClient() {
@@ -32,7 +31,6 @@ export default function ToggleClient() {
       <p className="font-roboto underline font-bold uppercase text-xs">modo oscuro:</p>
       <div>
         {
-          // mounted && theme !== 'light' ?
           isDark ?
             <Button onClick={() => setTheme("light")} variant="ghost" size="icon" className="">
               {/* <Sun className="size-[1rem] text-white rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" /> */}
@@ -45,10 +43,6 @@ export default function ToggleClient() {
             </Button>
         }
       </div>
-
-
     </div>
-
-
-  );
+  )
 }

@@ -1,27 +1,18 @@
 
 import H1 from '@/components/html/h1'
-import { PenIcon, Settings, ToggleLeftIcon } from 'lucide-react'
-import Link from 'next/link'
+import { Settings } from 'lucide-react'
 import React from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Button } from '@/components/ui/button'
+import { Card, CardContent } from "@/components/ui/card"
 import ToggleClient from '@/components/reutilizable/ToggleClient'
 import { auth } from '@/auth'
 import EditUserInfo from '@/components/configuracion/EditUserInfo'
-
 
 
 type Props = {}
 
 const Configuracion = async (props: Props) => {
   const session = await auth()
+
   return (
     <>
       <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>

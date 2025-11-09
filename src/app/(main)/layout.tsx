@@ -16,7 +16,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
   }
 
   return (
-
     <>
       {
         session.user.name &&
@@ -34,7 +33,6 @@ export default async function Layout({ children }: { children: React.ReactNode }
         </>
       }
     </>
-
   )
 }
 

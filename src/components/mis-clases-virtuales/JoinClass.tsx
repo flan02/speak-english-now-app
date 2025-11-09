@@ -1,22 +1,30 @@
 import Link from 'next/link';
 import { Button } from '../ui/button';
+import { validateMeetingDate } from '@/lib/utils';
 
 type Props = {
   link: string
   status: string
+  date: string
+  time: {
+    start: string
+    end: string
+  }
 }
 
-const JoinClass = ({ link, status }: Props) => {
-  const isDisabled = status === 'completed'
+const JoinClass = ({ link, status, date, time }: Props) => {
+
+  const isValidMeeting = validateMeetingDate(date, time.start, time.end)
+
   return (
-    <>
+    <div className='-ml-1 lg:ml-0 xl:ml-0 2xl:ml-0'>
       {
-        isDisabled ? (
+        isValidMeeting ? (
           <Button
-            disabled
+            disabled={isValidMeeting}
             size="sm"
             variant="outline"
-            className="w-[90px] h-8 ml-4 text-xs bg-black text-white cursor-not-allowed"
+            className="w-[90px] h-8 lg:ml-4 xl:ml-4 2xl:ml-4 text-xs bg-black text-white dark:bg-white dark:text-black"
           >
             Unirse
           </Button>
@@ -25,14 +33,13 @@ const JoinClass = ({ link, status }: Props) => {
             <Button
               size="sm"
               variant="outline"
-              className="w-[90px] h-8 ml-4 text-xs bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-gray-300"
+              className="w-[90px] h-8 xl:ml-4 2xl:ml-4 text-xs bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-gray-300"
             >
               Unirse
             </Button>
           </Link>
-        )
-      }
-    </>
+        )}
+    </div>
   );
 };
 

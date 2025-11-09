@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
-import { metodos_pago, ScheduleClassProps } from '@/lib/types'
+import { metodos_pago } from '@/lib/types'
 import useCalendar from '@/hooks/useCalendar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { MetodoDePagoBadge } from '@/components/reutilizable/MetodoDePagoBadge'
@@ -16,53 +16,12 @@ import { useRouter } from 'next/navigation'
 import { storePaymentData } from '@/zustand/store'
 import { Textarea } from '@/components/ui/textarea'
 import { KY, Method } from '@/services/api'
-import { cutId } from '@/lib/utils'
+import { cutId, formattedDate, scheduleClass } from '@/lib/utils'
 import pricing from '@/config/pricing.json'
-import FullCalendarMobile from '@/components/reutilizable/FullCalendarMobile'
+// import FullCalendarMobile from '@/components/reutilizable/FullCalendarMobile'
 
 
 type Props = {}
-
-export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
-  const clicked = info.date;
-  const today = new Date();
-
-  const clickedYMD = clicked.getFullYear() * 10000 + (clicked.getMonth() + 1) * 100 + clicked.getDate();
-  const todayYMD = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-
-  if (clickedYMD < todayYMD) return;
-  if (clicked.getDay() === 0) return;
-  if (clickedYMD === todayYMD && clicked.getTime() < today.getTime()) {
-    setSelectedDate(null);
-    return;
-  }
-
-  const formattedDate = clicked.toLocaleDateString('es-AR', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  });
-
-  setSelectedDate(formattedDate);
-  setOpen(true);
-};
-
-
-const removePastDays = (arg: any) => {
-  const cellDate = new Date(arg.date);
-  console.log("Current Time", arg.date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  cellDate.setHours(0, 0, 0, 0);
-
-  if (cellDate < today) {
-    return ["bg-gray-600/10", "bg-previous-day", "pointer-events-none"]; // gris y deshabilitado - 
-  }
-  return [];
-}
-
-
-
 
 const Reservas = (props: Props) => {
 
@@ -113,7 +72,7 @@ const Reservas = (props: Props) => {
 
   const handlePayment = useCallback(() => {
     //setPayment(true);
-    router.push('http://localhost:3000/inicio/pre-compra');
+    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/inicio/pre-compra`);
   }, [router])
 
   useEffect(() => {
@@ -314,7 +273,7 @@ const Reservas = (props: Props) => {
 
             <div className='w-[345px] lg:w-[500px] px-2 xl:px-0 2xl:px-0 font-roboto space-y-5 text-sm xl:text-base 2xl:text-base xl:space-y-3 2xl:space-y-3 font-roboto'>
               <p className=''>
-                <span className='underline underline-offset-4 mr-1'>Fecha:</span>{selectedDate ? selectedDate : " no hay fecha seleccionada"}
+                <span className='underline underline-offset-4 mr-1'>Fecha:</span>{selectedDate ? formattedDate(selectedDate) : " no hay fecha seleccionada"}
               </p>
               <p className=''>
                 <span className='underline underline-offset-4 mr-1'>Horario:</span>

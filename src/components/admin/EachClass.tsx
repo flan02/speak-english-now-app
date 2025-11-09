@@ -48,8 +48,7 @@ const EachClass = async ({ classItem, index }: Props) => {
 
       <AccessCode code={classItem.accessCode} classType={classItem.classType} />
 
-
-      <JoinClass link={classItem.htmlLink} status={classItem.status} />
+      <JoinClass link={classItem.htmlLink} status={classItem.status} date={new Date(classItem.startTime).toLocaleDateString()} time={{ start: parsedStartTime, end: parsedEndTime }} />
       <p className='w-[105px] flex items-center justify-center'>
         {classItem.activityStatus === 'pending'
           ? <Button asChild size="sm" className='bg-green-600 hover:bg-green-600/80 text-white text-xs w-[80px]'>

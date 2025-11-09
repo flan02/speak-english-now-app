@@ -2,7 +2,6 @@
 import H1 from '@/components/html/h1';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { toGoogleDate } from '@/lib/utils';
 import { KY, Method } from '@/services/api';
 import { storePaymentData } from '@/zustand/store';
 import { initMercadoPago } from '@mercadopago/sdk-react';
@@ -11,19 +10,19 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import pricing from '@/config/pricing.json';
+import { simulateSuccessPayment } from '@/services/api/clients';
+import { API_ROUTES } from '@/services/api/routes';
+import { formattedDate } from '@/lib/utils';
 
 type Props = {}
 
 const PreCompraPage = () => {
-  const { payment, isGroupClass, selectedDate, studentsCount, price, scheduledTime, text } = storePaymentData();
+  const { isGroupClass, selectedDate, studentsCount, price, scheduledTime, text } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
   const router = useRouter();
 
-  console.log("This is the current price", price);
-  console.log("This is the current students count", studentsCount);
-
-  // * CALL CHECKOUT BRICKS FROM MERCADO PAGO
+  // TODO: (MOVE TO CLIENTS.TS) CALL CHECKOUT BRICKS FROM MERCADO PAGO
   const handlePayment = async () => {
     //console.log('handle payments', classMetadata);
 
@@ -35,7 +34,7 @@ const PreCompraPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
+      const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
         json: classMetadata
       })
 
@@ -87,10 +86,10 @@ const PreCompraPage = () => {
                   status: paymentData.status
                 }
 
-                router.push(`/checkout/callback/success?payment_id=${payment.id}&status=success`)
+                router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/checkout/callback/success?payment_id=${payment.id}&status=success`)
 
                 // TODO: Calling to google api calendar to create event (pass date and user)
-                await KY(Method.POST, 'http://localhost:3000/api/calendar', {})
+                await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {})
               }
             },
           });
@@ -110,70 +109,65 @@ const PreCompraPage = () => {
   }
 
   // * Simular pago exitoso
-  const simulateSuccessPayment = async () => {
-    setIsLoading(true);
+  // const simulateSuccessPayment = async () => {
+  //   setIsLoading(true);
 
-    try {
+  //   try {
 
-      // TODO: Simulate booking event in google api calendar
-      const toGoogleCalendarEvent = {
-        start: `${toGoogleDate(scheduledTime.start!)}`,
-        end: `${toGoogleDate(scheduledTime.end!)}`,
-        isGroupClass,
-        studentsCount,
-        text
-      }
+  //     // TODO: Simulate booking event in google api calendar
+  //     const toGoogleCalendarEvent = {
+  //       start: `${toGoogleDate(scheduledTime.start!)}`,
+  //       end: `${toGoogleDate(scheduledTime.end!)}`,
+  //       isGroupClass,
+  //       studentsCount,
+  //       text
+  //     }
 
-      await KY(Method.POST, 'http://localhost:3000/api/calendar', {
-        json: toGoogleCalendarEvent
-      })
+  //     await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {
+  //       json: toGoogleCalendarEvent
+  //     })
 
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-
-
-
-    try {
-      const classMetadata = {
-        type: isGroupClass ? 'grupo' : 'individual',
-        studentsCount: studentsCount == 0 ? 1 : studentsCount,
-        price: studentsCount > 2 ? (studentsCount) : price
-      }
-
-      console.log("This is the current metadata", classMetadata);
+  //   } catch (error) {
+  //     console.error("Error fetching user data:", error);
+  //   }
 
 
-      const response = await KY(Method.POST, 'http://localhost:3000/api/mercado-pago/create-preference', {
-        json: classMetadata
-      })
 
-      const data = await response.json();
-      //console.log('response from mercado pago', data.preferenceId);
+  //   try {
+  //     const classMetadata = {
+  //       type: isGroupClass ? 'grupo' : 'individual',
+  //       studentsCount: studentsCount == 0 ? 1 : studentsCount,
+  //       price: studentsCount > 2 ? (studentsCount) : price
+  //     }
+  //     //console.log("This is the current metadata", classMetadata);
 
-      if (data.preferenceId) {
+  //     const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
+  //       json: classMetadata
+  //     })
 
-        const simulatedParams = new URLSearchParams({
-          payment_id: 'TEST1234',
-          status: 'success',
-          preference_id: data.preferenceId,
-        }).toString();
+  //     const data = await response.json();
+  //     //console.log('response from mercado pago', data.preferenceId);
 
-        // * REDIRECT TO CALLBACK SUCCESS PAGE
-        window.location.href = `http://localhost:3000/checkout/callback/success?${simulatedParams}`;
-      }
+  //     if (data.preferenceId) {
+
+  //       const simulatedParams = new URLSearchParams({
+  //         payment_id: 'TEST1234',
+  //         status: 'success',
+  //         preference_id: data.preferenceId,
+  //       }).toString();
+
+  //       // * REDIRECT TO CALLBACK SUCCESS PAGE
+  //       window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/callback/success?${simulatedParams}`;
+  //     }
 
 
-    } catch (error) {
-      console.error("Error simulating payment", error)
-    }
-  };
-
-
+  //   } catch (error) {
+  //     console.error("Error simulating payment", error)
+  //   }
+  // };
 
   return (
     <>
-      {/* <div className='flex space-x-4 justify-between items-end'> */}
       <div className='flex px-1 xl:px-0 2xl:px-0 mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-between xl:justify-between 2xl:justify-between'>
         <div className='flex items-end space-x-2'>
           <CreditCard className='mb-0.5' />
@@ -196,7 +190,7 @@ const PreCompraPage = () => {
             <div className='space-y-6 xl:space-y-8 2xl:space-y-8 px-1 xl:px-8 2xl:px-8 font-roboto text-sm xl:text-3xl 2xl:text-3xl'>
               <p className=''>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
               <p className=''>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / pricing.groupPrice)}</span></p>
-              <p className=''>Fecha: <span className='font-extrabold'>{selectedDate}</span></p>
+              <p className=''>Fecha: <span className='font-extrabold'>{formattedDate(selectedDate!)}</span></p>
               <p className=''>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
               <p className=''>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
               {text && text != '' &&
@@ -208,7 +202,7 @@ const PreCompraPage = () => {
             </div>
             <br />
             <div className='w-full text-center'>
-              <Button onClick={simulateSuccessPayment} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-xs xl:text-base 2xl:text-base'>Confirmar ...</Button>
+              <Button onClick={() => simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price })} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-xs xl:text-base 2xl:text-base'>Confirmar ...</Button>
             </div>
             {
               isConfirm && <div>
@@ -225,35 +219,3 @@ const PreCompraPage = () => {
 }
 
 export default PreCompraPage
-
-
-
-// .no-copy {
-//   user-select: none;  /* Evita seleccionar el texto */
-// }
-// tsx
-// Copy code
-// <div className="no-copy" onContextMenu={(e) => e.preventDefault()}>
-//   {meetLink}
-// </div>
-
-//<button onClick={() => window.open(meetLink, "_blank")}>
-//  Unirse a la clase
-// </button>
-
-
-// const part1 = "https://meet.google.com/";
-// const part2 = "bxq-rtsu-jgv";
-
-// <button onClick={() => window.open(part1 + part2, "_blank")}>
-//   Unirse a la clase
-// </button>
-
-
-
-// declare global {
-//   interface Window {
-//     MercadoPagoBricks: (options: { locale: string }) => any;
-//     MercadoPago: new (publicKey: string, options?: { locale?: string }) => any;
-//   }
-// }

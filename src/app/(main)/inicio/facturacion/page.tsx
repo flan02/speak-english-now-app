@@ -1,5 +1,5 @@
 import H1 from '@/components/html/h1'
-import { ArrowLeftCircle, CreditCard, History } from 'lucide-react'
+import { ArrowLeftCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 

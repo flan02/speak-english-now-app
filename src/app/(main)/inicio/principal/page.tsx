@@ -6,7 +6,6 @@ import Link from 'next/link'
 import React from 'react'
 import { getLastClass, getTotalClass } from './actions'
 import { calcularTiempoRestante, customDate } from '@/lib/utils'
-import { formatDate } from 'date-fns'
 
 type Props = {}
 
@@ -96,7 +95,6 @@ const Principal = async (props: Props) => {
                 <p className="font-roboto text-sm">La clave está en la práctica constante y en no tener miedo a cometer errores. Cada error es una oportunidad para aprender y mejorar.</p>
               </div>
             </Card>
-
           </div>
 
           <Card className='w-full border border-card py-4 space-y-4 px-4 flex flex-col space-x-4'>
