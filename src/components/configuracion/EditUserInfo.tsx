@@ -5,17 +5,11 @@ import Link from 'next/link'
 import { KY, Method } from '@/services/api'
 import { NivelIngles } from '@prisma/client'
 import { Skeleton } from '../ui/skeleton'
+import { formUserData } from '@/lib/types'
+import { fetchData } from '@/services/api/clients'
+
 
 type Props = {}
-
-interface formUserData {
-  status: boolean
-  localidad: string
-  nivel: NivelIngles | ''
-  telefono: number | ''
-  newsletter: string
-}
-
 
 const EditUserInfo = (props: Props) => {
   const [formUpdated, setFormUpdated] = React.useState(false)
@@ -29,6 +23,7 @@ const EditUserInfo = (props: Props) => {
   }
   const [isEditing, setIsEditing] = React.useState<formUserData>(initData)
 
+
   const handleSaveBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = {
@@ -37,9 +32,7 @@ const EditUserInfo = (props: Props) => {
       telefono: Number(isEditing.telefono),
       newsletter: isEditing.newsletter
     }
-
     setIsEditing({ ...isEditing, status: false })
-
     setFormUpdated(true)
     setTimeout(() => {
       setFormUpdated(false)
@@ -59,28 +52,8 @@ const EditUserInfo = (props: Props) => {
 
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const res = await KY(Method.GET, 'http://localhost:3000/api/user-data');
-        //console.log('user data fetched:', res);
-        if (res) {
-          setIsEditing({
-            ...isEditing,
-            localidad: res.localidad || '',
-            nivel: res.nivel || 'inicial',
-            telefono: res.telefono,
-            newsletter: res.newsletter || 'no'
-          })
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData();
+    fetchData(isEditing, setIsEditing);
   }, []);
-
-
-
 
   return (
     <form onSubmit={handleSaveBtn} className='space-y-3'>
@@ -106,7 +79,6 @@ const EditUserInfo = (props: Props) => {
             :
             <select className='text-xs font-roboto border border-gray-400 border-card rounded-md !p-1 dark:bg-black' value={isEditing.nivel} onChange={(e) => setIsEditing({ ...isEditing, nivel: (e.target.value as NivelIngles) })}>
               <option value="inicial" >inicial</option>
-              <option value="basico">basico</option>
               <option value="intermedio">intermedio</option>
               <option value="avanzado">avanzado</option>
             </select>

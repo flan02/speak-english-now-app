@@ -33,7 +33,6 @@ const Section2 = (props: Props) => {
 export default Section2
 
 
-
 /* COMPONENTS */
 function Card({ title, description }: { title: string, description: string }) {
   return (<div className="bg-amber-100/30 lg:border-none space-y-8 hover:bg-amber-100/40 bg-card px-4 py-6 lg:py-12 rounded-lg shadow hover:shadow-lg transition">

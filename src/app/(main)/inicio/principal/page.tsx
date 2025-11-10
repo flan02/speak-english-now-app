@@ -55,18 +55,18 @@ const Principal = async (props: Props) => {
                   {
                     lastClass && new Date(lastClass.endTime) > new Date() ?
                       <div className='min-w-[345px] xl:w-full 2xl:w-full flex justify-around items-start flex-col px-2 xl:items-center 2xl:items-center xl:flex-row 2xl:flex-row space-x-2 xl:px-2 xl:text-xs 2xl:px-4 2xl:text-sm font-roboto border border-card mx-auto xl:mx-4 2xl:mx-4 py-6 xl:py-0 2xl:py-0'>
-                        <div className='flex items-center space-x-2 text-sm xl:text-base 2xl:text-base'>
+                        <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Siguiente clase:</h2>
-                          <p className='pr-4 text-xs xl:text-base 2xl:text-base'>{customDate(lastClass.startTime)}</p>
+                          <p className='pr-4'>{customDate(lastClass.startTime)}</p>
                         </div>
-                        <div className='flex items-center space-x-2 text-sm xl:text-base 2xl:text-base'>
+                        <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Participantes confirmados:</h2>
-                          <p className='xl:text-xs 2xl:text-sm text-xs'>{lastClass.currentParticipants} de</p>
-                          <p className='-ml-0.5 xl:text-xs 2xl:text-sm text-xs'>{lastClass.maxParticipants}</p>
+                          <p className=''>{lastClass.currentParticipants} de</p>
+                          <p className='-ml-0.5'>{lastClass.maxParticipants}</p>
                         </div>
-                        <div className='flex items-center space-x-2 text-sm xl:text-base 2xl:text-base '>
+                        <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Comienza en:</h2>
-                          <p className='xl:text-xs 2xl:text-sm text-xs'>{calcularTiempoRestante(lastClass.startTime)}</p>
+                          <p className=''>{calcularTiempoRestante(lastClass.startTime)}</p>
                         </div>
                       </div>
                       :

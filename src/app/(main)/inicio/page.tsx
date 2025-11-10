@@ -14,7 +14,7 @@ export default async function Inicio() {
   const session = await auth()
 
   if (!session?.user?.id) {
-    return <p>Error</p>
+    return <p className="text-black dark:text-white">Error</p>
   }
 
   return redirect("/inicio/principal");

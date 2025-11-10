@@ -5,8 +5,6 @@ import { metodos_pago } from '@/lib/types'
 
 type Props = {}
 
-
-
 const Section6 = (props: Props) => {
   return (
     <MaxWidthWrapper className='lg:space-y-16'>
@@ -39,6 +37,5 @@ const Section6 = (props: Props) => {
 }
 
 export default Section6
-{/* <p>analizar implementar gmail para enviar email a los usuarios en un nuevo footer mas cortito</p> */ }
 
 

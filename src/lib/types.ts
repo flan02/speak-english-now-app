@@ -1,6 +1,7 @@
 import { BookAIcon, Bot, Calendar, Computer, Home, Settings } from "lucide-react"
 import { Session } from "next-auth"
 import pricing from "@/config/pricing.json"
+import { NivelIngles } from "@prisma/client"
 
 export const marquee_banners = [
   "🌟 La clase dura 2hs, la primera es virtual y la segunda una evaluación integradora —",
@@ -215,4 +216,10 @@ export type ActividadModel = {
   difficulty: 'easy' | 'medium' | 'hard'
 }
 
-
+export interface formUserData {
+  status: boolean
+  localidad: string
+  nivel: NivelIngles | ''
+  telefono: number | ''
+  newsletter: string
+}

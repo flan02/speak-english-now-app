@@ -19,12 +19,9 @@ const Section5 = (props: Props) => {
         <p className='font-orbitron text-xs leading-4.5 lg:leading-6 lg:text-lg text-left lg:mt-2'>Continuo diariamente con mi formación en la programación con inteligencia artificial así como en el inglés. Si queres conocer más sobre mí te comparto los siguientes enlaces donde verás proyectos que he realizado y mis certificaciones obtenidas como programador:</p>
       </section>
       <article className='min-w-[340px] lg:w-1/3 -ml-1 lg:mx-auto space-y-2 lg:space-y-4'>
-
         <MyWebsiteButton />
         <LinkedInButton />
         <GitHubButton />
-
-
       </article>
     </MaxWidthWrapper>
   )

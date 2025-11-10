@@ -2,13 +2,9 @@ import React from 'react'
 import MaxWidthWrapper from '../reutilizable/MaxWidthWrapper'
 import Calendar from '../reutilizable/Calendar'
 
-
 type Props = {}
 
 const Section4 = (props: Props) => {
-
-
-
   return (
     <MaxWidthWrapper className='lg:space-y-16'>
       <h2 className="mb-0 text-3xl py-16 lg:text-5xl font-bold lg:mb-16 lg:py-0 text-center tracking-wider">Horario de Reservas (17hs a 21hs)</h2>

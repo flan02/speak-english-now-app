@@ -25,7 +25,8 @@ const AccessCode = ({ code, classType }: Props) => {
     <div className='w-[90px] flex relative justify-between items-center'>
       {
         classType === 'grupal'
-          ? <>
+          ?
+          <>
             <p
               onCopy={(e) => e.preventDefault()}
               onCut={(e) => e.preventDefault()} >

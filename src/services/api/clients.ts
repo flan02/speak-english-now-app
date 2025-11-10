@@ -1,5 +1,6 @@
 //Fijate cómo los client “consumen datos” y los handler “manejan lógica de negocio o base de datos”.
 "use client"
+import { formUserData } from "@/lib/types";
 import { KY, Method } from ".";
 import { API_ROUTES } from "./routes";
 import { toGoogleDate } from "@/lib/utils";
@@ -90,3 +91,22 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
     console.error("Error simulating payment", error)
   }
 };
+
+
+export async function fetchData(isEditing: formUserData, setIsEditing: React.Dispatch<React.SetStateAction<formUserData>>) {
+  try {
+    const res = await KY(Method.GET, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.USER_DATA}`);
+    //console.log('user data fetched:', res);
+    if (res) {
+      setIsEditing({
+        ...isEditing,
+        localidad: res.localidad || '',
+        nivel: res.nivel || 'inicial',
+        telefono: res.telefono,
+        newsletter: res.newsletter || 'no'
+      })
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}

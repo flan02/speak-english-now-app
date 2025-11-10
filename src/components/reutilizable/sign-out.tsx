@@ -4,7 +4,7 @@ import { signOut } from "@/auth"
 //type Props = {}
 
 const SignOut = () => {
-  const REDIRECT_TO_HOME = process.env.HOME_URL!
+  const REDIRECT_TO_HOME = process.env.BASE_URL
   return (
     <form
       action={async () => {

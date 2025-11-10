@@ -18,7 +18,6 @@ import { Textarea } from '@/components/ui/textarea'
 import { KY, Method } from '@/services/api'
 import { cutId, formattedDate, scheduleClass } from '@/lib/utils'
 import pricing from '@/config/pricing.json'
-// import FullCalendarMobile from '@/components/reutilizable/FullCalendarMobile'
 
 
 type Props = {}
@@ -121,7 +120,6 @@ const Reservas = (props: Props) => {
 
   return (
     <>
-      {/* <div className='flex space-x-4 items-end'> */}
       <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>
         <BookAIcon className='mb-0.5' />
         <H1 title='Reservas' />
@@ -130,8 +128,6 @@ const Reservas = (props: Props) => {
         <MouseIcon />
         <h2 className='font-roboto uppercase font-bold text-[10px] xl:text-xs 2xl:text-xs'>Clickea sobre un horario disponible para iniciar el proceso de reserva...</h2>
       </article>
-
-
       <section className="w-[350px] xl:w-full 2xl:w-full max-w-6xl mx-auto xl:px-4 2xl:px-4 py-2">
         {
           isCalendarReady && !isLoading
@@ -261,16 +257,13 @@ const Reservas = (props: Props) => {
             : <Skeleton className="h-[450px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
         }
       </section>
-
       <section className='space-y-2'>
         <Card className='w-full border border-card py-4 px-4'>
           <div className='flex space-x-2 mb-6'>
             <PenBoxIcon />
             <h3 className='font-roboto uppercase font-bold text-base'>Detalles de la reserva</h3>
           </div>
-
           <article className='flex flex-col xl:flex-row 2xl:flex-row items-center xl:space-x-[100px] 2xl:space-x-[100px]'>
-
             <div className='w-[345px] lg:w-[500px] px-2 xl:px-0 2xl:px-0 font-roboto space-y-5 text-sm xl:text-base 2xl:text-base xl:space-y-3 2xl:space-y-3 font-roboto'>
               <p className=''>
                 <span className='underline underline-offset-4 mr-1'>Fecha:</span>{selectedDate ? formattedDate(selectedDate) : " no hay fecha seleccionada"}

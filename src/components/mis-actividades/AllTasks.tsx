@@ -1,7 +1,5 @@
-// 'use client'
 import React from 'react'
 import { Card } from '../ui/card'
-// import Robot from '../../../public/robot.png'
 import { getAllClasses } from '@/app/(main)/inicio/mis-clases-virtuales/actions'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -16,7 +14,6 @@ type SessionProps = {
 const AllTasks = ({ all_tasks }: SessionProps) => {
 
   return (
-
     <div className='flex xl:w-full 2xl:w-full w-[350px] justify-between'>
       <section className='flex flex-wrap space-x-1 space-y-1 xl:h-[1020px] 2xl:h-[1020px]'>
         {

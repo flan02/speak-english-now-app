@@ -7,9 +7,6 @@ import { paragraph, paragraph2 } from '@/lib/types'
 
 type Props = {}
 
-
-
-
 const Section3 = (props: Props) => {
   return (
     <MaxWidthWrapper className=''>

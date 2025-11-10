@@ -27,14 +27,11 @@ export default async function Home() {
       <Marquee time={30} banners={marquee_banners} />
       <BackgroundMultiDots />
       <Section1 />
-
       <Section2 />
       <Section3 />
       <Section4 />
-
       <Section5 />
       <Section6 />
-
       <ScrollToTop />
 
 
