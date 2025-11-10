@@ -20,7 +20,7 @@ export async function getTask(taskId: string) {
 export async function completeTask(taskId: string) {
   try {
     const session = await auth()
-    let userId = session?.user.id;
+    const userId = session?.user.id;
 
     const userActivity = await db.userActivity.findFirst({
       where: {

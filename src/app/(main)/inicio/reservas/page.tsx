@@ -299,7 +299,7 @@ const Reservas = (props: Props) => {
                         if (e.target.value === "1") setIsGroupClass(false);
                         setStudentsCount(parseInt(e.target.value))
 
-                        let students = parseInt(e.target.value) > 0 ? Math.floor(parseInt(e.target.value) / 10000) : 1;
+                        const students = parseInt(e.target.value) > 0 ? Math.floor(parseInt(e.target.value) / 10000) : 1;
                         console.log("current students", students);
                         setClassMetadata({ ...classMetadata, type: "grupal", studentsCount: students, price: parseInt(e.target.value) })
                       }}

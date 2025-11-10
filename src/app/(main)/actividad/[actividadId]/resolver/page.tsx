@@ -7,9 +7,9 @@ import Link from "next/link";
 
 
 interface Props {
-  params: {
+  params: Promise<{
     actividadId: string
-  }
+  }>
 }
 
 const ResolverActividad = async ({ params }: Props) => {

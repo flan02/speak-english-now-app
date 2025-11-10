@@ -94,7 +94,7 @@ export function calcularTiempoRestante(fechaFutura: Date): string {
   const minutos = minutosTotales % 60;
 
   // Construir el mensaje dinámicamente
-  let partes: string[] = [];
+  const partes: string[] = [];
   if (dias > 0) partes.push(`${dias} día${dias > 1 ? "s" : ""}`);
   if (horas > 0) partes.push(`${horas} hora${horas > 1 ? "s" : ""}`);
   if (minutos > 0) partes.push(`${minutos} minuto${minutos > 1 ? "s" : ""}`);

@@ -81,7 +81,7 @@ const PreCompraPage = () => {
                 // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito
 
                 // TODO: Add real value
-                let payment = {
+                const payment = {
                   id: paymentData.id,
                   status: paymentData.status
                 }

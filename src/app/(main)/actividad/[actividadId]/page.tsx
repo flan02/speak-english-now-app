@@ -4,15 +4,14 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import React from 'react'
 import { getTask } from "../actions"
 
 
 
 interface Props {
-  params: {
+  params: Promise<{
     actividadId: string
-  }
+  }>
 }
 
 type MarkdownComponents = {

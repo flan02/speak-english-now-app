@@ -6,14 +6,21 @@ import React from 'react'
 import AllClasses from '@/components/admin/AllClasses'
 import LogoHablaInglesYa from '@/components/reutilizable/LogoHablaInglesYa'
 
+// type SearchParamProps = { [key: string]: string | undefined }
+type SearchParamProps = Promise<Record<string, string | undefined>>
 
-type SearchParamProps = { [key: string]: string | undefined }
+interface AdminPageProps {
+  searchParams?: SearchParamProps
+  // searchParams?: SearchParamProps
+  // searchParams?: Promise<Record<string, string | undefined>>
+}
 
-const AdminPage = async ({ searchParams, }: { searchParams?: SearchParamProps }) => {
+
+const AdminPage = async ({ searchParams }: AdminPageProps) => {
 
   const session = await auth()
 
-  let serverParams = await searchParams
+  const serverParams = (await searchParams) ?? {}
 
   // if (searchParams?.status == undefined) serverParams = { status: 'all' }
   const isAdmin = session?.user.email === process.env.ADMIN_EMAIL!
