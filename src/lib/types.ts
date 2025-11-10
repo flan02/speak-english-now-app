@@ -2,6 +2,7 @@ import { BookAIcon, Bot, Calendar, Computer, Home, Settings } from "lucide-react
 import { Session } from "next-auth"
 import pricing from "@/config/pricing.json"
 import { NivelIngles } from "@prisma/client"
+import { URL_ROUTES } from "@/services/api/routes"
 
 export const marquee_banners = [
   "🌟 La clase dura 2hs, la primera es virtual y la segunda una evaluación integradora —",
@@ -92,39 +93,38 @@ export // Menu items.
   const items = [
     {
       title: "Principal",
-      url: "/inicio/principal",
+      url: URL_ROUTES.INICIO,
       icon: Home,
     },
     {
       title: "Clases Virtuales",
-      url: "/inicio/mis-clases-virtuales",
+      url: URL_ROUTES.CLASES_VIRTUALES,
       icon: Computer
     },
     {
       title: "Actividades",
-      url: "/inicio/mis-actividades",
+      url: URL_ROUTES.ACTIVIDADES,
       icon: Bot
     },
     {
       title: "Calendario",
-      url: "/inicio/calendario",
+      url: URL_ROUTES.CALENDARIO,
       icon: Calendar,
     },
     {
       title: "Reservas",
-      url: "/inicio/reservas",
+      url: URL_ROUTES.RESERVAS,
       icon: BookAIcon,
     },
     {
       title: "Configuracion",
-      url: "/inicio/configuracion",
-      icon: Settings,
+      url: URL_ROUTES.CONFIG,
+      icon: Settings
     }
   ]
 
 
 export const nivelIngles = [
-  "inicial",
   "basico",
   "intermedio",
   "avanzado"

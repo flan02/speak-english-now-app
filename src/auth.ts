@@ -26,11 +26,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }
   })],
   session: {
-    maxAge: 86400, // 86400 = 1 day
-    updateAge: 43200 //60 * 60, // Opcional: actualiza la sesión cada 1 hora
+    maxAge: 60 * 60 * 24 * 30, // 86400 = 1 day
+    updateAge: 43200 // Opcional: actualiza la sesión cada 1 hora
   },
   jwt: {
-    maxAge: 86400 // 10 * 180 // 30 minutes
+    maxAge: 60 * 60 * 24 * 30 // 10 * 180 // 30 minutes
   },
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -64,14 +64,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             totalClasses: true
           }
         })
-        if (user) {
+        if (user) { // && account
           token.id = user?.id
           token.iat = Math.floor(Date.now() / 1000)
-          token.exp = Math.floor(Date.now() / 1000) + 86400
-
+          token.exp = Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30 // 30 days (86400 1day)
           token.accessToken = account.access_token
-          token.refreshToken = account.refresh_token
-          //console.log('THIS IS THE refresh_token', token.refreshToken);
+          //console.log('PROFILE EMAIL', profile.email);
+          //console.log('ACC REFRESH TOKEN', account.refresh_token);
+          if (profile.email === process.env.ADMIN_EMAIL! && account.refresh_token) {
+            token.refreshToken = account.refresh_token
+            console.log('THIS IS THE refresh_token', token.refreshToken);
+          }
 
           // const now = Math.floor(Date.now() / 1000);
           // const timeUntilExpiration = token.exp - now; // Si el token tiene menos de 5 minutos antes de expirar, renovarlo
@@ -91,7 +94,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.iat = String(token.iat)
         session.user.exp = String(token.exp)
         session.user.accessToken = token.accessToken
-        session.user.refreshToken = token.refreshToken
+        if (token.refreshToken && session.user.email === process.env.ADMIN_EMAIL) {
+          session.user.refreshToken = token.refreshToken
+        }
+        // session.user.refreshToken = token.refreshToken
 
         //session.expires = new Date(token.exp! * 1000).toISOString();
       }

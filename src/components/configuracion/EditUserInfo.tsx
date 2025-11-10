@@ -7,6 +7,7 @@ import { NivelIngles } from '@prisma/client'
 import { Skeleton } from '../ui/skeleton'
 import { formUserData } from '@/lib/types'
 import { fetchData } from '@/services/api/clients'
+import { API_ROUTES } from '@/services/api/routes'
 
 
 type Props = {}
@@ -38,8 +39,8 @@ const EditUserInfo = (props: Props) => {
       setFormUpdated(false)
     }, 2000);
     try {
-      const res = await KY(Method.POST, '/api/user-data', { json: data });
-      console.log('response after send user data:', res);
+      const res = await KY(Method.POST, `${API_ROUTES.USER_DATA}`, { json: data });
+      //console.log('response after send user data:', res);
     } catch (error) {
       console.error(error);
     }
@@ -78,7 +79,7 @@ const EditUserInfo = (props: Props) => {
             <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.nivel || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
             :
             <select className='text-xs font-roboto border border-gray-400 border-card rounded-md !p-1 dark:bg-black' value={isEditing.nivel} onChange={(e) => setIsEditing({ ...isEditing, nivel: (e.target.value as NivelIngles) })}>
-              <option value="inicial" >inicial</option>
+              <option value="basico" >basico</option>
               <option value="intermedio">intermedio</option>
               <option value="avanzado">avanzado</option>
             </select>

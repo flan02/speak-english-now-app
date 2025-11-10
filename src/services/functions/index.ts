@@ -273,10 +273,35 @@ export async function addParticipant(event: any, userId: string) {
   }
 }
 
+export async function getUpcomingClasses() {
+
+  try {
+    const response = await db.virtualClass.findMany({
+      where: {
+        startTime: {
+          gte: new Date(),
+        },
+      },
+      orderBy: {
+        startTime: "asc",
+      },
+      select: {
+        id: true,
+        maxParticipants: true,
+        classType: true,
+        status: true,
+        startTime: true,
+        endTime: true
+      }
+    });
+    return response
+  } catch (error) {
+    console.error("Our db couldn't retrieve upcoming classes", error)
+  }
+}
 
 /* 
-TODO: EXAMPLE EVENT CREATED
-
+* EXAMPLE EVENT CREATED
 {
   kind: 'calendar#event',
   etag: '"3520948709485150"',

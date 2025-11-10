@@ -1,27 +1,15 @@
-import { db } from "@/db";
+import { getUpcomingClasses } from "@/services/functions";
 import { NextResponse } from "next/server";
 
 export async function GET() {
 
+  try {
+    const response = await getUpcomingClasses()
+    return NextResponse.json({ response });
 
-  const response = await db.virtualClass.findMany({
-    where: {
-      startTime: {
-        gte: new Date(),
-      },
-    },
-    orderBy: {
-      startTime: "asc",
-    },
-    select: {
-      id: true,
-      maxParticipants: true,
-      classType: true,
-      status: true,
-      startTime: true,
-      endTime: true
-    }
-  });
+  } catch (error) {
+    console.error("We couldn't retrieve the upcoming classes", error)
+  }
 
-  return NextResponse.json({ response });
+
 }

@@ -70,10 +70,10 @@ export async function POST(request: NextRequest) {
 
     if (userId) await saveGoogleCalendarEvent(googleCalendarEvent, userId, body);
 
-    // * TESTING: List of my current events
+    // | TESTING: List of my current events (Useful for paneladmin purposes)
     //listEvents();
 
-    return NextResponse.json({});
+    return NextResponse.json({ success: true, message: "Event created successfully" });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Failed to create calendar event' }, { status: 500 });

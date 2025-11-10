@@ -22,7 +22,7 @@ const AccessCode = ({ code, classType }: Props) => {
     }
   };
   return (
-    <div className='w-[90px] flex relative justify-between items-center'>
+    <div className='w-[100px] lg:w-[90px] xl:w-[90px] 2xl:w-[90px] flex relative justify-between items-center'>
       {
         classType === 'grupal'
           ?
@@ -33,7 +33,7 @@ const AccessCode = ({ code, classType }: Props) => {
               {code}
             </p>
             <button onClick={handleCopy}>
-              <Copy size={12} className='mt-0.5' />
+              <Copy size={12} className='mt-0.5 lg:mt-0 xl:mt-0 2xl:mt-0' />
               {copied && (
                 <span className="text-xs text-gray-500 absolute mt-1.5 -ml-12">¡Copiado!</span>
               )}

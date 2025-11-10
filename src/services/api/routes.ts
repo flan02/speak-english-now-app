@@ -6,3 +6,13 @@ export const API_ROUTES = {
   UPCOMING_CLASSES: '/api/upcoming-classes',
   USER_DATA: '/api/user-data'
 }
+
+export const URL_ROUTES = {
+  INICIO: '/inicio',
+  PRE_COMPRA: '/inicio/pre-compra',
+  CLASES_VIRTUALES: '/inicio/mis-clases-virtuales',
+  CONFIG: '/inicio/configuracion',
+  RESERVAS: '/inicio/reservas',
+  CALENDARIO: '/inicio/calendario',
+  ACTIVIDADES: '/inicio/mis-actividades'
+}

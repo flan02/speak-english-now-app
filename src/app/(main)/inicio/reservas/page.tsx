@@ -18,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { KY, Method } from '@/services/api'
 import { cutId, formattedDate, scheduleClass } from '@/lib/utils'
 import pricing from '@/config/pricing.json'
+import { URL_ROUTES } from '@/services/api/routes'
 
 
 type Props = {}
@@ -71,7 +72,7 @@ const Reservas = (props: Props) => {
 
   const handlePayment = useCallback(() => {
     //setPayment(true);
-    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/inicio/pre-compra`);
+    router.push(`${process.env.NEXT_PUBLIC_BASE_URL}${URL_ROUTES.PRE_COMPRA}`);
   }, [router])
 
   useEffect(() => {

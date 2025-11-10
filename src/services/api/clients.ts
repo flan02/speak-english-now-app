@@ -1,6 +1,6 @@
 //Fijate cómo los client “consumen datos” y los handler “manejan lógica de negocio o base de datos”.
 "use client"
-import { formUserData } from "@/lib/types";
+import { calendarEvent, formUserData } from "@/lib/types";
 import { KY, Method } from ".";
 import { API_ROUTES } from "./routes";
 import { toGoogleDate } from "@/lib/utils";
@@ -108,5 +108,16 @@ export async function fetchData(isEditing: formUserData, setIsEditing: React.Dis
     }
   } catch (error) {
     console.error(error);
+  }
+}
+
+export const fetchEvents = async (setEvents: React.Dispatch<React.SetStateAction<calendarEvent[]>>, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
+  try {
+    const response = await KY(Method.GET, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`)
+    setEvents(response)
+  } catch (error) {
+    console.error("Error fetching calendar events from frontend:", error);
+  } finally {
+    setIsLoading(false)
   }
 }
