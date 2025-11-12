@@ -2,7 +2,7 @@
 import { Session } from "next-auth"
 import EachClass from "./EachClass"
 import { Card } from "../ui/card"
-import { getAllClasses } from "@/app/(main)/inicio/mis-clases-virtuales/actions"
+import { getAllClasses, getUpcomingClasses } from "@/app/(main)/inicio/mis-clases-virtuales/actions"
 
 type SessionProps = {
   session: Session
@@ -10,7 +10,8 @@ type SessionProps = {
 
 const AllClasses: React.FC<SessionProps> = async ({ session }) => {
 
-  const all_classes = await getAllClasses(session.user.id)
+  // const all_classes = await getAllClasses(session.user.id)
+  const all_classes = await getUpcomingClasses(session.user.id)
 
   return (
     <>

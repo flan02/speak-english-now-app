@@ -32,3 +32,60 @@ export const getAllClasses = cache(async (id: string) => {
     console.error("We could not retrieve activities for this user id", id)
   }
 })
+
+
+export const getUpcomingClasses = cache(async (id: string) => {
+  try {
+    const response = await db.userActivity.findMany({
+      where: {
+        userId: id,
+        class: {
+          startTime: {
+            gt: new Date() // solo clases con fecha/hora mayor a ahora
+          }
+        }
+      },
+      include: {
+        class: true,
+        task: true
+      },
+      orderBy: {
+        class: {
+          startTime: 'asc' // de la más próxima a la más lejana
+        }
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error("We could not retrieve upcoming classes for user id:", id, error);
+  }
+});
+
+export const getPastClasses = cache(async (id: string) => {
+  try {
+    const response = await db.userActivity.findMany({
+      where: {
+        userId: id,
+        class: {
+          startTime: {
+            lt: new Date() // lt = menor que → clases que ya ocurrieron
+          }
+        }
+      },
+      include: {
+        class: true,
+        task: true
+      },
+      orderBy: {
+        class: {
+          startTime: 'desc' // de la más reciente a la más antigua
+        }
+      }
+    });
+
+    return response;
+  } catch (error) {
+    console.error("We could not retrieve past classes for user id:", id, error);
+  }
+});

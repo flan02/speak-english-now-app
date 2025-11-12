@@ -14,18 +14,17 @@ const Principal = async (props: Props) => {
   const response = await getTotalClass()
   const lastClass = await getNextClass()
 
-  //console.log("Last class obtained", lastClass);
   return (
     <>
       <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>
         <Home className='mb-0.5' />
         <H1 title='Principal' />
       </div>
-      <section className='space-y-4'>
-        <Card className='w-full border border-card py-0 xl:py-8 2xl:py-8 space-y-4 px-0 xl:px-4 2xl:px-4'>
-          <div className='flex flex-col xl:flex-row 2xl:flex-row space-x-1'>
+      <section className='space-y-4 mx-2'>
+        <Card className='w-full py-0 xl:py-8 2xl:py-8 space-y-4px-0 xl:px-4 2xl:px-4'>
+          <div className='flex flex-col xl:flex-row 2xl:flex-row space-x-1 space-y-4'>
 
-            <Card className='w-full border border-card px-1 lg:px-0 xl:px-0 space-y-4 xl:h-[500px] 2xl:h-[500px]'>
+            <Card className='border border-card w-full lg:w-full lg:px-0 xl:px-0 space-y-4 xl:h-[500px] 2xl:h-[500px]'>
               <div className='bg-highlight rounded-md py-1 xl:py-4 2xl:py-4 pl-6 font-bold text-base xl:text-lg 2xl:text-lg tracking-wider'>Proximos Eventos</div>
               <section className='font-roboto'>
 
@@ -54,10 +53,10 @@ const Principal = async (props: Props) => {
                   </div>
                 </div>
 
-                <article className='flex justify-between'>
+                <article className='flex justify-between mb-2 lg:mb-0 xl:mb-0'>
                   {
                     lastClass && new Date(lastClass.endTime) > new Date() ?
-                      <div className='bg-highlight rounded-lg min-w-[340px] xl:w-full 2xl:w-full flex justify-around items-start flex-col px-2 xl:items-center 2xl:items-center xl:flex-row 2xl:flex-row space-x-2 xl:px-2 xl:text-xs 2xl:px-4 2xl:text-sm font-roboto border border-card mx-auto xl:mx-4 2xl:mx-4 py-6 xl:py-0 2xl:py-0'>
+                      <div className='bg-highlight w-full mx-1 rounded-lg xl:w-full 2xl:w-full flex justify-around items-start flex-col px-2 xl:items-center 2xl:items-center xl:flex-row 2xl:flex-row space-x-2 xl:px-2 xl:text-xs 2xl:px-4 2xl:text-sm font-roboto xl:mx-4 2xl:mx-4 py-6 xl:py-0 2xl:py-0'>
                         <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Siguiente clase:</h2>
                           <p className='pr-4'>{customDate(lastClass.startTime)}</p>
@@ -83,7 +82,7 @@ const Principal = async (props: Props) => {
               </section>
             </Card>
 
-            <Card className='xl:w-[30%] 2xl:w-[30%] border border-card py-12 xl:py-8 2xl:py-8 space-y-12 xl:space-y-3 2xl:space-y-8 px-4'>
+            <Card className='xl:w-[30%] 2xl:w-[30%] border border-card py-12 xl:py-8 2xl:py-8 space-y-12 xl:space-y-3 2xl:space-y-8 px-4 mb-0 xl:mb-4 2xl:0'>
               <div className='space-y-2'>
                 <h2 className="xl:text-lg 2xl:text-2xl text-center font-bold underline underline-offset-2">Que es el Ingles... ?</h2>
                 <p className='font-roboto text-sm'>El ingles es el idioma global de la comunicacion, la tecnologia y las oportunidades. <span className='font-bold dark:text-yellow-100 text-gray-800'>Aprenderlo</span> es invertir en tu futuro y abrirte al mundo.</p>
@@ -100,7 +99,7 @@ const Principal = async (props: Props) => {
             </Card>
           </div>
 
-          <Card className='w-full border border-card py-4 space-y-4 px-4 flex flex-col space-x-4'>
+          <Card className='w-full border border-card py-4 space-y-4 px-4 flex flex-col space-x-4 mt-2 lg:mt-0 xl:mt-0'>
             <div className='flex space-x-2 justify-center'>
               <h3 className='font-bold text-sm xl:text-base 2xl:text-base font-roboto'>TOTAL CLASES COMPLETADAS: &nbsp; {response?.totalClasses}</h3>
 

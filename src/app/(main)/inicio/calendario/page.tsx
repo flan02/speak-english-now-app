@@ -14,12 +14,13 @@ const Calendario = (props: Props) => {
         <H1 title='Calendario' />
       </div>
       <div className='flex flex-col space-x-2'>
-        <article className='w-[350px] lg:w-full space-y-8 xl:space-y-0 2xl:space-y-0 lg:space-x-4 lg:flex xl:flex-col 2xl:flex-row flex flex-col'>
-          <div className=''>
+        <article className='lg:w-full space-y-8 xl:space-y-0 2xl:space-y-0 lg:space-x-4 lg:flex xl:flex-col 2xl:flex-row flex flex-col'>
+          <div className='lg:ml-0 xl:ml-0 2xl:ml-0'>
             <h2 className="mb-4 text-base px-4 xl:px-0 2xl:px-0 xl:text-3xl 2xl:text-3xl font-bold text-left tracking-wider">Horario de Reservas (17hs a 21hs)</h2>
             <Calendar />
           </div>
-          <Card className='border border-card h-max mb-6 xl:mb-0 2xl:mb-0 xl:mt-12 2xl:mt-12 xl:mx-auto'>
+
+          <Card className='border border-card mx-1 h-max mb-6 xl:mb-0 2xl:mb-0 xl:mt-12 2xl:mt-12 xl:mx-auto'>
             <CardTitle className='text-center p-4 lg:text-left lg:p-6'>Instrucciones para reservar tu clase</CardTitle>
             <CardContent>
               <div className='space-y-2'>

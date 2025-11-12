@@ -75,7 +75,7 @@ const ActividadPage = async ({ params }: Props) => {
           <ArrowLeftCircle />
         </Link>
       </div>
-      {/* <br /> */}
+
       <article className="h-full xl:h-[750px] 2xl:h-[750px] space-y-12 xl:space-y-6 2xl:space-y-6">
         <h1 className="text-xl xl:text-3xl 2xl:text-3xl font-bold text-center underline underline-offset-4">Actividad: {task.title}</h1>
         <div className="space-y-5">
