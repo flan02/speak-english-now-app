@@ -4,6 +4,7 @@ import { Card } from '../ui/card'
 import JoinClass from './JoinClass'
 import { auth } from '@/auth'
 import AccessCodeClient from './AccessCodeClient'
+import { validateMeetingDate } from '@/lib/utils'
 
 
 type Props = {
@@ -25,6 +26,7 @@ const EachClass = async ({ classItem, index }: Props) => {
     hour12: false, // ✅ esto fuerza formato 24hs
   })
 
+  const isValidMeeting = validateMeetingDate(classItem.startTime.toLocaleDateString("es-AR"), parsedStartTime, parsedEndTime)
 
   return (
     <Card key={index} className='flex flex-col items-start text-sm xl:text-xs 2xl:text-xs xl:flex-row 2xl:flex-row xl:items-center 2xl:items-center py-4 px-4 border border-card space-y-2 lg:space-y-0 xl:space-y-0 2xl:space-y-0'>
@@ -54,7 +56,7 @@ const EachClass = async ({ classItem, index }: Props) => {
         <span className='block lg:hidden w-[80px] xl:w-auto 2xl:w-auto'>Tarea IA: </span>
         No Realizada
       </p>
-      {classItem.bookedById == session?.user?.id ? (
+      {classItem.bookedById == session?.user?.id && isValidMeeting ? (
         <div className='font-bold xl:font-normal 2xl:font-normal xl:w-[90px] 2xl:w-[90px] flex items-center justify-center capitalize'>
           <span className='block lg:hidden w-[80px] xl:w-auto 2xl:w-auto'>Codigo: </span>
           <AccessCodeClient code={classItem.accessCode} classType={classItem.classType} />

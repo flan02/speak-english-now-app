@@ -42,7 +42,7 @@ const ExamMarkdown = ({ content }: Props) => {
   };
 
   return (
-    <div className="whitespace-pre-line leading-relaxed">
+    <div className="whitespace-pre-line leading-relaxed w-[340px] -ml-1">
       {
         tokens.map((segment, i) => (
           <React.Fragment key={i}>

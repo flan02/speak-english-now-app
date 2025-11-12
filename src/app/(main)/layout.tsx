@@ -26,7 +26,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           <SidebarProvider className="">
             <AppSidebar />
             <MaxWidthWrapper className="min-w-[350px] xl:max-w-5xl 2xl:max-w-7xl px-0 mx-0 xl:mx-auto 2xl:mx-auto lg:px-4 lg:py-12 space-y-4 xl:space-y-8 2xl:space-y-8"> {/* added: px-0 mx-0 */}
-              <SidebarTrigger className="top-12 right-4 lg:hidden fixed text-white bg-black dark:text-black dark:bg-white" />
+              <SidebarTrigger className="top-12 right-4 lg:hidden fixed bg-highlight" />
               {children}
             </MaxWidthWrapper>
           </SidebarProvider>

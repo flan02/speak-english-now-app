@@ -32,7 +32,7 @@ export async function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>
             <span className="hidden lg:block lg:mb-4">Menu</span>
-            <SidebarTrigger className="lg:hidden absolute right-2 top-2 dark:bg-white dark:text-black bg-gray-900 text-white" />
+            <SidebarTrigger className="lg:hidden absolute right-2 top-2 bg-highlight" />
 
           </SidebarGroupLabel>
           <SidebarGroupContent>

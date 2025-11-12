@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun, ToggleLeftIcon, ToggleRight, ToggleRightIcon } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,15 +23,15 @@ export default function ThemeToggle() {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="z-50">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+      <DropdownMenuContent align="end" className="bg-white text-black dark:bg-black dark:text-white font-bold">
+        <DropdownMenuItem onClick={() => setTheme("light")} className="text-xs border-b border-gray-400/60">
+          Dia
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+        <DropdownMenuItem onClick={() => setTheme("dark")} className="text-xs border-b border-gray-400/60">
+          Noche
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
+        <DropdownMenuItem onClick={() => setTheme("system")} className="text-xs border-b border-gray-400/60">
+          Sistema
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

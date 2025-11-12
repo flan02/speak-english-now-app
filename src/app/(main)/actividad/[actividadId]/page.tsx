@@ -5,6 +5,8 @@ import { notFound } from "next/navigation"
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { getTask } from "../actions"
+import { URL_ROUTES } from "@/services/api/routes"
+import { translateDifficulty, translateType } from "@/lib/utils"
 
 
 
@@ -67,9 +69,9 @@ const ActividadPage = async ({ params }: Props) => {
   }
 
   return (
-    <section className="border border-card max-w-6xl mb-8 xl:mb-0 2xl:mb-0 px-2 py-4 xl:py-8 2xl:py-8 xl:px-12 2xl:px-12 mx-auto space-y-4 rounded-lg">
+    <section className="border border-card max-w-6xl mb-8 xl:mb-0 2xl:mb-0 px-2 py-4 xl:py-8 2xl:py-8 xl:px-12 2xl:px-12 mx-1 space-y-4 rounded-lg">
       <div className="flex justify-end mr-1 xl:mr-8 2xl:mr-8">
-        <Link href='/inicio/mis-actividades' className='underline'>
+        <Link href={URL_ROUTES.ACTIVIDADES} className='underline'>
           <ArrowLeftCircle />
         </Link>
       </div>
@@ -90,17 +92,17 @@ const ActividadPage = async ({ params }: Props) => {
           </div>
           <div className="flex">
             <p className="font-roboto text-lg font-bold underline underline-offset-4">Dificultad:</p>
-            <p className="text-lg font-roboto px-4 capitalize -ml-1">{task.difficulty}</p>
+            <p className="text-base xl:text-lg mt-1 lg:mt-0 font-roboto px-4 capitalize -ml-1">{translateDifficulty(task.difficulty)}</p>
           </div>
           <div className="flex">
             <p className="font-roboto text-lg font-bold underline underline-offset-4">Tipo:</p>
-            <p className="text-lg font-roboto px-4 capitalize -ml-1">{task.type}</p>
+            <p className="text-base xl:text-lg mt-1 lg:mt-0 font-roboto px-4 capitalize -ml-1">{translateType(task.type)}</p>
           </div>
         </div>
         <div className="flex justify-center mt-2">
           <a
             href={`/actividad/${task.id}/resolver`}
-            className="bg-black hover:bg-black/80 text-white dark:text-black dark:bg-gray-200 dark:hover:bg-gray-200/90 py-2 px-6 rounded-lg text-xs tracking-wide"
+            className="bg-highlight dark:hover:bg-gray-200/90 py-2 px-6 rounded-lg text-xs tracking-wide"
           >
             Comenzar actividad
           </a>

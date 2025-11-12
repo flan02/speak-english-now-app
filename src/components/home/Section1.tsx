@@ -15,8 +15,7 @@ const Section1 = (props: Props) => {
       </div>
       <div className="max-w-prose space-y-8">
         <div className="flex items-end space-x-4">
-          <div className="w-full flex items-end">
-
+          <div className="w-full flex items-end pl-2 lg:pl-0 xl:pl-0 2xl:pl-0">
             <LanguagesIcon className="pr-2 text-purple-500/70 size-20" />
             <h1 className="text-3xl lg:text-5xl font-bold text-lime-950">HABLA</h1>
             <h1 className="text-3xl lg:text-5xl font-bold bg-gradient-to-r from-purple-500 to-purple-300 bg-clip-text text-transparent">INGLES</h1>

@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Dan Chanivet",
-      url: "https://danchanivet.tech" // * reemplaza con tu URL
+      url: `${process.env.PERSONAL_WEBSITE}`
     }
   ]
 }
@@ -52,16 +52,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         ></script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${orbitron.variable} antialiased`} >
-
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-
           {children}
-
           <Footer />
           <Toaster />
         </ThemeProvider>

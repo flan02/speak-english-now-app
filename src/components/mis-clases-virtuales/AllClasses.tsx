@@ -25,7 +25,7 @@ const AllClasses: React.FC<SessionProps> = async ({ session }) => {
           <p className="w-[85px] text-center">Codigo</p>
         </Card>
       </div>
-      <div className="space-y-2 xl:space-y-0 2xl:space-y-0">
+      <div className="space-y-2 xl:space-y-1 2xl:space-y-1">
         {
           all_classes?.map((classItem, index) => (
             <EachClass key={index} classItem={classItem.class!} index={index} />

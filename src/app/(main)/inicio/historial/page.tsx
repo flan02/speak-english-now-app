@@ -13,7 +13,7 @@ const historial = (props: Props) => {
           <History className='mb-1' />
           <H1 title='Historial' />
         </div>
-        <Link href='/inicio/principal' className='absolute top-28 mt-0.5 right-4 xl:static 2xl:static underline'>
+        <Link href='/inicio' className='absolute top-28 mt-0.5 right-4 xl:static 2xl:static underline'>
           <ArrowLeftCircle />
         </Link>
       </div>

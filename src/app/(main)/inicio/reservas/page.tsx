@@ -49,7 +49,7 @@ const Reservas = (props: Props) => {
     const { title, extendedProps } = arg.event;
 
     return (
-      <div className="text-xs px-0 py-0 xl:px-2 xl:py-2 2xl:px-2 2xl:py-2 text-gray-500">
+      <div className="text-xs px-0 py-0 xl:px-2 xl:py-2 2xl:px-2 2xl:py-2 text-gray-500 dark:bg-white dark:-mx-1.5 dark:px-2 dark:py-1 dark:-mt-0.5 dark:rounded-lg xl:dark:py-2 xl:dark:-mt-0.5">
         <p className="font-roboto capitalize">Tipo: {title}</p>
         <p className="font-roboto capitalize">Participantes: {extendedProps.participants}</p>
         <p className="font-roboto capitalize">Estado: {extendedProps.status}</p>
@@ -289,7 +289,7 @@ const Reservas = (props: Props) => {
 
                 </div>
                 {
-                  isGroupClass ? <div className='flex space-x-2'>
+                  isGroupClass ? <div className='flex space-x-2 mt-2 lg:mt-0 xl:mt-0'>
                     <p className=''><span className='underline underline-offset-4'>Cantidad de alumnos</span>:</p>
                     <select
                       name="cantidad-alumnos"
@@ -313,7 +313,9 @@ const Reservas = (props: Props) => {
                   </div> : null
                 }
               </div>
-              <p><span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${(studentsCount && classMetadata.type === "grupal") ? studentsCount : price}</span> </p>
+              <p className='-mt-2 lg:mt-0 xl:mt-0'>
+                <span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${(studentsCount && classMetadata.type === "grupal") ? studentsCount : price}</span>
+              </p>
               <div className='space-y-2'>
                 <p className='underline underline-offset-4'>Objetivo de la clase:</p>
                 <Textarea

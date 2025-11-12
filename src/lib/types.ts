@@ -40,14 +40,14 @@ export const socialMediaUrl: string[] = [
   "https://www.facebook.com/dan.chanivet/",
   "https://www.linkedin.com/in/dan-chanivet-574084b2/",
   "https://www.twitch.tv/flano2",
-  "https://danchanivet.me",
+  process.env.NEXT_PUBLIC_PERSONAL_WEBSITE!
 ]
 
 export const socialMediaUrlHablaIngles: string[] = [
   "https://www.github.com/flan02",
   "https://www.youtube.com/@flan_02",
   "https://www.linkedin.com/in/dan-chanivet-574084b2/",
-  "https://curriculumvitae-woad.vercel.app/"
+  process.env.NEXT_PUBLIC_PERSONAL_WEBSITE!
 ]
 
 export const reduccionesColoquiales = [

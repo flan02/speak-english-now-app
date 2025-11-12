@@ -66,7 +66,7 @@ export function ModalDayCalendar({ setOpen, setSelectedDate, selectedDate, open,
             eventContent={(arg) => {
               const isReserved = arg.event.title === "RESERVADO";
               return (
-                <div className={`w-full text-center text-xs font-semibold rounded-md tracking-wide -mt-0.25 py-0 xl:py-1 2xl:py-1 xl:mt-0 2xl:mt-0 ${isReserved ? "bg-red-500 text-white dark:text-gray-500" : "bg-green-500 text-white dark:text-gray-500"}`}>
+                <div className={`w-full text-center text-xs font-semibold rounded-md tracking-wide -mt-0.25 py-0 xl:py-1 2xl:py-1 xl:mt-0 2xl:mt-0 ${isReserved ? "bg-white text-black dark:bg-black dark:text-white" : "dark:bg-white dark:text-black bg-black text-white"}`}>
                   {arg.event.title}
                 </div>
               );

@@ -4,7 +4,7 @@ export const API_ROUTES = {
   CALENDAR: '/api/calendar',
   MP: '/api/mercado-pago/create-preference',
   UPCOMING_CLASSES: '/api/upcoming-classes',
-  USER_DATA: '/api/user-data'
+  USER_DATA: '/api/user-data',
 }
 
 export const URL_ROUTES = {
@@ -14,5 +14,8 @@ export const URL_ROUTES = {
   CONFIG: '/inicio/configuracion',
   RESERVAS: '/inicio/reservas',
   CALENDARIO: '/inicio/calendario',
-  ACTIVIDADES: '/inicio/mis-actividades'
+  ACTIVIDADES: '/inicio/mis-actividades',
+  INFO: '/inicio/informacion',
+  HISTORIAL: '/inicio/historial',
+  FACTURACION: '/inicio/facturacion',
 }

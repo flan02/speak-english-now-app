@@ -18,7 +18,7 @@ const MisActividades = async (props: Props) => {
         <H1 title='Mis Actividades' />
       </div>
       <h2 className='font-roboto font-bold px-4 xl:px-0 2xl:px-0 text-sm xl:text-base 2xl:text-base'>Nuestro tutor IA va a poner a prueba los conocimientos adquiridos en las clases virtuales.</h2>
-      <Card className='w-auto xl:w-full 2xl:w-full flex justify-between border-card border py-4 px-4'>
+      <Card className='w-[340px] xl:w-full 2xl:w-full flex justify-between border-card border py-4 px-4 mx-1 lg:mx-0'>
         {
           session?.user?.id
             ? <AllTasks all_tasks={all_tasks} />

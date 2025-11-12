@@ -33,8 +33,6 @@ export default async function Home() {
       <Section5 />
       <Section6 />
       <ScrollToTop />
-
-
     </main>
   );
 }

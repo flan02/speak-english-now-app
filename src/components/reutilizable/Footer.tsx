@@ -4,8 +4,9 @@
 import { QRCodeCanvas } from "qrcode.react"
 import React from 'react'
 import { Icons } from './Icons'
-import { ArrowRight, BrainIcon, Globe, Heart, LanguagesIcon, Linkedin, MapPinCheckInsideIcon, Twitch } from 'lucide-react'
-import { socialMediaUrl, socialMediaUrlHablaIngles } from "@/lib/types"
+import { ArrowRight, Globe, LanguagesIcon, Linkedin } from 'lucide-react'
+import { socialMediaUrlHablaIngles } from "@/lib/types"
+import Link from "next/link"
 
 type Props = {}
 
@@ -13,7 +14,6 @@ type LiIconsProps = {
   component: React.ReactNode
   icon_name?: string
   socialMediaUrl: string
-
 }
 
 
@@ -30,21 +30,17 @@ const LiIcons = (props: LiIconsProps) => {
 
 const links = [
   {
-    name: "Home",
+    name: "Inicio",
     url: "#"
   },
   {
-    name: "About",
-    url: "#"
+    name: "Sobre mi",
+    url: "#about"
   },
   {
-    name: "Guide",
-    url: "#"
-  },
-  {
-    name: "Contact",
-    url: "#"
-  },
+    name: "Guía",
+    url: "guia"
+  }
 ]
 
 const groupIcons: { [key: string]: React.ReactNode } = {
@@ -57,7 +53,7 @@ const groupIcons: { [key: string]: React.ReactNode } = {
 
 
 const Footer = (props: Props) => {
-  const siteUrl = 'https://www.cvai.online' // Reemplaza con la URL de tu sitio web
+  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL!
   return (
     <footer className="relative py-20 flex flex-col items-center bg-yellow-50 bg-footer overflow-hidden md:py-40">
       <div className="relative z-[1] m-auto px-6 md:px-12 lg:px-0">
@@ -68,15 +64,15 @@ const Footer = (props: Props) => {
               <ul className="list-inside space-y-8">
                 {
                   links.map((link, index) => (
-                    <li key={index} className='flex space-x-2 items-end hover:text-purple-500 dark:text-zinc-700 dark:hover:text-purple-500'>
+                    <li key={index} className='flex font-roboto space-x-2 items-end hover:text-purple-500 dark:text-zinc-700 dark:hover:text-purple-500'>
                       <ArrowRight />
-                      <a href={`/${link.url}`} className="transition">{link.name}</a></li>
+                      <Link href={`/${link.url}`} className="transition">{link.name}</Link></li>
                   ))
                 }
 
               </ul>
 
-              <ul role="list" className="space-y-8 dark:text-zinc-700">
+              <ul role="list" className="space-y-8 dark:text-zinc-700 font-roboto">
                 {
                   Object.keys(groupIcons).map((key, index) => (
                     <LiIcons key={key} component={groupIcons[key]} icon_name={key} socialMediaUrl={socialMediaUrlHablaIngles[index]} />
@@ -102,9 +98,9 @@ const Footer = (props: Props) => {
                 <span className="block text-muted-foreground underline underline-offset-4 font-bold">HABLAINGLESYA &copy; {new Date().getFullYear()}</span>
               </div>
 
-              <div className="flex flex-col justify-between space-y-1">
+              <div className="flex flex-col justify-between space-y-3 text-xs lg:text-base xl:text-base 2xl:text-base xl:space-y-1">
                 <a href="/tos" className="font-mono underline underline-offset-4 dark:text-zinc-700">Términos de uso</a>
-                <a href="#" className="font-mono underline underline-offset-4 dark:text-zinc-700">Políticas de privacidad</a>
+                <a href="/privacidad" className="font-mono underline underline-offset-4 dark:text-zinc-700">Políticas de privacidad</a>
 
               </div>
             </div>

@@ -7,7 +7,7 @@ import { NivelIngles } from '@prisma/client'
 import { Skeleton } from '../ui/skeleton'
 import { formUserData } from '@/lib/types'
 import { fetchData } from '@/services/api/clients'
-import { API_ROUTES } from '@/services/api/routes'
+import { API_ROUTES, URL_ROUTES } from '@/services/api/routes'
 
 
 type Props = {}
@@ -109,13 +109,13 @@ const EditUserInfo = (props: Props) => {
       </div>
 
 
-      <Button asChild variant='default' className='w-full lg:w-auto bg-black text-white btn-dark text-xs'>
-        <Link href='/inicio/facturacion'>
+      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs'>
+        <Link href={URL_ROUTES.FACTURACION}>
           ver facturacion
         </Link>
       </Button>
       <div className='w-full text-center space-x-2'>
-        <Button onClick={handleEditButton} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-xs bg-red-500 hover:bg-red-500/80'>
+        <Button onClick={handleEditButton} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-xs bg-gray-400 hover:bg-gray-400/80'>
           editar
         </Button>
         {

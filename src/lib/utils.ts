@@ -96,10 +96,11 @@ export function calcularTiempoRestante(fechaFutura: Date): string {
   // Construir el mensaje dinámicamente
   const partes: string[] = [];
   if (dias > 0) partes.push(`${dias} día${dias > 1 ? "s" : ""}`);
-  if (horas > 0) partes.push(`${horas} hora${horas > 1 ? "s" : ""}`);
-  if (minutos > 0) partes.push(`${minutos} minuto${minutos > 1 ? "s" : ""}`);
+  if (horas > 0) partes.push(`${horas} h${horas > 1 ? "s" : ""}`);
+  if (minutos > 0) partes.push(`${minutos} min${minutos > 1 ? "s" : ""}`);
 
-  return `Faltan ${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}`;
+  // return `Faltan ${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}`;
+  return `${partes.join(", ").replace(/, ([^,]*)$/, " y $1")}`;
 }
 
 export const customDate = (date: Date) => {
@@ -111,8 +112,30 @@ export const customDate = (date: Date) => {
   return `${d}/${m}/${y} - ${h}:${min} hs`
 }
 
-export const validateMeetingDate = (date: string, startTime: string, endTime: string): boolean => {
+// export const validateMeetingDate = (date: string, startTime: string, endTime: string): boolean => {
 
+//   const [day, month, year] = date.split('/').map(Number);
+//   const [startHour, startMinute] = startTime.split(':').map(Number);
+//   const [endHour, endMinute] = endTime.split(':').map(Number);
+
+//   const meetingStart = new Date(year, month - 1, day, startHour, startMinute);
+//   const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
+//   const now = new Date();
+
+//   const oneHourBefore = new Date(meetingStart.getTime() - (60 * 60 * 1000));
+
+//   if (now < oneHourBefore || now > meetingEnd) {
+//     return true
+//   } else {
+//     return false
+//   }
+// }
+
+export const validateMeetingDate = (
+  date: string,
+  startTime: string,
+  endTime: string
+): boolean => {
   const [day, month, year] = date.split('/').map(Number);
   const [startHour, startMinute] = startTime.split(':').map(Number);
   const [endHour, endMinute] = endTime.split(':').map(Number);
@@ -121,14 +144,17 @@ export const validateMeetingDate = (date: string, startTime: string, endTime: st
   const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
   const now = new Date();
 
-  const oneHourBefore = new Date(meetingStart.getTime() - (60 * 60 * 1000));
-
-  if (now < oneHourBefore || now > meetingEnd) {
-    return true
-  } else {
-    return false
+  // Si la fecha de la reunión ya pasó completamente, no mostrar botón
+  if (now > meetingEnd) {
+    return false; // ya terminó, no es válida
   }
-}
+
+  // Una hora antes del inicio
+  const oneHourBefore = new Date(meetingStart.getTime() - 60 * 60 * 1000);
+
+  // Es válida solo si estamos dentro del rango [una hora antes, fin]
+  return now >= oneHourBefore && now <= meetingEnd;
+};
 
 export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
   const clicked = info.date; // es un objeto Date de FullCalendar
@@ -165,4 +191,33 @@ export const removePastDays = (arg: any) => {
 export const formattedDate = (date: string): string => {
   const formatted = new Date(date).toLocaleDateString('es-AR', { timeZone: 'UTC' })
   return formatted
+}
+
+export const translateDifficulty = (difficulty: string): string => {
+  switch (difficulty) {
+    case 'easy':
+      return 'Basico';
+    case 'medium':
+      return 'Intermedio';
+    case 'hard':
+      return 'Avanzado';
+    default:
+      return difficulty; // en caso de que no coincida, devolver el original
+  }
+}
+
+
+export const translateType = (type: string): string => {
+  switch (type) {
+    case 'exam':
+      return 'Examen';
+    case 'audio':
+      return 'Audio';
+    case 'video':
+      return 'Video';
+    case 'reading':
+      return 'Lectura';
+    default:
+      return type; // en caso de que no coincida, devolver el original
+  }
 }

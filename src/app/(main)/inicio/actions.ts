@@ -20,13 +20,17 @@ export const getTotalClass = cache(async () => {
   }
 })
 
-export const getLastClass = cache(async () => {
+export const getNextClass = cache(async () => {
   const session = await auth()
 
   try {
+    const today = new Date();
     const response = await db.virtualClass.findFirst({
       where: {
-        bookedById: session?.user.id
+        bookedById: session?.user.id,
+        startTime: {
+          gte: today
+        }
       },
       orderBy: {
         createdAt: 'desc'

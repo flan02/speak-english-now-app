@@ -15,7 +15,31 @@ type Props = {
 const JoinClass = ({ link, status, date, time }: Props) => {
 
   const isValidMeeting = validateMeetingDate(date, time.start, time.end)
+  if (!isValidMeeting) return null;
+  return (
+    <div className='-ml-1 lg:ml-0 xl:ml-0 2xl:ml-0'>
 
+      <Link href={link} target="_blank" rel="noopener noreferrer">
+        <Button
+          size="sm"
+          variant="outline"
+          className="bg-highlight w-[90px] h-8 xl:ml-4 2xl:ml-4 text-xs hover:bg-black/80 dark:hover:bg-gray-300"
+        >
+          Unirse
+        </Button>
+      </Link>
+
+    </div>
+  );
+};
+
+export default JoinClass
+
+/*
+const JoinClass = ({ link, status, date, time }: Props) => {
+
+  const isValidMeeting = validateMeetingDate(date, time.start, time.end)
+  if (!isValidMeeting) return null;
   return (
     <div className='-ml-1 lg:ml-0 xl:ml-0 2xl:ml-0'>
       {
@@ -24,7 +48,7 @@ const JoinClass = ({ link, status, date, time }: Props) => {
             disabled={isValidMeeting}
             size="sm"
             variant="outline"
-            className="w-[90px] h-8 lg:ml-4 xl:ml-4 2xl:ml-4 text-xs bg-black text-white dark:bg-white dark:text-black"
+            className="bg-highlight w-[90px] h-8 lg:ml-4 xl:ml-4 2xl:ml-4 text-xs"
           >
             Unirse
           </Button>
@@ -33,7 +57,7 @@ const JoinClass = ({ link, status, date, time }: Props) => {
             <Button
               size="sm"
               variant="outline"
-              className="w-[90px] h-8 xl:ml-4 2xl:ml-4 text-xs bg-black text-white dark:bg-white dark:text-black hover:bg-black/80 dark:hover:bg-gray-300"
+              className="bg-highlight w-[90px] h-8 xl:ml-4 2xl:ml-4 text-xs hover:bg-black/80 dark:hover:bg-gray-300"
             >
               Unirse
             </Button>
@@ -44,5 +68,6 @@ const JoinClass = ({ link, status, date, time }: Props) => {
 };
 
 export default JoinClass
+*/
 
 

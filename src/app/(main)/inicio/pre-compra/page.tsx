@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import pricing from '@/config/pricing.json';
 import { simulateSuccessPayment } from '@/services/api/clients';
-import { API_ROUTES } from '@/services/api/routes';
+import { API_ROUTES, URL_ROUTES } from '@/services/api/routes';
 import { formattedDate } from '@/lib/utils';
 
 type Props = {}
@@ -108,76 +108,17 @@ const PreCompraPage = () => {
     }
   }
 
-  // * Simular pago exitoso
-  // const simulateSuccessPayment = async () => {
-  //   setIsLoading(true);
-
-  //   try {
-
-  //     // TODO: Simulate booking event in google api calendar
-  //     const toGoogleCalendarEvent = {
-  //       start: `${toGoogleDate(scheduledTime.start!)}`,
-  //       end: `${toGoogleDate(scheduledTime.end!)}`,
-  //       isGroupClass,
-  //       studentsCount,
-  //       text
-  //     }
-
-  //     await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {
-  //       json: toGoogleCalendarEvent
-  //     })
-
-  //   } catch (error) {
-  //     console.error("Error fetching user data:", error);
-  //   }
-
-
-
-  //   try {
-  //     const classMetadata = {
-  //       type: isGroupClass ? 'grupo' : 'individual',
-  //       studentsCount: studentsCount == 0 ? 1 : studentsCount,
-  //       price: studentsCount > 2 ? (studentsCount) : price
-  //     }
-  //     //console.log("This is the current metadata", classMetadata);
-
-  //     const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
-  //       json: classMetadata
-  //     })
-
-  //     const data = await response.json();
-  //     //console.log('response from mercado pago', data.preferenceId);
-
-  //     if (data.preferenceId) {
-
-  //       const simulatedParams = new URLSearchParams({
-  //         payment_id: 'TEST1234',
-  //         status: 'success',
-  //         preference_id: data.preferenceId,
-  //       }).toString();
-
-  //       // * REDIRECT TO CALLBACK SUCCESS PAGE
-  //       window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/callback/success?${simulatedParams}`;
-  //     }
-
-
-  //   } catch (error) {
-  //     console.error("Error simulating payment", error)
-  //   }
-  // };
-
   return (
     <>
       <div className='flex px-1 xl:px-0 2xl:px-0 mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-between xl:justify-between 2xl:justify-between'>
-        <div className='flex items-end space-x-2'>
+        <div className='flex items-end space-x-2 ml-1'>
           <CreditCard className='mb-0.5' />
           <H1 title='Verifica tu reserva' />
         </div>
-        <Link href='/inicio/reservas' className='absolute top-28 mt-0.5 right-4 xl:static 2xl:static underline'>
+        <Link href={URL_ROUTES.RESERVAS} className='absolute top-28 mt-0.5 right-4 xl:static 2xl:static underline'>
           <ArrowLeftCircle />
         </Link>
       </div>
-      {/* <article className='flex space-x-2 items-end'> */}
       <article className='flex space-x-1 items-center xl:items-end 2xl:items-end px-2 xl:px-0 2xl:px-0'>
         <PenTool className='px-1 xl:px-0 2xl:px-0' />
         <h2 className='font-roboto uppercase font-bold text-xs'>Esta es la información de la clase a reservar:</h2>

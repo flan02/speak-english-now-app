@@ -42,7 +42,7 @@ const AnswerSidebar = ({ taskSolved, updatedAt }: Props) => {
   }
 
   return (
-    <div className="absolute top-24 left-4 xl:top-24 xl:right-8 2xl:top-24 2xl:right-8">
+    <div className="absolute top-24 left-4 xl:top-24 xl:right-8 2xl:top-24 2xl:right-8 mt-1 lg:mt-0">
       <Button
         disabled={!canView}
         onClick={() => setOpen(true)}

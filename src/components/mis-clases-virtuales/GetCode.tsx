@@ -33,7 +33,7 @@ const GetCode = (props: Props) => {
         <Button
           disabled={accessCode.length < 8}
           onClick={() => handleAccessCode(accessCode, setError)}
-          className='bg-black text-white dark:bg-white dark:text-black tracking-wider text-sm'>
+          className='bg-highlight tracking-wider text-sm'>
           <ExternalLink />
         </Button>
       </div>
