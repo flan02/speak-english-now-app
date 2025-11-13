@@ -20,12 +20,12 @@ const Calendario = (props: Props) => {
             <Calendar />
           </div>
 
-          <Card className='border border-card mx-1 h-max mb-6 xl:mb-0 2xl:mb-0 xl:mt-12 2xl:mt-12 xl:mx-auto'>
-            <CardTitle className='text-center p-4 lg:text-left lg:p-6'>Instrucciones para reservar tu clase</CardTitle>
+          <Card className='border border-card mx-1 h-max mb-6 xl:mb-0 2xl:mb-0 xl:mt-12 2xl:mt-12 xl:mx-auto text-black dark:text-white'>
+            <CardTitle className='text-center p-4 lg:text-left lg:p-6 text-sm lg:text-base'>Instrucciones para reservar tu clase</CardTitle>
             <CardContent>
               <div className='space-y-2'>
-                <h6 className='text-xs lg:text-sm text-gray-400'>* Primero clickea sobre los días en el calendario para ver la disponibilidad de horarios</h6>
-                <h6 className='text-xs lg:text-sm text-gray-400'>** Luego desde la sección reservas podrás elegir el horario que más te convenga</h6>
+                <h6 className='text-xs lg:text-sm'>* Primero clickea sobre los días en el calendario para ver la disponibilidad de horarios</h6>
+                <h6 className='text-xs lg:text-sm'>** Luego desde la sección reservas podrás elegir el horario que más te convenga</h6>
               </div>
             </CardContent>
           </Card>
