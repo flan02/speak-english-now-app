@@ -18,12 +18,12 @@ const geistMono = Geist_Mono({
 const roboto = Roboto({
   variable: '--font-roboto',
   subsets: ['latin'],
-  weight: ['400', '700'], // Add the weights you need
+  weight: ['400', '700'],
 });
 
 const orbitron = Orbitron({
   subsets: ["latin"],
-  weight: ["400", "700"], // los grosores que quieras usar
+  weight: ["400", "700"],
   variable: "--font-orbitron",
 });
 
@@ -32,7 +32,23 @@ export const metadata: Metadata = {
     template: "%s - HablaInglesYa",
     absolute: "HablaInglesYa"
   },
-  description: "",
+  description: "Aprende Ingles sin fraccionar el contenido, con nuestro metodo simple y eficaz.",
+  openGraph: {
+    title: "HablaInglesYa",
+    description: "Aprende Ingles sin fraccionar el contenido, con nuestro metodo simple y eficaz.",
+    url: `${process.env.BASE_URL}`,
+    siteName: "HablaInglesYa",
+    images: [
+      {
+        url: `${process.env.BASE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "HablaInglesYa"
+      }
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
   authors: [
     {
       name: "Dan Chanivet",
