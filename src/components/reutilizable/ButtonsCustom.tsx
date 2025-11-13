@@ -29,9 +29,10 @@ export function GitHubButton() {
 }
 
 export function MyWebsiteButton() {
+  const MY_WEBSITE = process.env.PERSONAL_WEBSITE!
   return (
     <a
-      href="https://curriculumvitae-woad.vercel.app/"
+      href={MY_WEBSITE}
       target="_blank"
       className="min-w-[300px] lg:w-full relative inline-flex items-center justify-center px-6 py-3 rounded-xl text-white font-semibold shadow-lg overflow-hidden transition-all duration-300
                  bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-pink-500 hover:via-purple-500 hover:to-indigo-500"

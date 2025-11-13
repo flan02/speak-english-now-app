@@ -36,24 +36,34 @@ export const getAllClasses = cache(async (id: string) => {
 
 export const getUpcomingClasses = cache(async (id: string) => {
   try {
+    const now = new Date();
+    const gracePeriod = 5 * 60 * 1000; // 5 minutos
+    const nowWithGrace = new Date(now.getTime() - gracePeriod);
+
     const response = await db.userActivity.findMany({
       where: {
         userId: id,
         class: {
-          startTime: {
-            gt: new Date() // solo clases con fecha/hora mayor a ahora
-          }
-        }
+          OR: [
+            { startTime: { gt: now } }, // futuras
+            {
+              AND: [
+                { startTime: { lte: now } }, // ya empezó
+                { endTime: { gte: nowWithGrace } }, // tolerancia de 5 min
+              ],
+            },
+          ],
+        },
       },
       include: {
         class: true,
-        task: true
+        task: true,
       },
       orderBy: {
         class: {
-          startTime: 'asc' // de la más próxima a la más lejana
-        }
-      }
+          startTime: "asc",
+        },
+      },
     });
 
     return response;
@@ -62,26 +72,29 @@ export const getUpcomingClasses = cache(async (id: string) => {
   }
 });
 
+
 export const getPastClasses = cache(async (id: string) => {
   try {
+    const now = new Date();
+
     const response = await db.userActivity.findMany({
       where: {
         userId: id,
         class: {
-          startTime: {
-            lt: new Date() // lt = menor que → clases que ya ocurrieron
-          }
-        }
+          endTime: {
+            lt: now, // solo clases cuyo final ya pasó
+          },
+        },
       },
       include: {
         class: true,
-        task: true
+        task: true,
       },
       orderBy: {
         class: {
-          startTime: 'desc' // de la más reciente a la más antigua
-        }
-      }
+          startTime: "desc", // de la más reciente a la más antigua
+        },
+      },
     });
 
     return response;

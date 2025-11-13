@@ -258,8 +258,8 @@ const Reservas = (props: Props) => {
             : <Skeleton className="h-[450px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
         }
       </section>
-      <section className='space-y-2'>
-        <Card className='w-full border border-card py-4 px-4'>
+      <section className='space-y-2 mx-1'>
+        <Card className='w-full border border-card p-4'>
           <div className='flex space-x-2 mb-6'>
             <PenBoxIcon />
             <h3 className='font-roboto uppercase font-bold text-base'>Detalles de la reserva</h3>
@@ -341,7 +341,7 @@ const Reservas = (props: Props) => {
 
       <section className='mt-8 px-2 space-y-4 xl:px-0 2xl:px-0 xl:space-y-0 2xl:space-y-0'>
         <p className='text-sm italic'>* Luego de abonar la clase se crea el evento en el calendario de google y podras ver el codigo de acceso a la clase desde la seccion Clases Virtuales.</p>
-        <p className='text-sm italic'>* Si necesitas un horario especial o tienes alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o por email a chanivetdan@hotmail.com</p>
+        <p className='text-sm italic'>* Si necesitas un horario especial o alguna consulta, no dudes en contactarnos por whatsapp al +11-3057-7799 o desde el formulario de contacto.</p>
       </section>
 
       <br />

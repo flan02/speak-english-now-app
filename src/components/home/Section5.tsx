@@ -13,10 +13,10 @@ const Section5 = (props: Props) => {
       <section className='px-1 lg:px-6'>
         <div className="flex flex-col space-y-4 lg:flex-row lg:justify-between">
           <Image src={Yo} alt="Foto Perfil" className='rounded-full mx-auto lg:mx-0 size-20 lg:size-28 border-2 border-black' />
-          <p className='font-orbitron text-xs leading-4.5 lg:pt-1 lg:leading-6 lg:text-lg text-left tracking-wide md:w-[86%]'>Soy Dan Chanivet un programador web argentino con más de 7 años de experiencia en el desarrollo de aplicaciones y sitios web modernos.
+          <p className='font-orbitron text-xs leading-4.5 lg:pt-1 lg:leading-6 lg:text-lg text-left tracking-wide md:w-[86%]'>Soy Dan Chanivet un programador web argentino con más de 6 años de experiencia en el desarrollo de aplicaciones y sitios web modernos.
             He trabajado durante 3 años de forma remota para empresas de Estados Unidos, y me comunico tanto en español como en inglés de manera fluida.</p>
         </div>
-        <p className='font-orbitron text-xs leading-4.5 lg:leading-6 lg:text-lg text-left py-4'>Construí esta plataforma como una alternativa a la enseñanza convencional del idioma ingles para ayudar a niños, adolescentes y adultos a aprender lograr comunicarse en ingles de una manera sencilla.
+        <p className='font-orbitron text-xs leading-4.5 lg:leading-6 lg:text-lg text-left py-3'>Construí esta plataforma como una alternativa a la enseñanza convencional del idioma ingles para ayudar a niños, adolescentes y adultos a aprender lograr comunicarse en ingles de una manera sencilla.
           Ya sea apoyo escolar, preparar entrevistas laborales o clases conversacionales sobre diversos temas, dispongo de varias horas semanales para brindarte la ayuda que necesites.</p>
         <p className='font-orbitron text-xs leading-4.5 lg:leading-6 lg:text-lg text-left lg:mt-2'>Si queres conocer más sobre mí te comparto los siguientes enlaces donde verás proyectos que he realizado y mis certificaciones internacionales obtenidas como programador.</p>
       </section>

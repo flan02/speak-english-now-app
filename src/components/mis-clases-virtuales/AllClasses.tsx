@@ -2,17 +2,21 @@
 import { Session } from "next-auth"
 import EachClass from "./EachClass"
 import { Card } from "../ui/card"
-import { getAllClasses, getUpcomingClasses } from "@/app/(main)/inicio/mis-clases-virtuales/actions"
+import { getPastClasses, getUpcomingClasses } from "@/app/(main)/inicio/mis-clases-virtuales/actions"
 
 type SessionProps = {
   session: Session
+  type: "upcoming" | "all"
 }
 
-const AllClasses: React.FC<SessionProps> = async ({ session }) => {
-
-  // const all_classes = await getAllClasses(session.user.id)
-  const all_classes = await getUpcomingClasses(session.user.id)
-
+const AllClasses: React.FC<SessionProps> = async ({ session, type }) => {
+  let all_classes
+  if (type === "upcoming") {
+    all_classes = await getUpcomingClasses(session.user.id)
+  }
+  if (type === "all") {
+    all_classes = await getPastClasses(session.user.id)
+  }
   return (
     <>
       <div className="hidden lg:block mb-2">

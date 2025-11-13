@@ -135,15 +135,15 @@ const PreCompraPage = () => {
               <p className=''>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
               <p className=''>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
               {text && text != '' &&
-                <div className=''>
+                <div className='space-y-4'>
                   <p className='font-roboto text-sm xl:text-3xl 2xl:text-3xl'>Tema a tratar en la clase: </p>
-                  <p className='font-extrabold text-sm ml-4 mt-2 xl:mt-0 2xl:mt-0'>{text}</p>
+                  <p className='font-extrabold text-sm lg:text-base xl:text-base ml-4 mt-2 xl:mt-0 2xl:mt-0'>{text}</p>
                 </div>
               }
             </div>
             <br />
             <div className='w-full text-center'>
-              <Button onClick={() => simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price })} className=' bg-black text-white dark:bg-white dark:text-black tracking-wider text-xs xl:text-base 2xl:text-base'>Confirmar ...</Button>
+              <Button onClick={() => simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price })} className=' bg-highlight tracking-wider text-xs xl:text-sm 2xl:text-sm'>Confirmar ...</Button>
             </div>
             {
               isConfirm && <div>

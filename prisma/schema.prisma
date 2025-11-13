@@ -71,6 +71,21 @@ enum classRole {
   participante
 }
 
+enum Newsletter {
+  si
+  no
+}
+
+model VisitorInquiry {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  medioContacto String
+  mensaje       String
+  response      String? // admin response
+  respondedAt   DateTime? // null until responded
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
 model User {
   id                 String              @id @default(auto()) @map("_id") @db.ObjectId
   email              String              @unique
@@ -80,7 +95,7 @@ model User {
   telefono           Int?                @default(0)
   nivel              NivelIngles         @default(inicial)
   status             Boolean             @default(false)
-  newsletter         String              @default("no")
+  newsletter         Newsletter          @default(no)
   totalClasses       Int                 @default(0)
   billingMercadoPago billingMercadoPago?
   createdAt          DateTime            @default(now())

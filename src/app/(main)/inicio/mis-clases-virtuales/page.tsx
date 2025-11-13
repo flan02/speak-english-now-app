@@ -22,12 +22,14 @@ const MisClasesVirtuales = async (props: Props) => {
         <Computer className='mb-0.5' />
         <H1 title='Mis Clases Virtuales' />
       </div>
-      <h2 className='font-roboto font-bold px-2 xl:px-0 2xl:px-0 text-xs xl:text-base 2xl:text-base'>Aqui veras las clases virtuales que tengas reservada. El boton de unirse y el código para compartir apareceran 60 minutos antes de que comience la clase.</h2>
+      <h2 className='font-roboto font-bold px-2 xl:px-0 2xl:px-0 text-xs xl:text-base 2xl:text-base'>
+        Aqui veras las clases virtuales que tengas reservadas. El boton de unirse y el código para compartir apareceran 60 minutos antes de que comience la clase.
+      </h2>
       <GetCode />
       <Card className='xl:w-full border border-card mx-1 py-4 px-1 lg:h-screen xl:h-[700px] 2xl:h-[700px]'>
         {
           session?.user.id
-            ? <AllClasses session={session} />
+            ? <AllClasses session={session} type={"upcoming"} />
             : null
         }
       </Card>

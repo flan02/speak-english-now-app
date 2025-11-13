@@ -12,7 +12,9 @@ type Props = {}
 
 const Principal = async (props: Props) => {
   const response = await getTotalClass()
-  const lastClass = await getNextClass()
+  const nextClass = await getNextClass()
+
+  console.log('NEXT CLASS', nextClass);
 
   return (
     <>
@@ -55,20 +57,20 @@ const Principal = async (props: Props) => {
 
                 <article className='flex justify-between mb-2 lg:mb-0 xl:mb-0'>
                   {
-                    lastClass && new Date(lastClass.endTime) > new Date() ?
+                    nextClass && new Date(nextClass.endTime) > new Date() ?
                       <div className='bg-highlight w-full mx-1 rounded-lg xl:w-full 2xl:w-full flex justify-around items-start flex-col px-2 xl:items-center 2xl:items-center xl:flex-row 2xl:flex-row space-x-2 xl:px-2 xl:text-xs 2xl:px-4 2xl:text-sm font-roboto xl:mx-4 2xl:mx-4 py-6 xl:py-0 2xl:py-0'>
                         <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Siguiente clase:</h2>
-                          <p className='pr-4'>{customDate(lastClass.startTime)}</p>
+                          <p className='pr-4'>{customDate(nextClass.startTime)}</p>
                         </div>
                         <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Participantes confirmados:</h2>
-                          <p className=''>{lastClass.currentParticipants} de</p>
-                          <p className='-ml-0.5'>{lastClass.maxParticipants}</p>
+                          <p className=''>{nextClass.currentParticipants} de</p>
+                          <p className='-ml-0.5'>{nextClass.maxParticipants}</p>
                         </div>
                         <div className='flex items-center space-x-2 text-sm'>
                           <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Comienza en:</h2>
-                          <p className='font-roboto'>{calcularTiempoRestante(lastClass.startTime)}</p>
+                          <p className='font-roboto'>{calcularTiempoRestante(nextClass.startTime)}</p>
                         </div>
                       </div>
                       :

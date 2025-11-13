@@ -35,9 +35,7 @@ interface PaymentSimulationParams {
 }
 
 export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price }: PaymentSimulationParams) {
-
   setIsLoading(true);
-
   try {
 
     // TODO: Simulate booking event in google api calendar
@@ -57,8 +55,6 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
     console.error("Error fetching user data:", error);
   }
 
-
-
   try {
     const classMetadata = {
       type: isGroupClass ? 'grupo' : 'individual',
@@ -66,7 +62,6 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
       price: studentsCount > 2 ? (studentsCount) : price
     }
     //console.log("This is the current metadata", classMetadata);
-
     const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
       json: classMetadata
     })
@@ -75,10 +70,9 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
     //console.log('response from mercado pago', data.preferenceId);
 
     if (data.preferenceId) {
-
       const simulatedParams = new URLSearchParams({
-        payment_id: 'TEST1234',
-        status: 'success',
+        payment_id: 'TEST1234', // Simulated payment ID
+        status: 'success', // Simulated status
         preference_id: data.preferenceId,
       }).toString();
 
@@ -103,7 +97,8 @@ export async function fetchData(isEditing: formUserData, setIsEditing: React.Dis
         localidad: res.localidad || '',
         nivel: res.nivel || 'inicial',
         telefono: res.telefono,
-        newsletter: res.newsletter || 'no'
+        newsletter: res.newsletter || 'no',
+
       })
     }
   } catch (error) {
