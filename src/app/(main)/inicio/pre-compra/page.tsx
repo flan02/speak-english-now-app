@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import pricing from '@/config/pricing.json';
-import { simulateSuccessPayment } from '@/services/api/clients';
+import { processMpPayment, simulateSuccessPayment } from '@/services/api/clients';
 import { API_ROUTES, URL_ROUTES } from '@/services/api/routes';
 import { formattedDate } from '@/lib/utils';
 
@@ -20,93 +20,6 @@ const PreCompraPage = () => {
   const { isGroupClass, selectedDate, studentsCount, price, scheduledTime, text } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
-  const router = useRouter();
-
-  // TODO: (MOVE TO CLIENTS.TS) CALL CHECKOUT BRICKS FROM MERCADO PAGO
-  const handlePayment = async () => {
-    //console.log('handle payments', classMetadata);
-
-    const classMetadata = {
-      type: isGroupClass ? 'grupo' : 'individual',
-      studentsCount: studentsCount == 0 ? 1 : studentsCount,
-      price: studentsCount > 2 ? (studentsCount) : price
-    }
-    setIsLoading(true);
-
-    try {
-      const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
-        json: classMetadata
-      })
-
-      const data = await response.json();
-      console.log('response from mercado pago', data.preferenceId);
-
-      if (data.preferenceId) {
-        initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
-
-        const renderPaymentBrick = async (preferenceId: string) => {
-          if (!window.MercadoPago) {
-            console.error("MercadoPago SDK no cargado aún");
-            return;
-          }
-
-          // Instancia de MercadoPago
-          const mp = new window.MercadoPago(
-            process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
-            { locale: "es-AR" }
-          );
-
-          // Obtener el builder de bricks
-          const bricksBuilder = mp.bricks();
-
-          // Crear el payment brick
-          await bricksBuilder.create("wallet", "payment-brick", {
-            initialization: { preferenceId: preferenceId, amount: studentsCount > 2 ? (studentsCount) : price },
-            customization: { visual: { style: { theme: "dark" } } },
-            texts: {
-              valueProp: 'smart_option', // muestra “pago rápido con Mercado Pago”
-            },
-            callbacks: {
-              onReady: () => {
-                console.log("Payment Brick listo!");
-              },
-              onError: (error: any) => {
-                console.error("Error en Payment Brick:", error);
-              },
-              onSubmit: () => {
-                console.log("💳 Usuario inició el pago");
-              },
-              onPaymentCompleted: async (paymentData: any) => {
-                console.log("💰 Pago completado:", paymentData);
-                // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito
-
-                // TODO: Add real value
-                const payment = {
-                  id: paymentData.id,
-                  status: paymentData.status
-                }
-
-                router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/checkout/callback/success?payment_id=${payment.id}&status=success`)
-
-                // TODO: Calling to google api calendar to create event (pass date and user)
-                await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {})
-              }
-            },
-          });
-        };
-        // TODO: We calling mp api
-        renderPaymentBrick(data.preferenceId);
-
-        setIsLoading(false);
-
-        setIsConfirm(true);
-      } else {
-        console.error("No se recibió un ID de preferencia:", data.preferenceId);
-      }
-    } catch (error) {
-      console.error('Error processing payment:', error);
-    }
-  }
 
   return (
     <>
@@ -124,10 +37,8 @@ const PreCompraPage = () => {
         <h2 className='font-roboto uppercase font-bold text-xs'>Esta es la información de la clase a reservar:</h2>
       </article>
       <section className="w-full max-w-6xl mx-auto px-1 xl:px-4 2xl:px-4 py-2">
-        <Card className='w-full h-[600px] border border-card py-4 px-4'>
-
+        <Card className='w-full h-[650px] border border-card py-4 px-4'>
           <div className='space-y-4 py-8'>
-
             <div className='space-y-6 xl:space-y-8 2xl:space-y-8 px-1 xl:px-8 2xl:px-8 font-roboto text-sm xl:text-3xl 2xl:text-3xl'>
               <p className=''>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
               <p className=''>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / pricing.groupPrice)}</span></p>
@@ -142,12 +53,13 @@ const PreCompraPage = () => {
               }
             </div>
             <br />
-            <div className='w-full text-center'>
-              <Button onClick={() => simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price })} className=' bg-highlight tracking-wider text-xs xl:text-sm 2xl:text-sm'>Confirmar ...</Button>
+            <div className='w-full text-center -mt-2'>
+              {/* <Button onClick={() => simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price })} className=' bg-highlight tracking-wider text-xs xl:text-sm 2xl:text-sm'>Confirmar ...</Button> */}
+              <Button onClick={() => processMpPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price, setIsConfirm })} className=' bg-highlight tracking-wider text-xs xl:text-sm 2xl:text-sm'>Confirmar ...</Button>
             </div>
             {
               isConfirm && <div>
-                <p className='font-roboto text-center text-lg mb-4'>¡Perfecto! Ya podes abonar tu reserva!</p>
+                <p className='font-roboto text-center text-sm lg:text-base mb-1'>¡Perfecto! Ya podes abonar tu reserva!</p>
                 <div id="payment-brick" className='w-full'></div>
               </div>
             }

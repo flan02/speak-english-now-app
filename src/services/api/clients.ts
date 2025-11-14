@@ -4,6 +4,8 @@ import { calendarEvent, formUserData } from "@/lib/types";
 import { KY, Method } from ".";
 import { API_ROUTES } from "./routes";
 import { toGoogleDate } from "@/lib/utils";
+import { initMercadoPago } from "@mercadopago/sdk-react";
+
 
 export async function handleAccessCode(accessCode: string, setError: (msg: string) => void) {
   //console.log('AccessCode in our frontend', accessCode);
@@ -29,9 +31,10 @@ interface PaymentSimulationParams {
   setIsLoading: (loading: boolean) => void;
   scheduledTime: any;
   isGroupClass: boolean;
+  setIsConfirm: (confirm: boolean) => void; // remove when we are using similated payment Fc
   studentsCount: number;
   text: string;
-  price?: number;
+  price: number; // could be optional in simulated payment
 }
 
 export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price }: PaymentSimulationParams) {
@@ -83,6 +86,191 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
 
   } catch (error) {
     console.error("Error simulating payment", error)
+  }
+};
+
+
+// * CUSTOM FUNCTION
+// export const processMpPayment = async ({ setIsLoading, isGroupClass, setIsConfirm, studentsCount, price }: PaymentSimulationParams) => {
+//   setIsLoading(true);
+
+//   const classMetadata = {
+//     type: isGroupClass ? 'grupo' : 'individual',
+//     studentsCount: studentsCount == 0 ? 1 : studentsCount,
+//     price: studentsCount > 2 ? (studentsCount) : price
+//   }
+
+//   try {
+//     const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
+//       json: classMetadata
+//     })
+
+//     const data = await response.json();
+//     console.log('response from mercado pago', data.preferenceId);
+
+//     if (data.preferenceId) {
+//       initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
+
+//       const renderPaymentBrick = async (preferenceId: string) => {
+//         if (!window.MercadoPago) {
+//           console.error("MercadoPago SDK no cargado aún");
+//           return;
+//         }
+
+//         // Instancia de MercadoPago
+//         const mp = new window.MercadoPago(
+//           process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
+//           { locale: "es-AR" }
+//         );
+
+//         // Obtener el builder de bricks
+//         const bricksBuilder = mp.bricks();
+
+//         // Crear el payment brick
+//         await bricksBuilder.create("wallet", "payment-brick", {
+//           initialization: { preferenceId: preferenceId, amount: studentsCount > 2 ? (studentsCount) : price },
+//           customization: { visual: { style: { theme: "dark" } } },
+//           texts: {
+//             valueProp: 'smart_option', // muestra “pago rápido con Mercado Pago”
+//           },
+//           callbacks: {
+//             onReady: () => {
+//               console.log("Payment Brick listo!");
+//             },
+//             onError: (error: any) => {
+//               console.error("Error en Payment Brick:", error);
+//             },
+//             onSubmit: () => {
+//               console.log("💳 Usuario inició el pago");
+//             },
+//             onPaymentCompleted: async (paymentData: any) => {
+//               console.log("💰 Pago completado:", paymentData);
+//               // Aquí podrías redirigir al usuario o mostrar un mensaje de éxito
+
+//               // TODO: Add real value
+//               const payment = {
+//                 id: paymentData.id,
+//                 status: paymentData.status
+//               }
+
+//               // * REDIRECT TO CALLBACK SUCCESS PAGE
+//               window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/callback/success?payment_id=${payment.id}&status=success`
+
+//               // TODO: Calling to google api calendar to create event (pass date and user)
+//               await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {})
+//             }
+//           },
+//         });
+//       };
+//       // TODO: We calling mp api
+//       renderPaymentBrick(data.preferenceId);
+
+//       setIsLoading(false);
+
+//       setIsConfirm(true);
+//     } else {
+//       console.error("No se recibió un ID de preferencia:", data.preferenceId);
+//     }
+//   } catch (error) {
+//     console.error('Error processing payment:', error);
+//   }
+// }
+
+// * RECOMMENDED FC CREATED BY AI
+export const processMpPayment = async ({ setIsLoading, isGroupClass, setIsConfirm, studentsCount, price }: PaymentSimulationParams) => {
+  setIsLoading(true);
+
+  const classMetadata = {
+    type: isGroupClass ? "grupo" : "individual",
+    studentsCount: studentsCount === 0 ? 1 : studentsCount,
+    price: studentsCount > 2 ? price * studentsCount : price,
+  };
+
+  try {
+    const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
+      json: classMetadata,
+    });
+
+    const data = await response.json();
+    console.log("response from mercado pago", data.preferenceId);
+
+    // if (!data.preferenceId) {
+    //   console.error("No se recibió preferenceId");
+    //   setIsLoading(false);
+    //   return;
+    // }
+
+    if (data.preferenceId) {
+      initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
+
+      const renderPaymentBrick = async (preferenceId: string) => {
+        if (!window.MercadoPago) {
+          console.error("MercadoPago SDK no cargado aún");
+          return;
+        }
+
+
+        // Limpia el contenedor si ya existía un brick
+        // const brickContainer = document.getElementById("payment-brick");
+        // if (brickContainer) brickContainer.innerHTML = "";
+
+        // Instanciar MercadoPago correctamente
+        const mp = new window.MercadoPago(
+          process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
+          { locale: "es-AR" }
+        );
+
+
+
+        const bricksBuilder = mp.bricks();
+
+        await bricksBuilder.create("wallet", "payment-brick", {
+          initialization: {
+            preferenceId: data.preferenceId,
+            amount: classMetadata.price,
+          },
+          customization: {
+            visual: { style: { theme: "dark" } },
+          },
+          texts: {
+            valueProp: "smart_option",
+          },
+          callbacks: {
+            onReady: () => console.log("Payment Brick listo!"),
+
+            onError: (error: any) => {
+              console.error("Error en Payment Brick:", error);
+              setIsLoading(false);
+            },
+
+            onSubmit: () => {
+              console.log("Usuario inició el pago");
+            },
+
+            onPaymentCompleted: async (paymentData: any) => {
+              console.log("Pago completado:", paymentData);
+
+              const payment = {
+                id: paymentData.id,
+                status: paymentData.status,
+              };
+
+              // redirección rápida
+              window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/callback/success?` + `payment_id=${payment.id}&status=success`;
+            },
+          },
+        });
+      }
+      renderPaymentBrick(data.preferenceId);
+
+      setIsLoading(false);
+      setIsConfirm(true);
+    } else {
+      console.error("No se recibió un ID de preferencia:", data.preferenceId);
+    }
+  } catch (error) {
+    console.error("Error processing payment:", error);
+    setIsLoading(false);
   }
 };
 
