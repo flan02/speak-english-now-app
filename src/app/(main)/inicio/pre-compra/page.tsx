@@ -2,16 +2,13 @@
 import H1 from '@/components/html/h1';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { KY, Method } from '@/services/api';
 import { storePaymentData } from '@/zustand/store';
-import { initMercadoPago } from '@mercadopago/sdk-react';
 import { ArrowLeftCircle, CreditCard, PenTool } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react'
 import pricing from '@/config/pricing.json';
 import { processMpPayment, simulateSuccessPayment } from '@/services/api/clients';
-import { API_ROUTES, URL_ROUTES } from '@/services/api/routes';
+import { URL_ROUTES } from '@/services/api/routes';
 import { formattedDate } from '@/lib/utils';
 
 type Props = {}
@@ -45,7 +42,8 @@ const PreCompraPage = () => {
               <p className=''>Fecha: <span className='font-extrabold'>{formattedDate(selectedDate!)}</span></p>
               <p className=''>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
               <p className=''>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
-              {text && text != '' &&
+              {
+                text && text != '' &&
                 <div className='space-y-4'>
                   <p className='font-roboto text-sm xl:text-3xl 2xl:text-3xl'>Tema a tratar en la clase: </p>
                   <p className='font-extrabold text-sm lg:text-base xl:text-base ml-4 mt-2 xl:mt-0 2xl:mt-0'>{text}</p>

@@ -2,26 +2,38 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 // Mercado Pago envía la notificación vía método POST
+// MP no firma el body del webhook a diferencia de Stripe
 export async function POST(req: Request) {
-  const body = await req.json();
   const headers = Object.fromEntries(req.headers.entries());
   console.log('Webhook received!!!');
-  console.log('Body obtained', body);
+  // console.log('Body obtained', body);
   console.log('Headers obtained', headers);
-
+  //let rawBody
   try {
+    //rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
     const signature = req.headers.get("x-signature");
+    const requestId = req.headers.get("x-request-id")
     const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!;
 
-    // Validar firma. Sin esta validacion cualquiera podria enviarte requests falsos
-    const hash = crypto
-      .createHmac("sha256", secret)
-      .update(body)
-      .digest("hex");
-
-    if (hash !== signature) {
-      return new Response("Invalid signature", { status: 401 });
+    if (!signature) {
+      return new Response("Missing signature", { status: 400 });
     }
+
+    // const parts = signature.split(",");
+    // const ts = parts[0]?.replace("ts=", "");
+    // const v1 = parts[1]?.replace("v1=", "");
+    // const endpoint = "https://speak-english-now-app.vercel.app/api/mercado-pago/webhook"; // $ Here add the actual domain URL
+
+    // const data = `${ts}.${requestId}.${endpoint}`;
+    // const hash = crypto
+    //   .createHmac("sha256", secret)
+    //   .update(data)
+    //   .digest("hex");
+
+    // if (hash !== v1) {
+    //   console.warn("Invalid signature");
+    //   return new Response("Invalid signature", { status: 401 });
+    // }
 
     // si llega acá es válido
     console.log("Webhook verificado correctamente");
@@ -30,6 +42,8 @@ export async function POST(req: Request) {
   }
 
   try {
+    // const body = await req.json(); // nextjs ya parsea el body a un objeto
+    const body = await req.json();
     console.log("📥 Webhook recibido desde Mercado Pago:", body);
 
     // Validar evento
@@ -38,6 +52,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "invalid" }, { status: 200 });
     }
 
+    // ? Obtener ID de pago
     const paymentId = body.data.id;
 
     // >>> Aquí vas a consultar el estado real del pago <<< Mercado Pago recomienda consultar la API con el paymentId
@@ -45,7 +60,7 @@ export async function POST(req: Request) {
       const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
           },
         }
       );
@@ -54,7 +69,7 @@ export async function POST(req: Request) {
       console.log("🔍 Pago consultado:", paymentInfo);
 
       // TODO: Ejemplo de uso: guardar en BD cuando se acreditó o rechazó
-      if (paymentInfo.status === "approved") {
+      if (paymentInfo.status === "approved" && paymentInfo.status_detail === "accredited") {
         console.log("✔ Pago acreditado. Guardar en BD.");
       }
 
@@ -88,12 +103,42 @@ export async function POST(req: Request) {
 //   "type": "payment"
 // }
 
-// Una vez aprobado el pago
+// Una vez aprobado el pago reicibire algo asi (utilizar para armar el modelo de la db)
 /*
-status ("approved")
-amount
-payment_id
-fecha
-mail del pagador
-etc.
+{
+  "id": 123456789,
+  "date_created": "2025-01-10T14:03:21.000-04:00",
+  "date_approved": "2025-01-10T14:03:45.000-04:00",
+  "status": "approved",
+  "status_detail": "accredited",
+  "payment_method_id": "visa",
+  "payment_type_id": "credit_card",
+  "payer": {
+    "id": "987654321",
+    "email": "cliente@example.com",
+    "first_name": "Juan",
+    "last_name": "Pérez"
+  },
+  "transaction_amount": 1000,
+  "currency_id": "ARS",
+  "description": "Clase individual x1",
+  "metadata": {
+    "type": "individual",
+    "studentsCount": 1
+  },
+  "additional_info": {
+    "items": [
+      {
+        "id": "english-class-123",
+        "title": "Clase individual",
+        "quantity": 1,
+        "unit_price": 1000
+      }
+    ]
+  },
+  "order": {
+    "id": "order-123",
+    "type": "mercadopago"
+  }
+}
 */

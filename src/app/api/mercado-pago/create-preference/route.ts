@@ -1,22 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import pricing from "@/config/pricing.json";
-
-// * Checkout ReAddressable (external URL)
-// back_urls: {
-//   success: "http://localhost:3000/checkout/callback/success",
-//   failure: "http://localhost:3000/checkout/callback/failure",
-//   pending: "http://localhost:3000/checkout/callback/pending"
-// },
-// auto_return: "approved"
+import { auth } from '@/auth';
 
 
 export async function POST(request: NextRequest) {
   // TODO: Every value come from the request body
   const body = await request.json();
+  const session = await auth()
 
   const { type, studentsCount, price } = body
   console.log('Request body:', body);
+
+  if (!session?.user) {
+    throw new Error('User not authenticated');
+  }
 
   try {
     const client = new MercadoPagoConfig({ accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN! });
@@ -26,16 +24,19 @@ export async function POST(request: NextRequest) {
     const body = {
       items: [
         {
-          id: "english-class-reservation", // * Check it later. Possible uses for id
+          id: `${session.user.id}-${Date.now()}`,
           title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / pricing.groupPrice)}`,
           quantity: 1,
           unit_price: 1000, //Number(price), // precio en ARS
-          currency_id: "ARS"
+          currency_id: "ARS",
         },
       ],
+      notification_url: `${process.env.BASE_URL}/api/mercado-pago/webhook`,
       metadata: {
+        userId: session?.user.id,
         type,
-        studentsCount
+        studentsCount,
+        price
       },
       payment_methods: {
         excluded_payment_types: [], // puedes excluir tipos si querés
