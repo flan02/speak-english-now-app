@@ -177,6 +177,8 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
 // }
 
 // * RECOMMENDED FC CREATED BY AI
+
+
 export const processMpPayment = async ({ setIsLoading, isGroupClass, setIsConfirm, studentsCount, price }: PaymentSimulationParams) => {
   setIsLoading(true);
 
