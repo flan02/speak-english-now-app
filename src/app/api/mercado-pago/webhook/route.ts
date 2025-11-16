@@ -18,17 +18,17 @@ export async function POST(req: Request) {
     }
 
     // X-Signature: ts=1234567890,v1=abcdef...
-    const [tsPart, hashPart] = signature.split(",");
-    const ts = tsPart.replace("ts=", "").trim();
-    const v1 = hashPart.replace("v1=", "").trim();
-
+    // const [tsPart, hashPart] = signature.split(",");
+    // const ts = tsPart.replace("ts=", "").trim();
+    // const v1 = hashPart.replace("v1=", "").trim();
+    const v1 = signature.split("v1=")[1];
     // Construir string que MP firma
-    const signedPayload = `${ts}.${rawBody}`;
+    // const signedPayload = `${ts}.${rawBody}`;
 
     // Validar firma. Sin esta validacion cualquiera podria enviarte requests falsos
     const hash = crypto
       .createHmac("sha256", secret)
-      .update(signedPayload)
+      .update(rawBody)
       .digest("hex");
 
     if (hash !== v1) {
