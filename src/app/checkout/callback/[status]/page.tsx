@@ -12,6 +12,9 @@ export default function CallbackPage() {
   const status = searchParams.get("status"); // success, failure, pending
   const { seconds } = useConfetti({ status: status! });
 
+  // TODO: If webhook successed, show confetti and success message to user
+
+
   return (
     <div className="flex flex-col items-center justify-center xl:justify-center 2xl:justify-center min-h-screen text-center mx-1 xl:mx-0">
       {

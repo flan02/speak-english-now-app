@@ -5,6 +5,7 @@ import { KY, Method } from ".";
 import { API_ROUTES } from "./routes";
 import { toGoogleDate } from "@/lib/utils";
 import { initMercadoPago } from "@mercadopago/sdk-react";
+import { metadata } from "@/app/layout";
 
 
 export async function handleAccessCode(accessCode: string, setError: (msg: string) => void) {
@@ -176,10 +177,10 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
 //   }
 // }
 
-// * RECOMMENDED FC CREATED BY AI
 
 
 export const processMpPayment = async ({ setIsLoading, isGroupClass, setIsConfirm, studentsCount, price }: PaymentSimulationParams) => {
+  // * RECOMMENDED FC CREATED BY AI
   setIsLoading(true);
 
   const classMetadata = {
@@ -196,12 +197,6 @@ export const processMpPayment = async ({ setIsLoading, isGroupClass, setIsConfir
     const data = await response.json();
     console.log("response from mercado pago", data.preferenceId);
 
-    // if (!data.preferenceId) {
-    //   console.error("No se recibió preferenceId");
-    //   setIsLoading(false);
-    //   return;
-    // }
-
     if (data.preferenceId) {
       initMercadoPago(process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!);
 
@@ -211,18 +206,10 @@ export const processMpPayment = async ({ setIsLoading, isGroupClass, setIsConfir
           return;
         }
 
-
-        // Limpia el contenedor si ya existía un brick
-        // const brickContainer = document.getElementById("payment-brick");
-        // if (brickContainer) brickContainer.innerHTML = "";
-
-        // Instanciar MercadoPago correctamente
         const mp = new window.MercadoPago(
           process.env.NEXT_PUBLIC_MERCADO_PAGO_PUBLIC_KEY!,
           { locale: "es-AR" }
         );
-
-
 
         const bricksBuilder = mp.bricks();
 
