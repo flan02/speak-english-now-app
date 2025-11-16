@@ -2,33 +2,32 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 // Mercado Pago envía la notificación vía método POST
+// MP no firma el body del webhook a diferencia de Stripe
 export async function POST(req: Request) {
   const headers = Object.fromEntries(req.headers.entries());
   console.log('Webhook received!!!');
   // console.log('Body obtained', body);
   console.log('Headers obtained', headers);
-  let rawBody
+  //let rawBody
   try {
-    rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
+    //rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
     const signature = req.headers.get("x-signature");
+    const requestId = req.headers.get("x-request-id")
     const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!;
 
     if (!signature) {
       return new Response("Missing signature", { status: 400 });
     }
 
-    // X-Signature: ts=1234567890,v1=abcdef...
-    // const [tsPart, hashPart] = signature.split(",");
-    // const ts = tsPart.replace("ts=", "").trim();
-    // const v1 = hashPart.replace("v1=", "").trim();
-    const v1 = signature.split("v1=")[1];
-    // Construir string que MP firma
-    // const signedPayload = `${ts}.${rawBody}`;
+    const parts = signature.split(",");
+    const ts = parts[0]?.replace("ts=", "");
+    const v1 = parts[1]?.replace("v1=", "");
+    const endpoint = "https://speak-english-now-app.vercel.app/api/mercado-pago/webhook";
 
-    // Validar firma. Sin esta validacion cualquiera podria enviarte requests falsos
+    const data = `${ts}.${requestId}.${endpoint}`;
     const hash = crypto
       .createHmac("sha256", secret)
-      .update(rawBody)
+      .update(data)
       .digest("hex");
 
     if (hash !== v1) {
@@ -44,7 +43,7 @@ export async function POST(req: Request) {
 
   try {
     // const body = await req.json(); // nextjs ya parsea el body a un objeto
-    const body = JSON.parse(rawBody!)
+    const body = await req.json();
     console.log("📥 Webhook recibido desde Mercado Pago:", body);
 
     // Validar evento
