@@ -7,9 +7,9 @@ export async function POST(req: Request) {
   console.log('Webhook received!!!');
   // console.log('Body obtained', body);
   console.log('Headers obtained', headers);
-
+  let rawBody
   try {
-    const rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
+    rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
     const signature = req.headers.get("x-signature");
     const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!;
 
@@ -43,7 +43,8 @@ export async function POST(req: Request) {
   }
 
   try {
-    const body = await req.json(); // nextjs ya parsea el body a un objeto
+    // const body = await req.json(); // nextjs ya parsea el body a un objeto
+    const body = JSON.parse(rawBody!)
     console.log("📥 Webhook recibido desde Mercado Pago:", body);
 
     // Validar evento
