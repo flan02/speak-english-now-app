@@ -3,23 +3,36 @@ import { NextResponse } from "next/server";
 
 // Mercado Pago envía la notificación vía método POST
 export async function POST(req: Request) {
-  const body = await req.json();
   const headers = Object.fromEntries(req.headers.entries());
   console.log('Webhook received!!!');
-  console.log('Body obtained', body);
+  // console.log('Body obtained', body);
   console.log('Headers obtained', headers);
 
   try {
+    const rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
     const signature = req.headers.get("x-signature");
     const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!;
+
+    if (!signature) {
+      return new Response("Missing signature", { status: 400 });
+    }
+
+    // X-Signature: ts=1234567890,v1=abcdef...
+    const [tsPart, hashPart] = signature.split(",");
+    const ts = tsPart.replace("ts=", "").trim();
+    const v1 = hashPart.replace("v1=", "").trim();
+
+    // Construir string que MP firma
+    const signedPayload = `${ts}.${rawBody}`;
 
     // Validar firma. Sin esta validacion cualquiera podria enviarte requests falsos
     const hash = crypto
       .createHmac("sha256", secret)
-      .update(body)
+      .update(signedPayload)
       .digest("hex");
 
-    if (hash !== signature) {
+    if (hash !== v1) {
+      console.warn("Invalid signature");
       return new Response("Invalid signature", { status: 401 });
     }
 
@@ -30,6 +43,7 @@ export async function POST(req: Request) {
   }
 
   try {
+    const body = await req.json(); // nextjs ya parsea el body a un objeto
     console.log("📥 Webhook recibido desde Mercado Pago:", body);
 
     // Validar evento
@@ -38,6 +52,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "invalid" }, { status: 200 });
     }
 
+    // ? Obtener ID de pago
     const paymentId = body.data.id;
 
     // >>> Aquí vas a consultar el estado real del pago <<< Mercado Pago recomienda consultar la API con el paymentId
