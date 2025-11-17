@@ -30,11 +30,11 @@ export async function POST(request: NextRequest) {
           id: `${session.user.id}-${Date.now()}`,
           title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / pricing.groupPrice)}`,
           quantity: 1,
-          unit_price: 1000, //Number(price), // precio en ARS
+          unit_price: 50, //Number(price), // precio en ARS
           currency_id: "ARS",
         },
       ],
-      notification_url: `${process.env.BASE_URL}/api/mercado-pago/webhook`,
+      notification_url: `${process.env.BASE_URL}api/mercado-pago/webhook`,
       metadata: {
         userId: session?.user.id,
         type,
@@ -47,6 +47,12 @@ export async function POST(request: NextRequest) {
         installments: 12, // máximo de cuotas
         crypto_currency: "ETH", // habilitar pago con criptomonedas
       },
+      back_urls: {
+        success: `${process.env.BASE_URL}/checkout/callback/success`,
+        failure: `${process.env.BASE_URL}/checkout/callback/failure`,
+        pending: `${process.env.BASE_URL}/checkout/callback/pending`,
+      },
+      auto_return: "approved",
     }
 
     //console.log('Creating preference with body:', body);

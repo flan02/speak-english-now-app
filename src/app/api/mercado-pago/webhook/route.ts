@@ -1,4 +1,4 @@
-// import crypto from "crypto";
+import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 // Mercado Pago envía la notificación vía método POST
@@ -10,7 +10,41 @@ export async function POST(req: Request) {
   const rawBody = await req.text();
   console.log("RAW BODY:", rawBody);
 
-  // Parseo seguro
+
+
+  // 2) Leer headers necesarios
+  const signature = req.headers.get("x-signature");
+  const webhookSecret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!; // tu secret real
+
+  if (!signature || !webhookSecret) {
+    console.warn("⚠ No hay firma o falta MP_WEBHOOK_SECRET");
+    return NextResponse.json({ received: true }, { status: 200 });
+  }
+
+  // 3) Validar firma
+  try {
+    const [tsPart, hashPart] = signature.split(",");
+    const ts = tsPart.replace("ts=", "");
+    const providedHash = hashPart.replace("v1=", "");
+
+    const toSign = ts + rawBody;
+    const expectedHash = crypto
+      .createHmac("sha256", webhookSecret)
+      .update(toSign)
+      .digest("hex");
+
+    if (expectedHash !== providedHash) {
+      console.error("❌ Firma inválida. Webhook rechazado.");
+      return NextResponse.json({ received: true }, { status: 200 });
+    }
+
+    console.log("✔ Firma válida");
+  } catch (err) {
+    console.error("❌ Error validando firma:", err);
+    return NextResponse.json({ received: true }, { status: 200 });
+  }
+
+  // 4 Parseo seguro
   let body: any = {};
   try {
     body = JSON.parse(rawBody);
