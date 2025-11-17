@@ -1,82 +1,55 @@
-import crypto from "crypto";
+// import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 // Mercado Pago envía la notificación vía método POST
 // MP no firma el body del webhook a diferencia de Stripe
 export async function POST(req: Request) {
-  const headers = Object.fromEntries(req.headers.entries());
-  console.log('Webhook received!!!');
-  // console.log('Body obtained', body);
-  console.log('Headers obtained', headers);
-  //let rawBody
+  console.log("Webhook received!!!");
+
+  // 🔥 Leer body crudo
+  const rawBody = await req.text();
+  console.log("RAW BODY:", rawBody);
+
+  // Parseo seguro
+  let body: any = {};
   try {
-    //rawBody = await req.text(); // texto crudo contiene espacios, saltos de linea, formato real, valores originales, orden de las keys
-    const signature = req.headers.get("x-signature");
-    const requestId = req.headers.get("x-request-id")
-    const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!;
-
-    // if (!signature) {
-    //   return new Response("Missing signature", { status: 400 });
-    // }
-
-    // Validar firma
-
-
-    // si llega acá es válido
-    console.log("Webhook verificado correctamente");
-  } catch (error) {
-    console.error("❌ Error validando firma del webhook:", error);
+    body = JSON.parse(rawBody);
+  } catch {
+    console.log("⚠ No se pudo parsear JSON. Continuamos...");
   }
 
-  try {
-    // const body = await req.json(); // nextjs ya parsea el body a un objeto
-    const body = await req.json();
-    console.log("📥 Webhook recibido desde Mercado Pago:", body);
-
-    // Validar evento
-    if (!body || !body.data || !body.data.id) {
-      console.warn("Webhook inválido o sin ID de pago.");
-      return NextResponse.json({ message: "invalid" }, { status: 200 });
-    }
-
-    // ? Obtener ID de pago
-    const paymentId = body.data.id;
-
-    // >>> Aquí vas a consultar el estado real del pago <<< Mercado Pago recomienda consultar la API con el paymentId
-    try {
-      const mpRes = await fetch(`https://api.mercadopago.com/v1/payments/${paymentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-          },
-        }
-      );
-
-      const paymentInfo = await mpRes.json();
-      console.log("🔍 Pago consultado:", paymentInfo);
-
-      // TODO: Ejemplo de uso: guardar en BD cuando se acreditó o rechazó
-      if (paymentInfo.status === "approved" && paymentInfo.status_detail === "accredited") {
-        console.log("✔ Pago acreditado. Guardar en BD.");
-      }
-
-      if (paymentInfo.status === "rejected") {
-        console.log("❌ Pago rechazado.");
-      }
-
-      // Siempre responder 200 OK
-      return NextResponse.json({ received: true }, { status: 200 });
-
-    } catch (err) {
-      console.error("❌ Error consultando pago:", err);
-      return NextResponse.json({ error: "mp error" }, { status: 200 });
-    }
-  } catch (error) {
-    console.error("❌ Error en webhook:", error);
-    return NextResponse.json({ error: "parse error" }, { status: 200 });
+  const paymentId = body?.data?.id;
+  if (!paymentId) {
+    console.warn("Webhook inválido o sin ID de pago.");
+    return NextResponse.json({ ok: true }, { status: 200 });
   }
 
+  // 🔍 Consultar pago real
+  try {
+    const mpRes = await fetch(
+      `https://api.mercadopago.com/v1/payments/${paymentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+        },
+      }
+    );
+
+    const paymentInfo = await mpRes.json();
+    console.log("🔍 Pago consultado:", paymentInfo);
+
+    if (paymentInfo.status === "approved") {
+      console.log("✔ Pago aprobado. Guardar en BD.");
+    }
+
+    return NextResponse.json({ ok: true }, { status: 200 });
+
+  } catch (err) {
+    console.error("❌ Error consultando pago:", err);
+    return NextResponse.json({ ok: true }, { status: 200 });
+  }
 }
+
 
 // Mercado Pago insiste en que SIEMPRE respondas 200 OK
 //No importa si falló tu lógica; si respondés 500 ellos vuelven a mandar notificaciones infinitamente.

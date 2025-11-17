@@ -12,8 +12,8 @@ export async function POST(request: NextRequest) {
   const { type, studentsCount, price } = body
 
   console.log('Request body:', body);
-  console.log('Actual students', Math.floor(body.studentsCount))
-  console.log('Actual price', Math.floor(body.price));
+  console.log('Actual students', Math.floor(Math.round(body.studentsCount) / 10000))
+  console.log('Actual price', body.studentsCount)
 
   if (!session?.user) {
     throw new Error('User not authenticated');
