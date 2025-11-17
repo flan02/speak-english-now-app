@@ -15,25 +15,12 @@ export async function POST(req: Request) {
     const requestId = req.headers.get("x-request-id")
     const secret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!;
 
-    if (!signature) {
-      return new Response("Missing signature", { status: 400 });
-    }
-
-    // const parts = signature.split(",");
-    // const ts = parts[0]?.replace("ts=", "");
-    // const v1 = parts[1]?.replace("v1=", "");
-    // const endpoint = "https://speak-english-now-app.vercel.app/api/mercado-pago/webhook"; // $ Here add the actual domain URL
-
-    // const data = `${ts}.${requestId}.${endpoint}`;
-    // const hash = crypto
-    //   .createHmac("sha256", secret)
-    //   .update(data)
-    //   .digest("hex");
-
-    // if (hash !== v1) {
-    //   console.warn("Invalid signature");
-    //   return new Response("Invalid signature", { status: 401 });
+    // if (!signature) {
+    //   return new Response("Missing signature", { status: 400 });
     // }
+
+    // Validar firma
+
 
     // si llega acá es válido
     console.log("Webhook verificado correctamente");
@@ -141,4 +128,24 @@ export async function POST(req: Request) {
     "type": "mercadopago"
   }
 }
+*/
+
+/* 
+Validar firma
+
+    const parts = signature.split(",");
+    const ts = parts[0]?.replace("ts=", "");
+    const v1 = parts[1]?.replace("v1=", "");
+    const endpoint = "https://speak-english-now-app.vercel.app/api/mercado-pago/webhook"; // $ Here add the actual domain URL
+
+    const data = `${ts}.${requestId}.${endpoint}`;
+    const hash = crypto
+      .createHmac("sha256", secret)
+      .update(data)
+      .digest("hex");
+
+    if (hash !== v1) {
+      console.warn("Invalid signature");
+      return new Response("Invalid signature", { status: 401 });
+    }
 */
