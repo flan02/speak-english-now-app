@@ -32,15 +32,15 @@ export async function POST(request: NextRequest) {
           quantity: 1,
           unit_price: 50, //Number(price), // precio en ARS
           currency_id: "ARS",
+          metadata: {
+            userId: session?.user.id,
+            type,
+            studentsCount,
+            price
+          }
         },
       ],
       notification_url: `${process.env.BASE_URL}api/mercado-pago/webhook`,
-      metadata: {
-        userId: session?.user.id,
-        type,
-        studentsCount,
-        price
-      },
       payment_methods: {
         excluded_payment_types: [], // puedes excluir tipos si querés
         excluded_payment_methods: [], // puedes excluir métodos específicos

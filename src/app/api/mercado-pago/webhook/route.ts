@@ -1,4 +1,3 @@
-import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 // Mercado Pago envía la notificación vía método POST
@@ -12,37 +11,57 @@ export async function POST(req: Request) {
   let body: any = {};
   try {
     body = JSON.parse(raw);
-  } catch { }
+  } catch {
+    console.log("⚠ No se pudo parsear JSON. Continuamos...");
+  }
 
-  const merchantOrderUrl = body?.resource;
-  if (!merchantOrderUrl) {
-    console.log("⚠ Webhook sin merchant_order URL");
+  const topic = body?.topic
+  const resource = body?.resource
+
+  console.log("TOPIC", topic);
+
+  // -------------------------
+  // 🎯 1. Llega un webhook de PAYMENT (no usar resource)
+  // -------------------------
+  if (topic === "payment") {
+    console.log("📬 Webhook 'payment' recibido. Ignorando (normal).");
     return Response.json({ ok: true });
   }
 
-  console.log("📡 Consultando merchant_order:", merchantOrderUrl);
+  // const merchantOrderUrl = body?.resource;
+  if (topic === "merchant_order") {
+    if (!resource) {
+      console.log("⚠ Webhook sin resource URL");
+      return Response.json({ ok: true });
+    }
 
-  const orderRes = await fetch(merchantOrderUrl, {
-    headers: {
-      Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-    },
-  });
+    console.log("📡 Consultando merchant_order:", resource);
 
-  const order = await orderRes.json();
-  console.log("📦 MERCHANT ORDER:", order);
+    const orderRes = await fetch(resource, {
+      headers: {
+        Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+      },
+    });
 
-  const payment = order.payments?.[0];
-  if (!payment) {
-    console.log("⚠ La orden no tiene pagos aún");
+    const order = await orderRes.json();
+    console.log("📦 MERCHANT ORDER:", order);
+
+    const payment = order.payments?.[0];
+    if (!payment) {
+      console.log("⚠ La orden no tiene pagos aún");
+      return Response.json({ ok: true });
+    }
+
+    console.log("💳 PAYMENT:", payment);
+
+    if (payment.status === "approved") {
+      console.log("✔ Pago aprobado, guardar en base de datos");
+    }
+
     return Response.json({ ok: true });
   }
-
-  console.log("💳 PAYMENT:", payment);
-
-  if (payment.status === "approved") {
-    console.log("✔ Pago aprobado, guardar en base de datos");
-  }
-
+  // Other events
+  console.log("⚠ Webhook desconocido, ignorando");
   return Response.json({ ok: true });
 }
 
