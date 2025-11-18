@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import pricing from "@/config/pricing.json";
 import { auth } from '@/auth';
+import { db } from '@/db';
+import { createPayment } from '@/services/functions';
 
 
 export async function POST(request: NextRequest) {
@@ -32,13 +34,7 @@ export async function POST(request: NextRequest) {
           quantity: 1,
           unit_price: 50, //Number(price), // precio en ARS
           currency_id: "ARS",
-          metadata: {
-            userId: session?.user.id,
-            type,
-            studentsCount,
-            price
-          }
-        },
+        }
       ],
       notification_url: `${process.env.BASE_URL}api/mercado-pago/webhook`,
       payment_methods: {
@@ -55,11 +51,17 @@ export async function POST(request: NextRequest) {
       auto_return: "approved",
     }
 
-    //console.log('Creating preference with body:', body);
-
     const result = await preference.create({ body });
-    //console.log("preferencia creada:", result.id);
 
+    if (!result.id) {
+      return NextResponse.json({ error: 'Failed to create preference' }, { status: 500 });
+    }
+    // TODO: Create a new prisma model to save the current payment attempt
+    const response = await createPayment(session.user.id, result.id, Number(studentsCount))
+
+    if (!response?.success) {
+      return NextResponse.json({ error: 'Failed to create payment record in our database' }, { status: 500 });
+    }
     return NextResponse.json({ preferenceId: result.id });
 
   } catch (error) {

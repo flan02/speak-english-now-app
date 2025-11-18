@@ -20,9 +20,9 @@ enum Role {
 }
 
 enum PaymentStatus {
-  succeeded
+  approved
   pending
-  failed
+  rejected
 }
 
 enum NivelIngles {
@@ -87,20 +87,20 @@ model VisitorInquiry {
 }
 
 model User {
-  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
-  email              String              @unique
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  email              String               @unique
   name               String
   image              String?
-  localidad          String?             @default("-")
-  telefono           Int?                @default(0)
-  nivel              NivelIngles         @default(inicial)
-  status             Boolean             @default(false)
-  newsletter         Newsletter          @default(no)
-  totalClasses       Int                 @default(0)
-  billingMercadoPago billingMercadoPago?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
+  localidad          String?              @default("-")
+  telefono           Int?                 @default(0)
+  nivel              NivelIngles          @default(inicial)
+  status             Boolean              @default(false)
+  newsletter         Newsletter           @default(no)
+  totalClasses       Int                  @default(0)
   UserActivity       UserActivity[]
+  PaymentMercadoPago PaymentMercadoPago[]
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
 }
 
 model VirtualClass {
@@ -154,10 +154,14 @@ model UserActivity {
   updatedAt DateTime      @updatedAt
 }
 
-model billingMercadoPago {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String   @unique @db.ObjectId
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model PaymentMercadoPago {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String        @db.ObjectId
+  classId      String?       @db.ObjectId // after payment is approved
+  preferenceId String        @unique
+  price        Int
+  status       PaymentStatus @default(pending)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }

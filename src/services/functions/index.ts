@@ -300,6 +300,23 @@ export async function getUpcomingClasses() {
   }
 }
 
+
+export async function createPayment(userId: string, preferenceId: string, studentsCount: number) {
+  try {
+    const response = await db.paymentMercadoPago.create({
+      data: {
+        userId,
+        preferenceId,
+        price: studentsCount,
+        status: 'pending'
+      }
+    })
+
+    return { response, success: true };
+  } catch (error) {
+    console.error("Error creating payment record in our database:", error);
+  }
+}
 /* 
 * EXAMPLE EVENT CREATED
 {
