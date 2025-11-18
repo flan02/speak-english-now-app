@@ -4,92 +4,135 @@ import { NextResponse } from "next/server";
 // Mercado Pago envía la notificación vía método POST
 // MP no firma el body del webhook a diferencia de Stripe
 export async function POST(req: Request) {
-  console.log("Webhook received!!!");
+  console.log("🚚 Webhook recibido!");
 
-  // 🔥 Leer body crudo
-  const rawBody = await req.text();
-  console.log("RAW BODY:", rawBody);
+  const raw = await req.text();
+  console.log("RAW BODY:", raw);
 
-
-
-  // 2) Leer headers necesarios
-  const signature = req.headers.get("x-signature");
-  const requestId = req.headers.get("x-request-id");
-  const webhookSecret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!; // tu secret real
-
-  if (!signature || !webhookSecret) {
-    console.warn("⚠ No hay firma o falta MP_WEBHOOK_SECRET");
-    return NextResponse.json({ received: true }, { status: 200 });
-  }
-
-  // 3) Validar firma
-  try {
-    // Extraer ts y v1
-    const [tsPart, v1Part] = signature.split(",");
-    const ts = tsPart.split("=")[1];
-    const v1 = v1Part.split("=")[1];
-
-    // Construir string base
-    const data = `${ts}.${rawBody}.${webhookSecret}`;
-
-    // Crear hash
-    const hash = crypto
-      .createHmac("sha256", webhookSecret)
-      .update(data)
-      .digest("hex");
-
-    if (hash !== v1) {
-      console.log("❌ Firma inválida. Webhook rechazado.");
-      return NextResponse.json({ ok: false }, { status: 200 });
-    }
-
-    console.log("✔ Firma válida. Webhook aceptado.");
-  } catch (err) {
-    console.error("❌ Error validando firma:", err);
-    return NextResponse.json({ received: true }, { status: 200 });
-  }
-
-  // 4 Parseo seguro
   let body: any = {};
   try {
-    body = JSON.parse(rawBody);
-  } catch {
-    console.log("⚠ No se pudo parsear JSON. Continuamos...");
+    body = JSON.parse(raw);
+  } catch { }
+
+  const merchantOrderUrl = body?.resource;
+  if (!merchantOrderUrl) {
+    console.log("⚠ Webhook sin merchant_order URL");
+    return Response.json({ ok: true });
   }
 
-  console.log("BODY PARSED", body);
+  console.log("📡 Consultando merchant_order:", merchantOrderUrl);
 
-  const paymentId = body?.data?.id;
-  if (!paymentId) {
-    console.warn("Webhook inválido o sin ID de pago.");
-    return NextResponse.json({ ok: true }, { status: 200 });
+  const orderRes = await fetch(merchantOrderUrl, {
+    headers: {
+      Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+    },
+  });
+
+  const order = await orderRes.json();
+  console.log("📦 MERCHANT ORDER:", order);
+
+  const payment = order.payments?.[0];
+  if (!payment) {
+    console.log("⚠ La orden no tiene pagos aún");
+    return Response.json({ ok: true });
   }
 
-  // 🔍 Consultar pago real
-  try {
-    const mpRes = await fetch(
-      `https://api.mercadopago.com/v1/payments/${paymentId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
-        },
-      }
-    );
+  console.log("💳 PAYMENT:", payment);
 
-    const paymentInfo = await mpRes.json();
-    console.log("🔍 Pago consultado:", paymentInfo);
-
-    if (paymentInfo.status === "approved") {
-      console.log("✔ Pago aprobado. Guardar en BD.");
-    }
-
-    return NextResponse.json({ ok: true }, { status: 200 });
-
-  } catch (err) {
-    console.error("❌ Error consultando pago:", err);
-    return NextResponse.json({ ok: true }, { status: 200 });
+  if (payment.status === "approved") {
+    console.log("✔ Pago aprobado, guardar en base de datos");
   }
+
+  return Response.json({ ok: true });
 }
+
+// export async function POST(req: Request) {
+//   console.log("Webhook received!!!");
+
+//   // 🔥 Leer body crudo
+//   const rawBody = await req.text();
+//   console.log("RAW BODY:", rawBody);
+
+
+
+//   // 2) Leer headers necesarios
+//   const signature = req.headers.get("x-signature");
+//   const requestId = req.headers.get("x-request-id");
+//   const webhookSecret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!; // tu secret real
+
+//   if (!signature || !webhookSecret) {
+//     console.warn("⚠ No hay firma o falta MP_WEBHOOK_SECRET");
+//     return NextResponse.json({ received: true }, { status: 200 });
+//   }
+
+//   // 3) Validar firma
+//   try {
+//     // Extraer ts y v1
+//     const [tsPart, v1Part] = signature.split(",");
+//     const ts = tsPart.split("=")[1];
+//     const v1 = v1Part.split("=")[1];
+
+//     // Construir string base
+//     const data = `${ts}.${rawBody}.${webhookSecret}`;
+
+//     // Crear hash
+//     const hash = crypto
+//       .createHmac("sha256", webhookSecret)
+//       .update(data)
+//       .digest("hex");
+
+//     if (hash !== v1) {
+//       console.log("❌ Firma inválida. Webhook rechazado.");
+//       return NextResponse.json({ ok: false }, { status: 200 });
+//     }
+
+//     console.log("✔ Firma válida. Webhook aceptado.");
+//   } catch (err) {
+//     console.error("❌ Error validando firma:", err);
+//     return NextResponse.json({ received: true }, { status: 200 });
+//   }
+
+//   // 4 Parseo seguro
+//   let body: any = {};
+//   try {
+//     body = JSON.parse(rawBody);
+//   } catch {
+//     console.log("⚠ No se pudo parsear JSON. Continuamos...");
+//   }
+
+//   console.log("BODY PARSED", body);
+
+//   const paymentId = body?.data?.id;
+//   if (!paymentId) {
+//     console.warn("Webhook inválido o sin ID de pago.");
+//     return NextResponse.json({ ok: true }, { status: 200 });
+//   }
+
+//   // 🔍 Consultar pago real
+//   try {
+//     const mpRes = await fetch(
+//       `https://api.mercadopago.com/v1/payments/${paymentId}`,
+//       {
+//         headers: {
+//           Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESS_TOKEN}`,
+//         },
+//       }
+//     );
+
+//     const paymentInfo = await mpRes.json();
+//     console.log("🔍 Pago consultado:", paymentInfo);
+
+//     if (paymentInfo.status === "approved") {
+//       console.log("✔ Pago aprobado. Guardar en BD.");
+//     }
+
+//     return NextResponse.json({ ok: true }, { status: 200 });
+
+//   } catch (err) {
+//     console.error("❌ Error consultando pago:", err);
+//     return NextResponse.json({ ok: true }, { status: 200 });
+//   }
+// }
 
 
 // Mercado Pago insiste en que SIEMPRE respondas 200 OK

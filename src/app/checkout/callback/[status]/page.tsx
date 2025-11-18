@@ -55,3 +55,19 @@ export default function CallbackPage() {
     </div>
   );
 }
+
+// ? Sending via mercado pago after an actual payment:
+/* 
+https://speak-english-now-app.vercel.app/checkout/callback/success?
+status=approved
+&collection_status=approved
+&preference_id=162275027-fe8b544b-ea47-471f-8f0d-3126b2640895
+&site_id=MLA
+&external_reference=
+&collection_id=133649831763
+&payment_id=133649831763
+&payment_type=account_money
+&processing_mode=aggregator
+&merchant_order_id=3566848058
+
+*/
