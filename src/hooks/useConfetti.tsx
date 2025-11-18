@@ -38,8 +38,8 @@ const useConfetti = ({ status }: Props) => {
   }
 
   useEffect(() => {
-    if (status !== 'success') return
-    if (status === 'success') {
+    if (status !== 'approved') return
+    if (status === 'approved') {
       launchConfetti()
       const countdown = setInterval(() => {
         setSeconds((prev) => prev - 1)

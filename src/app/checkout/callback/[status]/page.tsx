@@ -18,7 +18,7 @@ export default function CallbackPage() {
   return (
     <div className="flex flex-col items-center justify-center xl:justify-center 2xl:justify-center min-h-screen text-center mx-1 xl:mx-0">
       {
-        status === "success" && (
+        status === "approved" && (
           <Card className="w-full max-w-5xl xl:h-[500px] 2xl:h-[500px] py-16 xl:px-16 xl:py-16 2xl:px-16 2xl:py-16 border border-card space-y-12">
             <div className="flex items-end space-x-4 mx-1 xl:mx-0 2xl:mx-0">
               <div className="w-full flex items-end">

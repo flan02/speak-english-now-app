@@ -14,6 +14,7 @@ export async function POST(req: Request) {
 
   // 2) Leer headers necesarios
   const signature = req.headers.get("x-signature");
+  const requestId = req.headers.get("x-request-id");
   const webhookSecret = process.env.MERCADO_PAGO_WEBHOOK_SECRET!; // tu secret real
 
   if (!signature || !webhookSecret) {
@@ -23,22 +24,26 @@ export async function POST(req: Request) {
 
   // 3) Validar firma
   try {
-    const [tsPart, hashPart] = signature.split(",");
-    const ts = tsPart.replace("ts=", "");
-    const providedHash = hashPart.replace("v1=", "");
+    // Extraer ts y v1
+    const [tsPart, v1Part] = signature.split(",");
+    const ts = tsPart.split("=")[1];
+    const v1 = v1Part.split("=")[1];
 
-    const toSign = ts + rawBody;
-    const expectedHash = crypto
+    // Construir string base
+    const data = `${ts}.${rawBody}.${webhookSecret}`;
+
+    // Crear hash
+    const hash = crypto
       .createHmac("sha256", webhookSecret)
-      .update(toSign)
+      .update(data)
       .digest("hex");
 
-    if (expectedHash !== providedHash) {
-      console.error("❌ Firma inválida. Webhook rechazado.");
-      return NextResponse.json({ received: true }, { status: 200 });
+    if (hash !== v1) {
+      console.log("❌ Firma inválida. Webhook rechazado.");
+      return NextResponse.json({ ok: false }, { status: 200 });
     }
 
-    console.log("✔ Firma válida");
+    console.log("✔ Firma válida. Webhook aceptado.");
   } catch (err) {
     console.error("❌ Error validando firma:", err);
     return NextResponse.json({ received: true }, { status: 200 });
@@ -51,6 +56,8 @@ export async function POST(req: Request) {
   } catch {
     console.log("⚠ No se pudo parsear JSON. Continuamos...");
   }
+
+  console.log("BODY PARSED", body);
 
   const paymentId = body?.data?.id;
   if (!paymentId) {
