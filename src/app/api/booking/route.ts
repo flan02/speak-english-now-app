@@ -13,20 +13,17 @@ export async function POST(request: Request) {
 
     const userId = session.user.id;
 
-    // const { start, end, isGroupClass, studentsCount, text, price, preferenceId } = await request.json();
     const body = await request.json();
     console.log('Body received in booking route', body);
 
-    const toGoogleCalendarEvent = body?.toGoogleCalendarEvent;
-
-    if (!toGoogleCalendarEvent) {
+    if (!body) {
       return NextResponse.json(
         { error: "Missing booking data" },
         { status: 400 }
       );
     }
 
-    const { start, end, isGroupClass, studentsCount, text, price, preferenceId } = toGoogleCalendarEvent;
+    const { start, end, isGroupClass, studentsCount, text, price, preferenceId } = body;
 
     if (!start || !end) {
       return NextResponse.json(
