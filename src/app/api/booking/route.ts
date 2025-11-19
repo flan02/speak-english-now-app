@@ -43,11 +43,13 @@ export async function POST(request: Request) {
       start,
       end,
       classType: isGroupClass ? "grupal" : "individual",
-      price: Number(price),
+      classPrice: Number(price),
       maxParticipants: isGroupClass ? studentsCount : 1,
       preferenceId,
       learningFocus: text
     }
+
+    console.log('Booking Data before sending to our db', bookingData);
     // * Crear booking con estado "pending"
     const isbooked = await createVirtualClass(bookingData, userId)
 

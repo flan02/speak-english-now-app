@@ -132,7 +132,7 @@ export async function createVirtualClass(body: any, userId: string) {
         startTime: new Date(body.start),
         endTime: new Date(body.end),
         classType: body.classType,
-        classPrice: body.price,
+        classPrice: body.classPrice,
         maxParticipants: body.maxParticipants,
         preferenceId: body.preferenceId,
         learningFocus: body.learningFocus,
