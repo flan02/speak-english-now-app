@@ -57,7 +57,7 @@ export const storePaymentData = create<PaymentData>((set) => ({
   setIsGroupClass: (isGroup: boolean) => set({ isGroupClass: isGroup }),
   selectedDate: null,
   setSelectedDate: (date: string | null) => set({ selectedDate: date }),
-  studentsCount: 0,
+  studentsCount: 1,
   setStudentsCount: (count: number) => set({ studentsCount: count }),
   price: Number(pricing.basePrice),
   setPrice: (price: number) => set({ price }),

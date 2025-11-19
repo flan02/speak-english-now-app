@@ -150,21 +150,21 @@ export type ScheduleTimeProps = {
 
 
 export type CalendarEvent = {
-  googleEventId: string
+  googleEventId: string | null
   bookedById: string
-  accessCode: string
+  accessCode: string | null
   startTime: Date
   endTime: Date
   maxParticipants: number
   currentParticipants: number
   classType: 'individual' | 'grupal'
   classPrice: number
-  htmlLink: string
-  status: 'scheduled' | 'completed' | 'cancelled'
-  summary: string
-  description: string
-  learningFocus: string
+  htmlLink: string | null
+  status: 'scheduled' | 'completed' | 'pending' | 'cancelled'
+  summary: string | null
+  learningFocus: string | null
   hostType: 'anfitrion' | 'invitado'
+  preferenceId: string | null
   participantsIds: string[]
 }
 
@@ -222,4 +222,13 @@ export interface formUserData {
   nivel: NivelIngles | ''
   telefono: number | ''
   newsletter: string
+}
+
+export type PaymentMP = {
+  userId: string,
+  preferenceId: string,
+  amount: number,
+  type: 'individual' | 'grupal',
+  maxParticipants: number,
+  status: 'pending' | 'approved' | 'rejected',
 }

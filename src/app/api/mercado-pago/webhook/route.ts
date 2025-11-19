@@ -1,4 +1,8 @@
 // Mercado Pago envía la notificación vía método POST
+import { KY, Method } from "@/services/api";
+import { API_ROUTES } from "@/services/api/routes";
+import { updatePayment } from "@/services/functions";
+
 // MP no firma el body del webhook a diferencia de Stripe
 export async function POST(req: Request) {
   console.log("🚚 Webhook recibido!");
@@ -51,13 +55,35 @@ export async function POST(req: Request) {
 
     if (payment.status === "approved") {
       console.log("✔ Pago aprobado, guardar en base de datos");
+      const preferenceId = order.preference_id;
+      const paymentFound = await updatePayment(preferenceId)
 
+      if (paymentFound?.success) {
+        console.log("✅ Pago actualizado en la base de datos");
+        // TODO: Calling Calendar router
+        const isClassUpdated = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {
+          json: { preferenceId },
+        });
+
+        if (!isClassUpdated.success) {
+          console.log("❌ Error al actualizar la clase virtual después del pago");
+          return Response.json({ ok: false, status: 500 });
+        }
+      } else {
+        console.log("❌ Error al actualizar el pago en la base de datos");
+      }
     }
 
-    return Response.json({ ok: true });
+    return Response.json({ ok: true, status: 200 });
   }
   // Other events
   console.log("⚠ Webhook desconocido, ignorando");
   return Response.json({ ok: true });
 }
 
+/* 
+
+    const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
+      json: classMetadata,
+    });
+*/

@@ -5,6 +5,7 @@ export const API_ROUTES = {
   MP: '/api/mercado-pago/create-preference',
   UPCOMING_CLASSES: '/api/upcoming-classes',
   USER_DATA: '/api/user-data',
+  BOOKING: '/api/booking'
 }
 
 export const URL_ROUTES = {

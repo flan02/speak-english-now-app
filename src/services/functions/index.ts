@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/db";
-import { CalendarEvent } from "@/lib/types";
+import { CalendarEvent, PaymentMP } from "@/lib/types";
 import { $Enums } from "@prisma/client";
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
@@ -116,7 +116,7 @@ export async function createGoogleCalendarEvent(calendarId: string, calendar: an
       conferenceDataVersion: 1, // Mandatory to obtain Google Meet link
     });
 
-    return response.data;
+    return { response: response.data, success: true };
 
   } catch (error) {
     console.error("Error creating calendar event:", error);
@@ -124,14 +124,37 @@ export async function createGoogleCalendarEvent(calendarId: string, calendar: an
   }
 }
 
+export async function createVirtualClass(body: any, userId: string) {
+  try {
+    const booking = await db.virtualClass.create({
+      data: {
+        bookedById: userId,
+        startTime: new Date(body.start),
+        endTime: new Date(body.end),
+        classType: body.classType,
+        classPrice: body.price,
+        maxParticipants: body.maxParticipants,
+        preferenceId: body.preferenceId,
+        learningFocus: body.learningFocus,
+      }
+    });
+    if (!booking) {
+      throw new Error("Booking couldnt be created");
+    }
+  } catch (error) {
+    console.error("We couldnt access to the database", error)
+    return { success: false, status: 500 };
+  }
+  return { success: true, status: 200 };
+}
 
-export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: string, body: any) {
-  const { isGroupClass, studentsCount, text } = body;
+
+
+export async function updateVirtualClass(googleCalendarEvent: any, userId: string, body: any) {
+  const { isGroupClass, studentsCount, text, preferenceId } = body;
   const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();  // Create a random access code with 8 char.
 
-  console.log("current studentsCount", studentsCount);
-
-  const price = studentsCount > 2 ? (studentsCount) : (12000 * (studentsCount + 1));
+  console.log("updated Virtual class body received, after webhook successful", body)
 
   const saveCalendarEvent: CalendarEvent = {
     googleEventId: googleCalendarEvent.id,
@@ -140,22 +163,37 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
     accessCode: randomCode,
     startTime: new Date(googleCalendarEvent.start.dateTime),
     endTime: new Date(googleCalendarEvent.end.dateTime),
-    maxParticipants: studentsCount == 0 ? 1 : studentsCount / pricing.groupPrice,
+    maxParticipants: isGroupClass ? studentsCount : 1,
     currentParticipants: 1,
-    classPrice: price,
+    classPrice: 111, // * Fix it later
     htmlLink: googleCalendarEvent.conferenceData.entryPoints[0].uri,
     status: "scheduled",
-    summary: googleCalendarEvent.summary,
-    description: googleCalendarEvent.description,
+    summary: `${googleCalendarEvent.summary}. ${googleCalendarEvent.description}`,
     learningFocus: text,
+    preferenceId: preferenceId,
     hostType: 'anfitrion',
     participantsIds: [
       userId
     ]
   }
 
+  // TODO: Already created in booking route. Must be filter by preferenceId and updated
   try {
-    const newClass = await db.virtualClass.create({
+    // Find the record first because `preferenceId` is not a unique field in Prisma's schema,
+    // and `update` requires a unique identifier in the `where` clause.
+    const reservedClassFound = await db.virtualClass.findFirst({
+      where: { preferenceId },
+      select: { id: true }
+    });
+
+    if (!reservedClassFound) {
+      return NextResponse.json({ error: 'Virtual class not found' }, { status: 404 });
+    }
+
+    const newClass = await db.virtualClass.update({
+      where: {
+        id: reservedClassFound.id
+      },
       data: saveCalendarEvent
     })
 
@@ -171,12 +209,7 @@ export async function saveGoogleCalendarEvent(googleCalendarEvent: any, userId: 
       })
     }
 
-    return NextResponse.json({
-      success: true,
-      message: 'Google Calendar event saved successfully',
-      data: newClass,
-      status: 200
-    });
+    return NextResponse.json({ success: true, status: 200 });
 
   } catch (error) {
     console.error('Error saving google event in database', error)
@@ -301,20 +334,58 @@ export async function getUpcomingClasses() {
 }
 
 
-export async function createPayment(userId: string, preferenceId: string, studentsCount: number) {
+export async function createPayment(data: PaymentMP) {
   try {
     const response = await db.paymentMercadoPago.create({
       data: {
-        userId,
-        preferenceId,
-        price: studentsCount,
-        status: 'pending'
+        userId: data.userId,
+        preferenceId: data.preferenceId,
+        price: data.amount,
+        type: data.type,
+        maxParticipants: data.maxParticipants,
+        status: data.status
       }
     })
 
     return { response, success: true };
   } catch (error) {
     console.error("Error creating payment record in our database:", error);
+  }
+}
+
+export async function updatePayment(preferenceId: string) {
+  try {
+    const response = await db.paymentMercadoPago.update({
+      where: {
+        preferenceId
+      },
+      data: {
+        status: 'approved'
+      }
+    })
+    return { response, success: true };
+  } catch (error) {
+    console.error("Error updating and approving payment record in our database:", error);
+  }
+}
+
+
+export async function findVirtualClass(preferenceId: string) {
+  try {
+    const response = await db.virtualClass.findFirst({
+      where: {
+        preferenceId
+      },
+      select: {
+        startTime: true,
+        endTime: true,
+        classType: true,
+        maxParticipants: true
+      }
+    });
+    return { response, success: true };
+  } catch (error) {
+    console.error("Error finding virtual class in our database:", error);
   }
 }
 /* 

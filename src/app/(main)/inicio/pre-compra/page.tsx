@@ -14,9 +14,17 @@ import { formattedDate } from '@/lib/utils';
 type Props = {}
 
 const PreCompraPage = () => {
-  const { isGroupClass, selectedDate, studentsCount, price, scheduledTime, text } = storePaymentData();
+  const { isGroupClass, selectedDate, studentsCount, price, scheduledTime, text, setStudentsCount } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
+  const type = isGroupClass ? 'grupal' : 'individual';
+  console.log('Price', price);
+  console.log('Type', type);
+  // if (type === 'individual') {
+  //   setStudentsCount(1);
+  // }
+  console.log('Students count', studentsCount);
+
 
   return (
     <>
@@ -38,10 +46,10 @@ const PreCompraPage = () => {
           <div className='space-y-4 py-8'>
             <div className='space-y-6 xl:space-y-8 2xl:space-y-8 px-1 xl:px-8 2xl:px-8 font-roboto text-sm xl:text-3xl 2xl:text-3xl'>
               <p className=''>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
-              <p className=''>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount == 0 ? 1 : Math.floor((studentsCount) / pricing.groupPrice)}</span></p>
+              <p className=''>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount}</span></p>
               <p className=''>Fecha: <span className='font-extrabold'>{formattedDate(selectedDate!)}</span></p>
               <p className=''>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
-              <p className=''>Precio: <span className='font-extrabold'>${studentsCount > 2 ? (studentsCount) : price}</span></p>
+              <p className=''>Precio: <span className='font-extrabold'>${price}</span></p>
               {
                 text && text != '' &&
                 <div className='space-y-4'>

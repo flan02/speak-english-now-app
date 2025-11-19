@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
 import pricing from "@/config/pricing.json";
 import { auth } from '@/auth';
-import { db } from '@/db';
 import { createPayment } from '@/services/functions';
+import { PaymentMP } from '@/lib/types';
 
 
 export async function POST(request: NextRequest) {
@@ -13,9 +13,8 @@ export async function POST(request: NextRequest) {
 
   const { type, studentsCount, price } = body
 
-  console.log('Request body:', body);
-  console.log('Actual students', Math.floor(Math.round(body.studentsCount) / 10000))
-  console.log('Actual price', body.studentsCount)
+  console.log('Request body in create preference:', body);
+
 
   if (!session?.user) {
     throw new Error('User not authenticated');
@@ -26,22 +25,21 @@ export async function POST(request: NextRequest) {
 
     const preference = new Preference(client);
 
-    const body = {
+    const mpBody = {
       items: [
         {
           id: `${session.user.id}-${Date.now()}`,
-          title: `Clase ${type === 'individual' ? 'individual' : 'grupal'} x${studentsCount == 1 ? 1 : Math.round(Math.floor(studentsCount) / pricing.groupPrice)}`,
+          title: `HablaInglesYa - Clase virtual para ${studentsCount} persona(s)`,
           quantity: 1,
-          unit_price: 50, //Number(price), // precio en ARS
+          unit_price: 50, // * const price (sent by frontend body json)
           currency_id: "ARS",
         }
       ],
-      notification_url: `${process.env.BASE_URL}api/mercado-pago/webhook`,
+      notification_url: `${process.env.BASE_URL}/api/mercado-pago/webhook`,
       payment_methods: {
         excluded_payment_types: [], // puedes excluir tipos si querés
         excluded_payment_methods: [], // puedes excluir métodos específicos
         installments: 12, // máximo de cuotas
-        crypto_currency: "ETH", // habilitar pago con criptomonedas
       },
       back_urls: {
         success: `${process.env.BASE_URL}/checkout/callback/success`,
@@ -51,15 +49,24 @@ export async function POST(request: NextRequest) {
       auto_return: "approved",
     }
 
-    const result = await preference.create({ body });
+    const result = await preference.create({ body: mpBody });
 
     if (!result.id) {
       return NextResponse.json({ error: 'Failed to create preference' }, { status: 500 });
     }
     // TODO: Create a new prisma model to save the current payment attempt
-    const response = await createPayment(session.user.id, result.id, Number(studentsCount))
+    const data: PaymentMP = {
+      userId: session.user.id,
+      preferenceId: result.id,
+      amount: Number(price),
+      type: type,
+      maxParticipants: Number(studentsCount),
+      status: 'pending',
+    }
 
-    if (!response?.success) {
+    const paymentCreated = await createPayment(data);
+
+    if (!paymentCreated?.success) {
       return NextResponse.json({ error: 'Failed to create payment record in our database' }, { status: 500 });
     }
     return NextResponse.json({ preferenceId: result.id });

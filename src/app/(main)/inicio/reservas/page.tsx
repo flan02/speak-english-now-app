@@ -1,7 +1,7 @@
 'use client'
 import H1 from '@/components/html/h1'
 import { BookAIcon, MouseIcon, PenBoxIcon } from 'lucide-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import FullCalendar from '@fullcalendar/react'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
@@ -18,32 +18,55 @@ import { Textarea } from '@/components/ui/textarea'
 import { KY, Method } from '@/services/api'
 import { cutId, formattedDate, scheduleClass } from '@/lib/utils'
 import pricing from '@/config/pricing.json'
-import { URL_ROUTES } from '@/services/api/routes'
+import { API_ROUTES, URL_ROUTES } from '@/services/api/routes'
 
 
 type Props = {}
 
 const Reservas = (props: Props) => {
 
-
   const [upcomingClasses, setUpcomingClasses] = useState<any[]>([]);
   const router = useRouter()
   const [isCalendarReady, setIsCalendarReady] = useState(false);
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
-  const { isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime, text, setText, classMetadata, setClassMetadata } = storePaymentData();
+  // const { isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime, text, setText, classMetadata, setClassMetadata } = storePaymentData();
+  const text = storePaymentData((state) => state.text);
+  const setText = storePaymentData((state) => state.setText);
+
+  const price = storePaymentData((state) => state.price);
+  const setPrice = storePaymentData((state) => state.setPrice);
+
+  const studentsCount = storePaymentData((state) => state.studentsCount);
+  const setStudentsCount = storePaymentData((state) => state.setStudentsCount);
+  const isGroupClass = storePaymentData((state) => state.isGroupClass);
+  const setIsGroupClass = storePaymentData((state) => state.setIsGroupClass);
+  const setClassMetadata = storePaymentData((state) => state.setClassMetadata);
+  const classMetadata = storePaymentData((state) => state.classMetadata);
+  const selectedDate = storePaymentData((state) => state.selectedDate);
+  const setSelectedDate = storePaymentData((state) => state.setSelectedDate);
+  const setScheduledTime = storePaymentData((state) => state.setScheduledTime);
+  const scheduledTime = storePaymentData((state) => state.scheduledTime);
+
+  // const [price, setPrice] = storePaymentData((s) => [s.price, s.setPrice]);
+
+
+  const [localText, setLocalText] = useState(text);
   const [isMobile, setIsMobile] = useState(false)
-  const fullCalendarEvents = upcomingClasses.map((meeting) => ({
-    id: `#${cutId(meeting.id)}`,
-    title: meeting.classType,
-    start: meeting.startTime,
-    end: meeting.endTime,
-    color: meeting.status === 'scheduled' ? '#F0ED90' : '',
-    extendedProps: {
-      participants: meeting.maxParticipants,
-      status: meeting.status === 'scheduled' ? 'Reservada' : meeting.status === 'completed' ? 'Completada' : 'Cancelada',
-    },
-  }))
+
+  const fullCalendarEvents = useMemo(() => {
+    return upcomingClasses.map((meeting) => ({
+      id: `#${cutId(meeting.id)}`,
+      title: meeting.classType,
+      start: meeting.startTime,
+      end: meeting.endTime,
+      color: meeting.status === 'scheduled' ? '#F0ED90' : '',
+      extendedProps: {
+        participants: meeting.maxParticipants,
+        status: meeting.status === 'scheduled' ? 'Reservada' : meeting.status === 'completed' ? 'Completada' : 'Cancelada',
+      },
+    }))
+  }, [upcomingClasses]);
 
   const fullCalendarContent = useCallback((arg: any) => {
     const { title, extendedProps } = arg.event;
@@ -70,10 +93,16 @@ const Reservas = (props: Props) => {
   }, [setIsGroupClass, setClassMetadata, classMetadata])
 
 
-  const handlePayment = useCallback(() => {
-    //setPayment(true);
+  // const handlePayment = useCallback(() => {
+  //   //setPayment(true);
+  //   setText(localText);
+  //   router.push(`${process.env.NEXT_PUBLIC_BASE_URL}${URL_ROUTES.PRE_COMPRA}`);
+  // }, [localText, setText, router])
+
+  const handlePayment = () => {
+    setText(localText);
     router.push(`${process.env.NEXT_PUBLIC_BASE_URL}${URL_ROUTES.PRE_COMPRA}`);
-  }, [router])
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -99,7 +128,7 @@ const Reservas = (props: Props) => {
 
   async function fetchMeeting() {
     try {
-      const response = await KY(Method.GET, '/api/upcoming-classes')
+      const response = await KY(Method.GET, `${API_ROUTES.UPCOMING_CLASSES}`);
       const data = await response.response;
       //console.log("Data", data);
       setUpcomingClasses(data);
@@ -118,6 +147,7 @@ const Reservas = (props: Props) => {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
 
   return (
     <>
@@ -296,25 +326,32 @@ const Reservas = (props: Props) => {
                       id="cantidad-alumnos"
                       value={studentsCount}
                       onChange={(e) => {
-                        if (e.target.value === "1") setIsGroupClass(false);
-                        setStudentsCount(parseInt(e.target.value))
+                        const qty = parseInt(e.target.value);        // 2,3,4,5
+                        const key = e.target.value as keyof typeof pricing.perStudent;
+                        const totalPrice = pricing.perStudent[key];
 
-                        const students = parseInt(e.target.value) > 0 ? Math.floor(parseInt(e.target.value) / 10000) : 1;
-                        console.log("current students", students);
-                        setClassMetadata({ ...classMetadata, type: "grupal", studentsCount: students, price: parseInt(e.target.value) })
+                        setStudentsCount(qty);
+                        setPrice(totalPrice);
+
+                        setClassMetadata({
+                          ...classMetadata,
+                          type: "grupal",
+                          studentsCount: qty,
+                          price: totalPrice
+                        });
                       }}
                       className='dark:bg-black px-1 border-card rounded-lg'>
                       <option value="0"></option>
-                      <option value={pricing.perStudent["2"]}>2</option>
-                      <option value={pricing.perStudent["3"]}>3</option>
-                      <option value={pricing.perStudent["4"]}>4</option>
-                      <option value={pricing.perStudent["5"]}>5</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
                     </select>
                   </div> : null
                 }
               </div>
               <p className='-mt-2 lg:mt-0 xl:mt-0'>
-                <span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${(studentsCount && classMetadata.type === "grupal") ? studentsCount : price}</span>
+                <span className='underline underline-offset-4'>Precio total</span>: <span className='font-roboto font-bold text-lg'>&nbsp; ${isGroupClass == false ? pricing.basePrice : price}</span>
               </p>
               <div className='space-y-2'>
                 <p className='underline underline-offset-4'>Objetivo de la clase:</p>
@@ -322,17 +359,17 @@ const Reservas = (props: Props) => {
                   className='text-xs xl:text-base 2xl:text-base'
                   maxLength={100}
                   placeholder='Describe el tema que necesitas tratar durante la clase (opcional)...'
-                  value={text}
-                  onChange={(e) => setText(e.target.value)}
+                  value={localText}
+                  onChange={(e) => setLocalText(e.target.value)}
                 />
                 <p className="text-sm text-muted-foreground text-right">
-                  {text?.length}/100
+                  {localText?.length}/100
                 </p>
               </div>
             </div>
 
             <div className=''>
-              <Button disabled={!text || !selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
+              <Button disabled={!localText || !selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
             </div>
 
           </article>

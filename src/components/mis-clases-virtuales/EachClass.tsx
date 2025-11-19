@@ -26,8 +26,11 @@ const EachClass = async ({ classItem, index }: Props) => {
     hour12: false, // ✅ esto fuerza formato 24hs
   })
 
-  const isValidMeeting = validateMeetingDate(classItem.startTime.toLocaleDateString("es-AR"), parsedStartTime, parsedEndTime)
+  // * Validate if the meeting can be joined (60 minutes before start time)
+  const isValidMeeting = validateMeetingDate(classItem.startTime.toLocaleDateString("es-AR"), parsedStartTime, parsedEndTime) // validate in line 61 alongside classItem.bookedById == session?.user?.id 
 
+
+  console.log(classItem.accessCode);
   return (
     <Card key={index} className='flex flex-col items-start text-sm xl:text-xs 2xl:text-xs xl:flex-row 2xl:flex-row xl:items-center 2xl:items-center py-4 px-4 border border-card space-y-2 lg:space-y-0 xl:space-y-0 2xl:space-y-0'>
       <p className='font-bold xl:font-normal 2xl:font-normal xl:w-[75px] 2xl:w-[75px] flex items-center justify-center'>
@@ -56,14 +59,14 @@ const EachClass = async ({ classItem, index }: Props) => {
         <span className='block lg:hidden w-[80px] xl:w-auto 2xl:w-auto'>Tarea IA: </span>
         No Realizada
       </p>
-      {classItem.bookedById == session?.user?.id && isValidMeeting ? (
+      {classItem.bookedById == session?.user?.id ? (
         <div className='font-bold xl:font-normal 2xl:font-normal xl:w-[90px] 2xl:w-[90px] flex items-center justify-center capitalize'>
           <span className='block lg:hidden w-[80px] xl:w-auto 2xl:w-auto'>Codigo: </span>
           <AccessCodeClient code={classItem.accessCode} classType={classItem.classType} />
         </div>
       ) : <div className='w-[90px] justify-center'></div>}
       <JoinClass
-        link={classItem.htmlLink}
+        link={classItem.htmlLink!}
         status={classItem.status}
         date={classItem.startTime.toLocaleDateString("es-AR")}
         time={{ start: parsedStartTime, end: parsedEndTime }}

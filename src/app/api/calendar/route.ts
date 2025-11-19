@@ -2,16 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { KY, Method } from '@/services/api'
 import { calendarEvent } from "@/lib/types";
 import { google } from "googleapis";
-import { createGoogleCalendarEvent, listEvents, saveGoogleCalendarEvent } from "@/services/functions";
+import { createGoogleCalendarEvent, findVirtualClass, listEvents, updateVirtualClass } from "@/services/functions";
 import { auth } from "@/auth";
-
 
 export async function GET() {
   const calendarId = process.env.CALENDAR_ID!;
   const apiKey = process.env.CALENDAR_API_KEY!;
   const now = new Date().toISOString();
   const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events?key=${apiKey}&timeMin=${now}`;
-
 
   try {
     const response = await KY(Method.GET, url);
@@ -32,7 +30,7 @@ export async function GET() {
   }
 }
 
-
+// TODO: Call this fc from webhook and update filtering by preferenceId
 export async function POST(request: NextRequest) {
   let userData, userId
   const session = await auth()
@@ -41,36 +39,35 @@ export async function POST(request: NextRequest) {
       name: session?.user?.name,
       email: session?.user?.email
     }
-
     userId = session?.user?.id
   }
 
-  const body = await request.json();
-
   try {
-
+    const { preferenceId } = await request.json();
+    if (!preferenceId) {
+      return NextResponse.json({ error: "Missing preferenceId" }, { status: 400 });
+    }
     const calendarId = process.env.CALENDAR_ID!;
 
-    // ? Required when using service account
-    // const auth = new google.auth.GoogleAuth({
-    //   credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!),
-    //   scopes: ['https://www.googleapis.com/auth/calendar']
-    // });
-
-    const auth = new google.auth.OAuth2(
-      process.env.AUTH_GOOGLE_ID,
-      process.env.AUTH_GOOGLE_SECRET
-    );
+    const auth = new google.auth.OAuth2(process.env.AUTH_GOOGLE_ID, process.env.AUTH_GOOGLE_SECRET)
     auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+
+    const body = await findVirtualClass(preferenceId)
+
+    if (!body?.success) {
+      return NextResponse.json({ error: "Virtual class not found" }, { status: 404 });
+    }
 
     const calendar = google.calendar({ version: 'v3', auth });
 
     // TODO: Create events in google calendar api
-    const googleCalendarEvent = await createGoogleCalendarEvent(calendarId, calendar, body, userData);
+    const googleCalendarEvent = await createGoogleCalendarEvent(calendarId, calendar, body.response, userData);
 
-    if (userId) await saveGoogleCalendarEvent(googleCalendarEvent, userId, body);
+    if (userId && googleCalendarEvent?.success) {
+      await updateVirtualClass(googleCalendarEvent.response, userId, body.response);
+    }
 
-    // | TESTING: List of my current events (Useful for paneladmin purposes)
+    // * TESTING: List of my current events (Useful for paneladmin purposes)
     //listEvents();
 
     return NextResponse.json({ success: true, message: "Event created successfully" });
@@ -79,3 +76,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to create calendar event' }, { status: 500 });
   }
 }
+
+// ? Required when using service account
+// const auth = new google.auth.GoogleAuth({
+//   credentials: JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON!),
+//   scopes: ['https://www.googleapis.com/auth/calendar']
+// });
