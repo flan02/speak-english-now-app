@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
           currency_id: "ARS",
         }
       ],
-      notification_url: `${process.env.BASE_URL}/api/mercado-pago/webhook`,
+      notification_url: `${process.env.BASE_URL}api/mercado-pago/webhook`,
       payment_methods: {
         excluded_payment_types: [], // puedes excluir tipos si querés
         excluded_payment_methods: [], // puedes excluir métodos específicos
