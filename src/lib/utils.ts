@@ -221,3 +221,10 @@ export const translateType = (type: string): string => {
       return type; // en caso de que no coincida, devolver el original
   }
 }
+
+
+export function normalizeUrl(base: string, path: string) {
+  const cleanBase = base.replace(/\/+$/, '');   // elimina barras finales del base
+  const cleanPath = path.replace(/^\/+/, '');   // elimina barras iniciales del path
+  return `${cleanBase}/${cleanPath}`;
+}

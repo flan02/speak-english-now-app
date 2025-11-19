@@ -1,4 +1,5 @@
 // Mercado Pago envía la notificación vía método POST
+import { normalizeUrl } from "@/lib/utils";
 import { KY, Method } from "@/services/api";
 import { API_ROUTES } from "@/services/api/routes";
 import { updatePayment } from "@/services/functions";
@@ -61,9 +62,10 @@ export async function POST(req: Request) {
       if (paymentFound?.success) {
         console.log("✅ Pago actualizado en la base de datos");
         // console.log("Route to create google meeting", `${process.env.BASE_URL}${API_ROUTES.CALENDAR}`);
+        const url = normalizeUrl(process.env.BASE_URL!, API_ROUTES.CALENDAR);
         // TODO: Calling Calendar router
-        const isClassUpdated = await KY(Method.POST, `${API_ROUTES.CALENDAR}`, {
-          json: { preferenceId },
+        const isClassUpdated = await KY(Method.POST, url, {
+          json: { preferenceId }
         });
 
 
