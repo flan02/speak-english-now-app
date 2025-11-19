@@ -4,8 +4,6 @@ import NextAuth from 'next-auth'
 import Github from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import { createUser, loggedAsAdmin } from '@/server-actions/actions'
-
-
 import { db } from './db'
 import { User } from './lib/types'
 
@@ -15,12 +13,12 @@ import { User } from './lib/types'
 // let isAdmin = (email: string) => email === process.env.ADMIN_EMAIL!
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Github, Google({
-    // clientId: process.env.AUTH_GOOGLE_ID,
-    // clientSecret: process.env.AUTH_GOOGLE_SECRET,
+    clientId: process.env.AUTH_GOOGLE_ID,
+    clientSecret: process.env.AUTH_GOOGLE_SECRET,
     authorization: {
       params: {
         scope: "openid email profile https://www.googleapis.com/auth/calendar.events",
-        access_type: "offline"
+        access_type: "offline",
         // prompt: "consent"
       }
     }

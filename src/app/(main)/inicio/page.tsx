@@ -14,7 +14,7 @@ const Principal = async (props: Props) => {
   const response = await getTotalClass()
   const nextClass = await getNextClass()
 
-  console.log('NEXT CLASS', nextClass);
+  //console.log('NEXT CLASS', nextClass);
 
   return (
     <>
