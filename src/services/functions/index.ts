@@ -203,7 +203,7 @@ export async function updateVirtualClass(googleCalendarEvent: any, body: any) {
           classId: newClass.id,
           taskId: null,
           rol: 'anfitrion',
-          completed: null,
+          completed: false
         }
       })
     }

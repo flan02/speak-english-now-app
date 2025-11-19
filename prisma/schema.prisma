@@ -159,7 +159,6 @@ model UserActivity {
 model PaymentMercadoPago {
   id              String        @id @default(auto()) @map("_id") @db.ObjectId
   userId          String        @db.ObjectId
-  classId         String?       @db.ObjectId // after payment is approved
   preferenceId    String        @unique
   price           Int
   type            ClassType

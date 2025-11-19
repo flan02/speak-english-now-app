@@ -91,7 +91,7 @@ export async function simulateSuccessPayment({ setIsLoading, scheduledTime, isGr
   }
 };
 
-
+/*
 export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupClass, setIsConfirm, studentsCount, price, text }: PaymentSimulationParams) => {
 
   setIsLoading(true);
@@ -180,6 +180,7 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
 
       setIsLoading(false);
       setIsConfirm(true);
+
     } else {
       console.error("No se recibió un ID de preferencia:", res.preferenceId);
     }
@@ -188,6 +189,68 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
     setIsLoading(false);
   }
 };
+*/
+
+// * IMPROVED CHECKOUT PRO WAY
+export const processMpPayment = async ({
+  setIsLoading,
+  scheduledTime,
+  isGroupClass,
+  setIsConfirm,
+  studentsCount,
+  price,
+  text
+}: PaymentSimulationParams) => {
+
+  setIsLoading(true);
+
+  const toGoogleCalendarEvent = {
+    start: `${toGoogleDate(scheduledTime.start!)}`,
+    end: `${toGoogleDate(scheduledTime.end!)}`,
+    isGroupClass,
+    studentsCount,
+    price,
+    text,
+    preferenceId: '',
+  };
+
+  try {
+    const classMetadata = {
+      type: isGroupClass ? "grupal" : "individual",
+      studentsCount,
+      price,
+    };
+
+    // 1) Crear preferencia
+    const res = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
+      json: classMetadata,
+    });
+
+    console.log("response from mercado pago", res);
+
+    if (!res.preferenceId || !res.initPoint) {
+      console.error("Respuesta inválida del backend MP:", res);
+      setIsLoading(false);
+      return;
+    }
+
+    // 2) Crear reserva en DB
+    toGoogleCalendarEvent.preferenceId = res.preferenceId;
+
+    await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.BOOKING}`, {
+      json: toGoogleCalendarEvent
+    });
+
+    // 3) Redirigir directamente (misma pestaña)
+    window.location.href = res.initPoint;
+    return;
+
+  } catch (error) {
+    console.error("Error processing payment:", error);
+    setIsLoading(false);
+  }
+};
+
 
 
 export async function fetchData(isEditing: formUserData, setIsEditing: React.Dispatch<React.SetStateAction<formUserData>>) {

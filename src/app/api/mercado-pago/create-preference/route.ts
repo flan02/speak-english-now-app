@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
     if (!paymentCreated?.success) {
       return NextResponse.json({ error: 'Failed to create payment record in our database' }, { status: 500 });
     }
-    return NextResponse.json({ preferenceId: result.id });
+    return NextResponse.json({ preferenceId: result.id, initPoint: result.init_point })
 
   } catch (error) {
     console.error('❌ Error creating preference:', error);
