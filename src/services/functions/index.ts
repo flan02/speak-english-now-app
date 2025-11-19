@@ -5,8 +5,7 @@ import { CalendarEvent, PaymentMP } from "@/lib/types";
 import { $Enums } from "@prisma/client";
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
-import pricing from "@/config/pricing.json";
-import { convertUtcToArg } from "@/lib/utils";
+
 
 export async function getUserData({ id }: { id: string }) {
   try {
@@ -85,17 +84,17 @@ export async function listEvents() {
 
 
 export async function createGoogleCalendarEvent(calendarId: string, calendar: any, eventData: any) {
-  const { start, end, isGroupClass, studentsCount } = eventData;
+  const { startTime, endTime, isGroupClass, studentsCount } = eventData;
 
   const bookingClass = {
     summary: `Clase de Inglés`,
     description: `La clase sera ${isGroupClass ? 'grupal' : 'individual'} con x${studentsCount == 0 ? 1 : studentsCount} participantes`,
     start: {
-      dateTime: convertUtcToArg(start),
+      dateTime: startTime,
       timeZone: 'America/Argentina/Buenos_Aires',
     },
     end: {
-      dateTime: convertUtcToArg(end),
+      dateTime: endTime,
       timeZone: 'America/Argentina/Buenos_Aires',
     },
     conferenceData: {
