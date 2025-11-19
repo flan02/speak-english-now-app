@@ -60,13 +60,15 @@ export async function POST(req: Request) {
 
       if (paymentFound?.success) {
         console.log("✅ Pago actualizado en la base de datos");
+        console.log("Route to create google meeting", `${process.env.BASE_URL}${API_ROUTES.CALENDAR}`);
         // TODO: Calling Calendar router
         const isClassUpdated = await KY(Method.POST, `${process.env.BASE_URL}${API_ROUTES.CALENDAR}`, {
           json: { preferenceId },
         });
 
+
         if (!isClassUpdated.success) {
-          console.log("❌ Error al actualizar la clase virtual después del pago");
+          console.log("❌ Error al crear clase virtual después del pago");
           return Response.json({ ok: false, status: 500 });
         }
       } else {

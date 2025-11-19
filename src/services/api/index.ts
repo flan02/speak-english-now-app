@@ -15,7 +15,7 @@ export async function KY(method: Method, url: string, data?: any) {
       const response = await (ky as any)[method](url).json()
       return response
     } else if (method === Method.POST) {
-      const response = await (ky as any)[method](url, data)
+      const response = await (ky as any)[method](url, data).json()
       return response
     }
     return null
