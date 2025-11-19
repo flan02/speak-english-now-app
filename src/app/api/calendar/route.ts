@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
 
     const body = await findVirtualClass(preferenceId)
-
+    console.log("Retrieved data from fc findVirtualClass", body?.response);
     if (!body?.success) {
       return NextResponse.json({ error: "Virtual class not found" }, { status: 404 });
     }

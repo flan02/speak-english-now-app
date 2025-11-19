@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
           id: `${session.user.id}-${Date.now()}`,
           title: `HablaInglesYa - Clase virtual para ${studentsCount} persona(s)`,
           quantity: 1,
-          unit_price: 50, // * const price (sent by frontend body json)
+          unit_price: 10, // * const price (sent by frontend body json)
           currency_id: "ARS",
         }
       ],
