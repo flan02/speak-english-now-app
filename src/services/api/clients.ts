@@ -108,20 +108,20 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
   try {
     const classMetadata = {
       type: isGroupClass ? "grupal" : "individual",
-      studentsCount: studentsCount === 0 ? 1 : studentsCount,
-      price: studentsCount > 2 ? price * studentsCount : price,
+      studentsCount: studentsCount,
+      price: price,
     };
 
     // * Creates preference in Mercado Pago API
-    const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
+    const res = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
       json: classMetadata,
     });
 
-    const data = await response.json();
-    console.log("response from mercado pago", data.preferenceId);
+    // const data = await response.json();
+    console.log("response from mercado pago", res.preferenceId);
 
-    if (data.preferenceId) {
-      toGoogleCalendarEvent.preferenceId = data.preferenceId;
+    if (res.preferenceId) {
+      toGoogleCalendarEvent.preferenceId = res.preferenceId;
 
       // * Creates booking for our class with status "pending"
       await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.BOOKING}`, {
@@ -141,7 +141,7 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
         const bricksBuilder = mp.bricks();
         await bricksBuilder.create("wallet", "payment-brick", {
           initialization: {
-            preferenceId: data.preferenceId,
+            preferenceId: res.preferenceId,
             amount: classMetadata.price,
           },
           customization: {
@@ -176,12 +176,12 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
           },
         });
       }
-      renderPaymentBrick(data.preferenceId);
+      renderPaymentBrick(res.preferenceId);
 
       setIsLoading(false);
       setIsConfirm(true);
     } else {
-      console.error("No se recibió un ID de preferencia:", data.preferenceId);
+      console.error("No se recibió un ID de preferencia:", res.preferenceId);
     }
   } catch (error) {
     console.error("Error processing payment:", error);

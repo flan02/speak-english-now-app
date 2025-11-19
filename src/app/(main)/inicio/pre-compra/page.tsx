@@ -17,14 +17,7 @@ const PreCompraPage = () => {
   const { isGroupClass, selectedDate, studentsCount, price, scheduledTime, text, setStudentsCount } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
-  const type = isGroupClass ? 'grupal' : 'individual';
-  console.log('Price', price);
-  console.log('Type', type);
-  // if (type === 'individual') {
-  //   setStudentsCount(1);
-  // }
-  console.log('Students count', studentsCount);
-
+  // const type = isGroupClass ? 'grupal' : 'individual';
 
   return (
     <>
