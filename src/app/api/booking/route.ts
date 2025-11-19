@@ -14,17 +14,32 @@ export async function POST(request: Request) {
     const userId = session.user.id;
 
     // const { start, end, isGroupClass, studentsCount, text, price, preferenceId } = await request.json();
-    const { toGoogleCalendarEvent } = await request.json();
-    console.log('Body received in booking route', toGoogleCalendarEvent);
+    const body = await request.json();
+    console.log('Body received in booking route', body);
 
-    const { start, end, isGroupClass, studentsCount, text, price, preferenceId } = toGoogleCalendarEvent
+    const toGoogleCalendarEvent = body?.toGoogleCalendarEvent;
+
+    if (!toGoogleCalendarEvent) {
+      return NextResponse.json(
+        { error: "Missing booking data" },
+        { status: 400 }
+      );
+    }
+
+    const { start, end, isGroupClass, studentsCount, text, price, preferenceId } = toGoogleCalendarEvent;
 
     if (!start || !end) {
-      return NextResponse.json({ error: "Missing start or end date", status: 400 })
+      return NextResponse.json(
+        { error: "Missing start or end date" },
+        { status: 400 }
+      );
     }
 
     if (!preferenceId) {
-      return NextResponse.json({ error: "Missing preferenceId", status: 400 });
+      return NextResponse.json(
+        { error: "Missing preferenceId" },
+        { status: 400 }
+      );
     }
 
     const bookingData = {
