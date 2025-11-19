@@ -100,6 +100,7 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
     end: `${toGoogleDate(scheduledTime.end!)}`,
     isGroupClass,
     studentsCount,
+    price,
     text,
     preferenceId: '',
   }
