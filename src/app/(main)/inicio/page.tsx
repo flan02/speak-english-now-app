@@ -14,8 +14,6 @@ const Principal = async (props: Props) => {
   const response = await getTotalClass()
   const nextClass = await getNextClass()
 
-  //console.log('NEXT CLASS', nextClass);
-
   return (
     <>
       <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>

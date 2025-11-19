@@ -228,3 +228,26 @@ export function normalizeUrl(base: string, path: string) {
   const cleanPath = path.replace(/^\/+/, '');   // elimina barras iniciales del path
   return `${cleanBase}/${cleanPath}`;
 }
+
+
+export function convertUtcToArg(dateStr: string) {
+  const d = new Date(dateStr);      // interpreta la Z (UTC)
+  if (isNaN(d.getTime())) {
+    throw new Error("Invalid date: " + dateStr);
+  }
+
+  // offset para Argentina (-180 min)
+  const offsetMinutes = 180; // 3 horas  
+  const local = new Date(d.getTime() - offsetMinutes * 60 * 1000);
+
+  // convertir a ISO local
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const year = local.getFullYear();
+  const month = pad(local.getMonth() + 1);
+  const day = pad(local.getDate());
+  const hours = pad(local.getHours());
+  const minutes = pad(local.getMinutes());
+  const seconds = pad(local.getSeconds());
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-03:00`;
+}

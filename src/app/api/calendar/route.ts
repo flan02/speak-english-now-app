@@ -40,7 +40,11 @@ export async function POST(request: NextRequest) {
     }
     const calendarId = process.env.CALENDAR_ID!;
 
-    const auth = new google.auth.OAuth2(process.env.AUTH_GOOGLE_ID, process.env.AUTH_GOOGLE_SECRET)
+    const auth = new google.auth.OAuth2(
+      process.env.AUTH_GOOGLE_ID,
+      process.env.AUTH_GOOGLE_SECRET,
+      process.env.GOOGLE_REDIRECT_URI
+    )
     auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
 
     const body = await findVirtualClass(preferenceId)
