@@ -3,7 +3,7 @@ import { KY, Method } from '@/services/api'
 import { calendarEvent } from "@/lib/types";
 import { google } from "googleapis";
 import { createGoogleCalendarEvent, findVirtualClass, listEvents, updateVirtualClass } from "@/services/functions";
-import { auth } from "@/auth";
+
 
 export async function GET() {
   const calendarId = process.env.CALENDAR_ID!;
@@ -32,15 +32,6 @@ export async function GET() {
 
 // TODO: Call this fc from webhook and update filtering by preferenceId
 export async function POST(request: NextRequest) {
-  let userData, userId
-  const session = await auth()
-  if (session?.user) {
-    userData = {
-      name: session?.user?.name,
-      email: session?.user?.email
-    }
-    userId = session?.user?.id
-  }
 
   try {
     const { preferenceId } = await request.json();
@@ -61,10 +52,10 @@ export async function POST(request: NextRequest) {
     const calendar = google.calendar({ version: 'v3', auth });
 
     // TODO: Create events in google calendar api
-    const googleCalendarEvent = await createGoogleCalendarEvent(calendarId, calendar, body.response, userData);
+    const googleCalendarEvent = await createGoogleCalendarEvent(calendarId, calendar, body.response);
 
-    if (userId && googleCalendarEvent?.success) {
-      await updateVirtualClass(googleCalendarEvent.response, userId, body.response);
+    if (googleCalendarEvent?.success) {
+      await updateVirtualClass(googleCalendarEvent.response, body.response);
     }
 
     // * TESTING: List of my current events (Useful for paneladmin purposes)

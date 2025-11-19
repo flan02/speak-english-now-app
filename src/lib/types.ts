@@ -151,7 +151,7 @@ export type ScheduleTimeProps = {
 
 export type CalendarEvent = {
   googleEventId: string | null
-  bookedById: string
+  bookedById: string | null
   accessCode: string | null
   startTime: Date
   endTime: Date
@@ -165,7 +165,7 @@ export type CalendarEvent = {
   learningFocus: string | null
   hostType: 'anfitrion' | 'invitado'
   preferenceId: string | null
-  participantsIds: string[]
+  participantsIds: string[] | null
 }
 
 

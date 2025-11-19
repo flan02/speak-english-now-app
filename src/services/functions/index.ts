@@ -83,12 +83,12 @@ export async function listEvents() {
 
 
 
-export async function createGoogleCalendarEvent(calendarId: string, calendar: any, eventData: any, userData: any) {
+export async function createGoogleCalendarEvent(calendarId: string, calendar: any, eventData: any) {
   const { start, end, isGroupClass, studentsCount } = eventData;
 
   const bookingClass = {
-    summary: `Clase de Inglés reservada por (${userData?.name})`,
-    description: `La clase sera ${isGroupClass ? 'grupal' : 'individual'} con x${studentsCount == 0 ? 1 : studentsCount / 10000} participantes`,
+    summary: `Clase de Inglés`,
+    description: `La clase sera ${isGroupClass ? 'grupal' : 'individual'} con x${studentsCount == 0 ? 1 : studentsCount} participantes`,
     start: {
       dateTime: start,
       timeZone: 'America/Argentina/Buenos_Aires',
@@ -136,6 +136,9 @@ export async function createVirtualClass(body: any, userId: string) {
         maxParticipants: body.maxParticipants,
         preferenceId: body.preferenceId,
         learningFocus: body.learningFocus,
+        participantsIds: [
+          userId
+        ]
       }
     });
     if (!booking) {
@@ -150,15 +153,14 @@ export async function createVirtualClass(body: any, userId: string) {
 
 
 
-export async function updateVirtualClass(googleCalendarEvent: any, userId: string, body: any) {
+export async function updateVirtualClass(googleCalendarEvent: any, body: any) {
   const { isGroupClass, studentsCount, text, preferenceId } = body;
   const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();  // Create a random access code with 8 char.
 
   console.log("updated Virtual class body received, after webhook successful", body)
 
-  const saveCalendarEvent: CalendarEvent = {
+  const saveCalendarEvent: Omit<CalendarEvent, 'bookedById' | 'participantsIds'> = {
     googleEventId: googleCalendarEvent.id,
-    bookedById: userId,
     classType: isGroupClass ? 'grupal' : 'individual',
     accessCode: randomCode,
     startTime: new Date(googleCalendarEvent.start.dateTime),
@@ -172,9 +174,6 @@ export async function updateVirtualClass(googleCalendarEvent: any, userId: strin
     learningFocus: text,
     preferenceId: preferenceId,
     hostType: 'anfitrion',
-    participantsIds: [
-      userId
-    ]
   }
 
   // TODO: Already created in booking route. Must be filter by preferenceId and updated
