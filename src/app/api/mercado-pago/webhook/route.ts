@@ -61,7 +61,7 @@ export async function POST(req: Request) {
       if (paymentFound?.success) {
         console.log("✅ Pago actualizado en la base de datos");
         // TODO: Calling Calendar router
-        const isClassUpdated = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`, {
+        const isClassUpdated = await KY(Method.POST, `${process.env.BASE_URL}${API_ROUTES.CALENDAR}`, {
           json: { preferenceId },
         });
 
@@ -81,9 +81,4 @@ export async function POST(req: Request) {
   return Response.json({ ok: true });
 }
 
-/* 
 
-    const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.MP}`, {
-      json: classMetadata,
-    });
-*/
