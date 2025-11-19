@@ -84,11 +84,11 @@ export async function listEvents() {
 
 
 export async function createGoogleCalendarEvent(calendarId: string, calendar: any, eventData: any) {
-  const { startTime, endTime, isGroupClass, studentsCount } = eventData;
+  const { startTime, endTime, classType, maxParticipants } = eventData;
 
   const bookingClass = {
     summary: `Clase de Inglés`,
-    description: `La clase sera ${isGroupClass ? 'grupal' : 'individual'} con x${studentsCount == 0 ? 1 : studentsCount} participantes`,
+    description: `La clase sera ${classType} con x${maxParticipants == 0 ? 1 : maxParticipants} participantes`,
     start: {
       dateTime: startTime,
       timeZone: 'America/Argentina/Buenos_Aires',
@@ -154,18 +154,18 @@ export async function createVirtualClass(body: any, userId: string) {
 
 
 export async function updateVirtualClass(googleCalendarEvent: any, body: any) {
-  const { isGroupClass, studentsCount, text, preferenceId } = body;
+  const { classType, maxParticipants, text, preferenceId } = body;
   const randomCode = Math.random().toString(36).substring(2, 10).toUpperCase();  // Create a random access code with 8 char.
 
   console.log("updated Virtual class body received, after webhook successful", body)
 
   const saveCalendarEvent: Omit<CalendarEvent, 'bookedById' | 'participantsIds'> = {
     googleEventId: googleCalendarEvent.id,
-    classType: isGroupClass ? 'grupal' : 'individual',
+    classType: classType,
     accessCode: randomCode,
     startTime: new Date(googleCalendarEvent.start.dateTime),
     endTime: new Date(googleCalendarEvent.end.dateTime),
-    maxParticipants: isGroupClass ? studentsCount : 1,
+    maxParticipants: maxParticipants,
     currentParticipants: 1,
     classPrice: 111, // * Fix it later
     htmlLink: googleCalendarEvent.conferenceData.entryPoints[0].uri,
@@ -379,7 +379,8 @@ export async function findVirtualClass(preferenceId: string) {
         startTime: true,
         endTime: true,
         classType: true,
-        maxParticipants: true
+        maxParticipants: true,
+        preferenceId: true,
       }
     });
     return { response, success: true };
