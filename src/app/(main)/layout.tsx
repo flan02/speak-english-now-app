@@ -22,7 +22,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
       {
         session.user.name &&
         <>
-          {/* <AuthTabSync /> */}
+
           <ClientTabGuard />
           <Marquee time={30} banners={marquee_banners} />
           <Navbar />
