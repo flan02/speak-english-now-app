@@ -74,7 +74,7 @@ const EachClass = async ({ classItem, index }: Props) => {
       <JoinClass
         link={classItem.htmlLink!}
         status={classItem.status}
-        date={toArgentinaTZ(new Date(classItem.startTime)).toISOString()}
+        date={formatUTCDate(String(classItem.startTime))} // ← YA ES dd/mm/yyyy
         time={{ start: parsedStartTime, end: parsedEndTime }}
       />
     </Card>
