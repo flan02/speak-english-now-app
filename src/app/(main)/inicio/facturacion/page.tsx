@@ -17,10 +17,11 @@ const Facturacion = async (props: Props) => {
   }
   const billingHistory = await getBillingHistory(session.user.id)
 
-  console.log("All billingHistory", billingHistory);
+  //console.log("All billingHistory", billingHistory);
   return (
     <>
-      <div className='flex space-x-4 justify-between items-end'>
+      {/* <div className='flex space-x-4 justify-between items-end'> */}
+      <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-between 2xl:justify-between'>
         <div className='flex items-end space-x-2'>
           <CreditCard className='mb-1' />
           <H1 title='Facturacion' />
