@@ -1,19 +1,15 @@
 import H1 from '@/components/html/h1'
-import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Home, Trophy } from 'lucide-react'
+import { Home } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
-import { getNextClass, getTotalClass } from './actions'
-import { calcularTiempoRestante, customDate } from '@/lib/utils'
 import { URL_ROUTES } from '@/services/api/routes'
+import TotalClasses from '@/components/inicio/TotalClasses'
+import NextClass from '@/components/inicio/NextClass'
 
 type Props = {}
 
 const Principal = async (props: Props) => {
-  const response = await getTotalClass()
-  const nextClass = await getNextClass()
-
   return (
     <>
       <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-start 2xl:justify-start'>
@@ -53,31 +49,7 @@ const Principal = async (props: Props) => {
                   </div>
                 </div>
 
-                <article className='flex justify-between mb-2 lg:mb-0 xl:mb-0'>
-                  {
-                    nextClass && new Date(nextClass.endTime) > new Date() ?
-                      <div className='bg-highlight w-full mx-1 rounded-lg xl:w-full 2xl:w-full flex justify-around items-start flex-col px-2 xl:items-center 2xl:items-center xl:flex-row 2xl:flex-row space-x-2 xl:px-2 xl:text-xs 2xl:px-4 2xl:text-sm font-roboto xl:mx-4 2xl:mx-4 py-6 xl:py-0 2xl:py-0'>
-                        <div className='flex items-center space-x-2 text-sm'>
-                          <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Siguiente clase:</h2>
-                          <p className='pr-4'>{customDate(nextClass.startTime)}</p>
-                        </div>
-                        <div className='flex items-center space-x-2 text-sm'>
-                          <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Participantes confirmados:</h2>
-                          <p className=''>{nextClass.currentParticipants} de</p>
-                          <p className='-ml-0.5'>{nextClass.maxParticipants}</p>
-                        </div>
-                        <div className='flex items-center space-x-2 text-sm'>
-                          <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Comienza en:</h2>
-                          <p className='font-roboto'>{calcularTiempoRestante(nextClass.startTime)}</p>
-                        </div>
-                      </div>
-                      :
-                      <p className='px-2 xl:px-6 2xl:px-6 py-2 font-bold font-roboto text-sm xl:mx-4 2xl:mx-4 border border-card w-full rounded-lg'>
-                        <span className='underline'>Siguiente clase</span>: &nbsp;No tenes clases programadas
-                      </p>
-                  }
-
-                </article>
+                <NextClass />
 
               </section>
             </Card>
@@ -99,18 +71,7 @@ const Principal = async (props: Props) => {
             </Card>
           </div>
 
-          <Card className='w-full border border-card py-4 space-y-4 px-4 flex flex-col space-x-4 mt-2 lg:mt-0 xl:mt-0'>
-            <div className='flex space-x-2 justify-center'>
-              <h3 className='font-bold text-sm xl:text-base 2xl:text-base font-roboto'>TOTAL CLASES COMPLETADAS: &nbsp; {response?.totalClasses}</h3>
-
-              <Trophy fill='#FFD700' color='#FFD700' size={20} className='xl:mt-0.5 2xl:mt-0.5' />
-            </div>
-            <Button asChild variant='default' className='bg-highlight mx-auto lg:w-min text-xs xl:text-base 2xl:text-base xl:tracking-wider font-bold'>
-              <Link href={URL_ROUTES.HISTORIAL}>
-                ver historial
-              </Link>
-            </Button>
-          </Card>
+          <TotalClasses />
         </Card>
         <br /><br /><br />
       </section>

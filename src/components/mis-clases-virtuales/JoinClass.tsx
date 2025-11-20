@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { validateMeetingDate } from '@/lib/utils';
+import { toArgentinaTZ, validateMeetingDate } from '@/lib/utils';
 import { Video } from 'lucide-react';
 
 type Props = {
@@ -14,12 +14,12 @@ type Props = {
 }
 
 const JoinClass = ({ link, status, date, time }: Props) => {
-
-  const isValidMeeting = validateMeetingDate(date, time.start, time.end)
+  console.log('offset date / start / end', date, time.start, time.end);
+  const isValidMeeting = validateMeetingDate(String(date), time.start, time.end)
+  console.log(isValidMeeting);
   if (!isValidMeeting) return null;
   return (
     <div className='-ml-1 lg:ml-0 xl:ml-0 2xl:ml-0'>
-
       <Link href={link} target="_blank" rel="noopener noreferrer">
         <Button
           size="sm"

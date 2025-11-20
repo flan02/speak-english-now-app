@@ -4,7 +4,7 @@ import { Card } from '../ui/card'
 import JoinClass from './JoinClass'
 import { auth } from '@/auth'
 import AccessCodeClient from './AccessCodeClient'
-import { toArgentinaTZ, validateMeetingDate } from '@/lib/utils'
+import { formatUTCDate, toArgentinaTZ, validateMeetingDate } from '@/lib/utils'
 
 
 type Props = {
@@ -17,19 +17,6 @@ const EachClass = async ({ classItem, index }: Props) => {
   const estado = classItem.status === 'scheduled' ? 'Reservada' : classItem.status === 'completed' ? 'Completada' : 'Cancelada'
 
   // ! No uses .toLocaleString() dentro de un Server Component.
-
-  // const parsedStartTime = classItem.startTime.toLocaleString("es-AR", {
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  //   hour12: false, // ✅ esto fuerza formato 24hs
-  // })
-
-  // const parsedEndTime = classItem.endTime.toLocaleString("es-AR", {
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  //   hour12: false, // ✅ esto fuerza formato 24hs
-  // })
-
   const argStart = toArgentinaTZ(new Date(classItem.startTime));
   const argEnd = toArgentinaTZ(new Date(classItem.endTime));
 
@@ -48,7 +35,7 @@ const EachClass = async ({ classItem, index }: Props) => {
 
 
   // * Validate if the meeting can be joined (60 minutes before start time)
-  const isValidMeeting = validateMeetingDate(classItem.startTime.toLocaleDateString("es-AR"), parsedStartTime, parsedEndTime) // validate in line 61 alongside classItem.bookedById == session?.user?.id 
+  // const isValidMeeting = validateMeetingDate(classItem.startTime.toLocaleDateString("es-AR"), parsedStartTime, parsedEndTime) // validate in line 61 alongside classItem.bookedById == session?.user?.id 
 
 
   console.log(classItem.accessCode);
@@ -56,7 +43,8 @@ const EachClass = async ({ classItem, index }: Props) => {
     <Card key={index} className='flex flex-col items-start text-sm xl:text-xs 2xl:text-xs xl:flex-row 2xl:flex-row xl:items-center 2xl:items-center py-4 px-4 border border-card space-y-2 lg:space-y-0 xl:space-y-0 2xl:space-y-0'>
       <p className='font-bold xl:font-normal 2xl:font-normal xl:w-[75px] 2xl:w-[75px] flex items-center justify-center'>
         <span className='block lg:hidden w-[80px] xl:w-auto 2xl:w-auto'>Dia: </span>
-        {new Date(classItem.startTime).toLocaleDateString("es-AR")}
+        {/* {new Date(classItem.startTime).toLocaleDateString("es-AR")} */}
+        {formatUTCDate(String(classItem.startTime))}
       </p>
       <div className='flex space-x-1 w-full xl:w-[110px] 2xl:w-[110px] items-center justify-start xl:justify-center'>
         <p className='font-bold xl:font-normal 2xl:font-normal xl:w-[90px] 2xl:w-[90px] flex items-center justify-center'>

@@ -122,7 +122,6 @@ export const customDate = (date: Date) => {
   return `${d}/${m}/${y} - ${h}:${min} hs`
 }
 
-
 export const validateMeetingDate = (
   date: string,
   startTime: string,
@@ -136,36 +135,30 @@ export const validateMeetingDate = (
   const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
   const now = new Date();
 
-  // Si la fecha de la reunión ya pasó completamente, no mostrar botón
-  if (now > meetingEnd) {
-    return false; // ya terminó, no es válida
+  // ❌ Si la clase ya terminó → NO mostrar botón
+  if (now >= meetingEnd) {
+    return false;
   }
 
-  // Una hora antes del inicio
+  // 🕒 Calcular el momento exacto en que falta 1 hora
   const oneHourBefore = new Date(meetingStart.getTime() - 60 * 60 * 1000);
 
-  // Es válida solo si estamos dentro del rango [una hora antes, fin]
-  return now >= oneHourBefore && now <= meetingEnd;
+  // ✔️ TRUE solo si estamos dentro del intervalo
+  // [una hora antes del inicio, hasta antes de que termine la clase]
+  return now >= oneHourBefore && now < meetingEnd;
 };
 
-export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
-  const clicked = info.date; // es un objeto Date de FullCalendar
-  const today = new Date();
 
-  // Comparamos solo año, mes y día
-  const clickedYMD = clicked.getFullYear() * 10000 + (clicked.getMonth() + 1) * 100 + clicked.getDate();
-  const todayYMD = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+export const formatUTCDate = (dateString: string) => {
+  const d = new Date(dateString);
+  // Obtiene valores en UTC, no se desplaza según timezones
+  const day = String(d.getUTCDate()).padStart(2, "0");
+  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+  const year = d.getUTCFullYear();
 
-  // Bloqueamos solo si es anterior a hoy
-  if (clickedYMD < todayYMD) return;
+  return `${day}/${month}/${year}`;
+};
 
-  // Bloquear domingos
-  if (clicked.getDay() === 0) return;
-
-  // Día válido → abrir modal
-  setSelectedDate(info.date.toISOString().slice(0, 10));
-  setOpen(true);
-}
 
 export const removePastDays = (arg: any) => {
   const cellDate = new Date(arg.date);
