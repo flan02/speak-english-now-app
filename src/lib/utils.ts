@@ -8,6 +8,16 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function toArgentinaTZ(date: Date) {
+  let offsetTZ = 3
+  if (process.env.NODE_ENV === "development") {
+    offsetTZ = 0
+  }
+
+  const timezone = new Date(date.getTime() - offsetTZ * 60 * 60 * 1000);
+  return timezone
+}
+
 export function toGoogleDate(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -112,24 +122,6 @@ export const customDate = (date: Date) => {
   return `${d}/${m}/${y} - ${h}:${min} hs`
 }
 
-// export const validateMeetingDate = (date: string, startTime: string, endTime: string): boolean => {
-
-//   const [day, month, year] = date.split('/').map(Number);
-//   const [startHour, startMinute] = startTime.split(':').map(Number);
-//   const [endHour, endMinute] = endTime.split(':').map(Number);
-
-//   const meetingStart = new Date(year, month - 1, day, startHour, startMinute);
-//   const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
-//   const now = new Date();
-
-//   const oneHourBefore = new Date(meetingStart.getTime() - (60 * 60 * 1000));
-
-//   if (now < oneHourBefore || now > meetingEnd) {
-//     return true
-//   } else {
-//     return false
-//   }
-// }
 
 export const validateMeetingDate = (
   date: string,
@@ -230,24 +222,24 @@ export function normalizeUrl(base: string, path: string) {
 }
 
 
-export function convertUtcToArg(dateStr: string) {
-  const d = new Date(dateStr);      // interpreta la Z (UTC)
-  if (isNaN(d.getTime())) {
-    throw new Error("Invalid date: " + dateStr);
-  }
+// export function convertUtcToArg(dateStr: string) {
+//   const d = new Date(dateStr);      // interpreta la Z (UTC)
+//   if (isNaN(d.getTime())) {
+//     throw new Error("Invalid date: " + dateStr);
+//   }
 
-  // offset para Argentina (-180 min)
-  const offsetMinutes = 180; // 3 horas  
-  const local = new Date(d.getTime() - offsetMinutes * 60 * 1000);
+//   // offset para Argentina (-180 min)
+//   const offsetMinutes = 180; // 3 horas  
+//   const local = new Date(d.getTime() - offsetMinutes * 60 * 1000);
 
-  // convertir a ISO local
-  const pad = (n: number) => String(n).padStart(2, "0");
-  const year = local.getFullYear();
-  const month = pad(local.getMonth() + 1);
-  const day = pad(local.getDate());
-  const hours = pad(local.getHours());
-  const minutes = pad(local.getMinutes());
-  const seconds = pad(local.getSeconds());
+//   // convertir a ISO local
+//   const pad = (n: number) => String(n).padStart(2, "0");
+//   const year = local.getFullYear();
+//   const month = pad(local.getMonth() + 1);
+//   const day = pad(local.getDate());
+//   const hours = pad(local.getHours());
+//   const minutes = pad(local.getMinutes());
+//   const seconds = pad(local.getSeconds());
 
-  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-03:00`;
-}
+//   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-03:00`;
+// }

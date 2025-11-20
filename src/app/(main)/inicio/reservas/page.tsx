@@ -71,13 +71,21 @@ const Reservas = (props: Props) => {
   const fullCalendarContent = useCallback((arg: any) => {
     const { title, extendedProps } = arg.event;
 
+
+
     return (
-      <div className="text-xs px-0 py-0 xl:px-2 xl:py-2 2xl:px-2 2xl:py-2 text-gray-500 dark:bg-white dark:-mx-1.5 dark:px-2 dark:py-1 dark:-mt-0.5 dark:rounded-lg xl:dark:py-2 xl:dark:-mt-0.5">
-        <p className="font-roboto capitalize">Tipo: {title}</p>
-        <p className="font-roboto capitalize">Participantes: {extendedProps.participants}</p>
-        <p className="font-roboto capitalize">Estado: {extendedProps.status}</p>
-        <p className="font-roboto capitalize">Id: {arg.event.id}</p>
-      </div>
+      <>
+        {
+          extendedProps.status != 'Cancelada'
+            ? <div className="text-xs px-0 py-0 xl:px-2 xl:py-2 2xl:px-2 2xl:py-2 text-gray-500 dark:bg-white dark:-mx-1.5 dark:px-2 dark:py-1 dark:-mt-0.5 dark:rounded-lg xl:dark:py-2 xl:dark:-mt-0.5">
+              <p className="font-roboto capitalize">Tipo: {title}</p>
+              <p className="font-roboto capitalize">Participantes: {extendedProps.participants}</p>
+              <p className="font-roboto capitalize">Estado: {extendedProps.status}</p>
+              <p className="font-roboto capitalize">Id: {arg.event.id}</p>
+            </div>
+            : null
+        }
+      </>
     );
   }, []);
 

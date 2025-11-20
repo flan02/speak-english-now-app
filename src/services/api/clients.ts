@@ -192,15 +192,7 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
 */
 
 // * IMPROVED CHECKOUT PRO WAY
-export const processMpPayment = async ({
-  setIsLoading,
-  scheduledTime,
-  isGroupClass,
-  setIsConfirm,
-  studentsCount,
-  price,
-  text
-}: PaymentSimulationParams) => {
+export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupClass, setIsConfirm, studentsCount, price, text }: PaymentSimulationParams) => {
 
   setIsLoading(true);
 

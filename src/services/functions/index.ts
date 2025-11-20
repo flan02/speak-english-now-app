@@ -7,6 +7,7 @@ import { google } from "googleapis";
 import { NextResponse } from "next/server";
 
 
+
 export async function getUserData({ id }: { id: string }) {
   try {
     const response = await db.user.findUnique({

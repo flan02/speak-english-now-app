@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { validateMeetingDate } from '@/lib/utils';
+import { Video } from 'lucide-react';
 
 type Props = {
   link: string
@@ -25,6 +26,7 @@ const JoinClass = ({ link, status, date, time }: Props) => {
           variant="outline"
           className="bg-highlight w-[90px] h-8 xl:ml-4 2xl:ml-4 text-xs hover:bg-black/80 dark:hover:bg-gray-300"
         >
+          <span><Video /></span>
           Unirse
         </Button>
       </Link>
