@@ -6,6 +6,8 @@ import { marquee_banners } from "@/lib/types";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/ui/app-sidebar";
 import MaxWidthWrapper from "@/components/reutilizable/MaxWidthWrapper";
+import ClientTabGuard from "@/components/reutilizable/ClientTabGuard";
+import AuthTabSync from "@/components/reutilizable/AuthTabSync";
 
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
@@ -20,6 +22,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
       {
         session.user.name &&
         <>
+          {/* <AuthTabSync /> */}
+          <ClientTabGuard />
           <Marquee time={30} banners={marquee_banners} />
           <Navbar />
           {/* <BackgroundMultiDots /> */}
