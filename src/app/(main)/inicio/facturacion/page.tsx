@@ -5,16 +5,19 @@ import { ArrowLeftCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { getBillingHistory } from './actions'
+import { toArgentinaTZ } from '@/lib/utils'
 
 type Props = {}
 
-export async function Facturacion(props: Props) {
+const Facturacion = async (props: Props) => {
   const session = await auth()
 
   if (!session) {
     return null
   }
   const billingHistory = await getBillingHistory(session.user.id)
+
+  console.log("All billingHistory", billingHistory);
   return (
     <>
       <div className='flex space-x-4 justify-between items-end'>
@@ -29,7 +32,26 @@ export async function Facturacion(props: Props) {
       <h2 className='font-roboto font-bold px-2 xl:px-0 2xl:px-0 text-xs xl:text-base 2xl:text-base'>
         Aqui tienes un resumen de las clases que has abonado.
       </h2>
-      <Card className='xl:w-full border border-card mx-1 py-4 px-1 lg:h-screen xl:h-[700px] 2xl:h-[700px]'></Card>
+      {
+        billingHistory && billingHistory.length != 0
+          ?
+          <Card className='xl:w-full border border-card mx-1 py-4 px-1 lg:h-screen xl:h-[700px] 2xl:h-[700px]'>
+            {
+              billingHistory.map((bill, index) => (
+                <div key={index} className='flex flex-col space-y-2'>
+                  <p><span className='font-bold'>Fecha de pago:</span> { }</p>
+                  <p><span className='font-bold'>Monto:</span> {`${toArgentinaTZ(bill.createdAt)}`}</p>
+                  <p><span className='font-bold'>Metodo de pago:</span> mercadopago</p>
+                  <p><span className='font-bold'>Nro. de orden:</span> {bill.preferenceId}</p>
+                  <p><span className='font-bold'>Precio:</span> {bill.preferenceId}</p>
+                  <p><span className='font-bold'>Cantidad de estudiantes:</span> {bill.maxParticipants}</p>
+                  <hr className='my-2' />
+                </div>
+              ))
+            }
+          </Card>
+          : <p>No se encontro ningun pago cargado en tu historial.</p>
+      }
 
     </>
   )

@@ -18,11 +18,11 @@ export function toArgentinaTZ(date: Date) {
   return timezone
 }
 
-export function force3hsTZ(date: Date) {
-  const offsetTZ = 3
-  const timezone = new Date(date.getTime() - offsetTZ * 60 * 60 * 1000);
-  return timezone
-}
+// export function force3hsTZ(date: Date) {
+//   const offsetTZ = 3
+//   const timezone = new Date(date.getTime() - offsetTZ * 60 * 60 * 1000);
+//   return timezone
+// }
 
 export function toGoogleDate(date: Date) {
   const year = date.getFullYear();
