@@ -159,6 +159,25 @@ export const formatUTCDate = (dateString: string) => {
   return `${day}/${month}/${year}`;
 };
 
+export const scheduleClass = ({ info, setOpen, setSelectedDate }: ScheduleClassProps) => {
+  const clicked = info.date; // es un objeto Date de FullCalendar
+  const today = new Date();
+
+  // Comparamos solo año, mes y día
+  const clickedYMD = clicked.getFullYear() * 10000 + (clicked.getMonth() + 1) * 100 + clicked.getDate();
+  const todayYMD = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
+  // Bloqueamos solo si es anterior a hoy
+  if (clickedYMD < todayYMD) return;
+
+  // Bloquear domingos
+  if (clicked.getDay() === 0) return;
+
+  // Día válido → abrir modal
+  setSelectedDate(info.date.toISOString().slice(0, 10));
+  setOpen(true);
+}
+
 
 export const removePastDays = (arg: any) => {
   const cellDate = new Date(arg.date);
@@ -215,24 +234,4 @@ export function normalizeUrl(base: string, path: string) {
 }
 
 
-// export function convertUtcToArg(dateStr: string) {
-//   const d = new Date(dateStr);      // interpreta la Z (UTC)
-//   if (isNaN(d.getTime())) {
-//     throw new Error("Invalid date: " + dateStr);
-//   }
 
-//   // offset para Argentina (-180 min)
-//   const offsetMinutes = 180; // 3 horas  
-//   const local = new Date(d.getTime() - offsetMinutes * 60 * 1000);
-
-//   // convertir a ISO local
-//   const pad = (n: number) => String(n).padStart(2, "0");
-//   const year = local.getFullYear();
-//   const month = pad(local.getMonth() + 1);
-//   const day = pad(local.getDate());
-//   const hours = pad(local.getHours());
-//   const minutes = pad(local.getMinutes());
-//   const seconds = pad(local.getSeconds());
-
-//   return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}-03:00`;
-// }
