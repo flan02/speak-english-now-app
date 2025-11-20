@@ -11,13 +11,6 @@ export async function NextClass(props: Props) {
 
   const argStart = toArgentinaTZ(new Date(nextClass?.startTime!));
 
-  // const parsedStartTime = argStart.toLocaleTimeString("es-AR", {
-  //   hour: "2-digit",
-  //   minute: "2-digit",
-  //   hour12: false
-  // });
-
-
   return (
     <article className='flex justify-between mb-2 lg:mb-0 xl:mb-0'>
       {

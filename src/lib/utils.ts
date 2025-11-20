@@ -18,6 +18,12 @@ export function toArgentinaTZ(date: Date) {
   return timezone
 }
 
+export function force3hsTZ(date: Date) {
+  const offsetTZ = 3
+  const timezone = new Date(date.getTime() - offsetTZ * 60 * 60 * 1000);
+  return timezone
+}
+
 export function toGoogleDate(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -122,31 +128,58 @@ export const customDate = (date: Date) => {
   return `${d}/${m}/${y} - ${h}:${min} hs`
 }
 
-export const validateMeetingDate = (
-  date: string,
-  startTime: string,
-  endTime: string
-): boolean => {
+export const validateMeetingDate = (date: string, startTime: string, endTime: string): boolean => {
   const [day, month, year] = date.split('/').map(Number);
   const [startHour, startMinute] = startTime.split(':').map(Number);
   const [endHour, endMinute] = endTime.split(':').map(Number);
 
-  const meetingStart = new Date(year, month - 1, day, startHour, startMinute);
-  const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
-  const now = new Date();
+  // AR = UTC-3 → pasamos todo a UTC sumando +3
+  const meetingStart = new Date(Date.UTC(
+    year,
+    month - 1,
+    day,
+    startHour + 3,
+    startMinute
+  ));
 
-  // ❌ Si la clase ya terminó → NO mostrar botón
-  if (now >= meetingEnd) {
-    return false;
-  }
+  const meetingEnd = new Date(Date.UTC(
+    year,
+    month - 1,
+    day,
+    endHour + 3,
+    endMinute
+  ));
 
-  // 🕒 Calcular el momento exacto en que falta 1 hora
+  const now = new Date(); // siempre te da UTC en Vercel, TZ local en dev
+
+  if (now >= meetingEnd) return false;
+
   const oneHourBefore = new Date(meetingStart.getTime() - 60 * 60 * 1000);
 
-  // ✔️ TRUE solo si estamos dentro del intervalo
-  // [una hora antes del inicio, hasta antes de que termine la clase]
   return now >= oneHourBefore && now < meetingEnd;
 };
+
+// export const validateMeetingDate = (date: string,startTime: string,endTime: string): boolean => {
+//   const [day, month, year] = date.split('/').map(Number);
+//   const [startHour, startMinute] = startTime.split(':').map(Number);
+//   const [endHour, endMinute] = endTime.split(':').map(Number);
+
+//   const meetingStart = new Date(year, month - 1, day, startHour, startMinute);
+//   const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
+//   const now = new Date();
+
+//   // ❌ Si la clase ya terminó → NO mostrar botón
+//   if (now >= meetingEnd) {
+//     return false;
+//   }
+
+//   // 🕒 Calcular el momento exacto en que falta 1 hora
+//   const oneHourBefore = new Date(meetingStart.getTime() - 60 * 60 * 1000);
+
+//   // ✔️ TRUE solo si estamos dentro del intervalo
+//   // [una hora antes del inicio, hasta antes de que termine la clase]
+//   return now >= oneHourBefore && now < meetingEnd;
+// };
 
 
 export const formatUTCDate = (dateString: string) => {

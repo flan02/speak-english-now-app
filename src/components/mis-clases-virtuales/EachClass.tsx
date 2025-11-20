@@ -33,17 +33,14 @@ const EachClass = async ({ classItem, index }: Props) => {
   });
 
 
-
   // * Validate if the meeting can be joined (60 minutes before start time)
   // const isValidMeeting = validateMeetingDate(classItem.startTime.toLocaleDateString("es-AR"), parsedStartTime, parsedEndTime) // validate in line 61 alongside classItem.bookedById == session?.user?.id 
 
-
-  console.log(classItem.accessCode);
   return (
     <Card key={index} className='flex flex-col items-start text-sm xl:text-xs 2xl:text-xs xl:flex-row 2xl:flex-row xl:items-center 2xl:items-center py-4 px-4 border border-card space-y-2 lg:space-y-0 xl:space-y-0 2xl:space-y-0'>
       <p className='font-bold xl:font-normal 2xl:font-normal xl:w-[75px] 2xl:w-[75px] flex items-center justify-center'>
         <span className='block lg:hidden w-[80px] xl:w-auto 2xl:w-auto'>Dia: </span>
-        {/* {new Date(classItem.startTime).toLocaleDateString("es-AR")} */}
+
         {formatUTCDate(String(classItem.startTime))}
       </p>
       <div className='flex space-x-1 w-full xl:w-[110px] 2xl:w-[110px] items-center justify-start xl:justify-center'>
@@ -77,7 +74,7 @@ const EachClass = async ({ classItem, index }: Props) => {
       <JoinClass
         link={classItem.htmlLink!}
         status={classItem.status}
-        date={classItem.startTime.toLocaleDateString("es-AR")}
+        date={toArgentinaTZ(new Date(classItem.startTime)).toISOString()}
         time={{ start: parsedStartTime, end: parsedEndTime }}
       />
     </Card>

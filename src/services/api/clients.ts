@@ -4,23 +4,21 @@ import { calendarEvent, formUserData } from "@/lib/types";
 import { KY, Method } from ".";
 import { API_ROUTES } from "./routes";
 import { toGoogleDate } from "@/lib/utils";
-import { initMercadoPago } from "@mercadopago/sdk-react";
-
 
 
 export async function handleAccessCode(accessCode: string, setError: (msg: string) => void) {
   //console.log('AccessCode in our frontend', accessCode);
   console.log("URL OBTAINED", `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.ACCESS_CODE}`);
   try {
-    const response = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.ACCESS_CODE}`, { json: accessCode })
-    const data = await response.json();
+    const res = await KY(Method.POST, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.ACCESS_CODE}`, { json: accessCode })
+    //const data = await response.json();
 
     //console.log("Google link obtained", data);
-    if (data.response.message) {
-      setError(data.response.message);
+    if (res.response.message) {
+      setError(res.response.message);
     }
     else {
-      window.open(data.response.htmlLink, '_blank', 'noopener,noreferrer');
+      window.open(res.response.htmlLink, '_blank', 'noopener,noreferrer');
     }
   } catch (error) {
     console.error("Error fetching access code:", error);

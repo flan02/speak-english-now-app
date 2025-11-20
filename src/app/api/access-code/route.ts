@@ -13,8 +13,17 @@ export async function POST(request: NextRequest) {
 
     // TODO: Create a fc that avoid multiple meeting at the same time (Only validated in frontend)
 
+
     if (response?.bookedById === session?.user?.id!) {
       return NextResponse.json({ response: { message: "El creador de la clase no puede unirse como participante" } });
+    }
+
+    if (response?.endTime) {
+      const now = new Date();
+      const endTime = new Date(response.endTime);
+      if (now > endTime) {
+        return NextResponse.json({ response: { message: "La clase ya ha finalizado." } });
+      }
     }
 
     if (response == null) {
