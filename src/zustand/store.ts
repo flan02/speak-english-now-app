@@ -71,9 +71,8 @@ export const storePaymentData = create<PaymentData>()(
       classMetadata: initData,
       setClassMetadata: (metadata: ClassMedatadataProps) => set({ classMetadata: metadata }),
     }), {
-    name: "payment-data-storage", // unique name
+    name: "payment-data-storage",
     partialize: (state) => ({
-      // 🔥 Solo guardás lo que realmente querés persistir
       isGroupClass: state.isGroupClass,
       selectedDate: state.selectedDate,
       studentsCount: state.studentsCount,
@@ -81,7 +80,7 @@ export const storePaymentData = create<PaymentData>()(
       scheduledTime: state.scheduledTime,
       text: state.text,
       classMetadata: state.classMetadata,
-    }),
+    })
   })
-);
+)
 
