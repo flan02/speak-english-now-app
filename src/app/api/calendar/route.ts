@@ -49,14 +49,7 @@ export async function POST(request: NextRequest) {
 
     const body = await findVirtualClass(preferenceId)
     console.log("Retrieved data from fc findVirtualClass", body?.response);
-    /* 
-    Retrieved data from fc findVirtualClass {
-  startTime: 2025-12-05T20:00:00.000Z,
-  endTime: 2025-12-05T21:00:00.000Z,
-  classType: 'grupal',
-  maxParticipants: 2
-}
-    */
+
     if (!body?.success) {
       return NextResponse.json({ error: "Virtual class not found" }, { status: 404 });
     }
