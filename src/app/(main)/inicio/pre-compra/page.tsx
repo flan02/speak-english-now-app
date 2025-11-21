@@ -5,8 +5,7 @@ import { Card } from '@/components/ui/card';
 import { storePaymentData } from '@/zustand/store';
 import { ArrowLeftCircle, CreditCard, PenTool } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react'
-import pricing from '@/config/pricing.json';
+import { useMemo, useState } from 'react'
 import { processMpPayment, simulateSuccessPayment } from '@/services/api/clients';
 import { URL_ROUTES } from '@/services/api/routes';
 import { formattedDate } from '@/lib/utils';
@@ -17,8 +16,53 @@ const PreCompraPage = () => {
   const { isGroupClass, selectedDate, studentsCount, price, scheduledTime, text, setStudentsCount } = storePaymentData();
   const [isLoading, setIsLoading] = useState(false);
   const [isConfirm, setIsConfirm] = useState(false);
-  // const type = isGroupClass ? 'grupal' : 'individual';
 
+
+  // ---------- 🔥 Normalización de fechas guardadas en localStorage ----------
+  const start = useMemo(() => {
+    if (!scheduledTime?.start) return null;
+    return scheduledTime.start instanceof Date
+      ? scheduledTime.start
+      : new Date(scheduledTime.start);
+  }, [scheduledTime?.start]);
+
+  const end = useMemo(() => {
+    if (!scheduledTime?.end) return null;
+    return scheduledTime.end instanceof Date
+      ? scheduledTime.end
+      : new Date(scheduledTime.end);
+  }, [scheduledTime?.end]);
+
+  // ---------- 🔥 Formateo seguro ----------
+  const formattedDate = useMemo(() => {
+    return start
+      ? start.toLocaleDateString("es-AR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+      })
+      : "-";
+  }, [start]);
+
+  const formattedStartTime = useMemo(() => {
+    return start
+      ? start.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      : "-";
+  }, [start]);
+
+  const formattedEndTime = useMemo(() => {
+    return end
+      ? end.toLocaleTimeString("es-AR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      : "-";
+  }, [end]);
   return (
     <>
       <div className='flex px-1 xl:px-0 2xl:px-0 mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-between xl:justify-between 2xl:justify-between'>
@@ -40,8 +84,8 @@ const PreCompraPage = () => {
             <div className='space-y-6 xl:space-y-8 2xl:space-y-8 px-1 xl:px-8 2xl:px-8 font-roboto text-sm xl:text-3xl 2xl:text-3xl'>
               <p className=''>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
               <p className=''>Cantidad de estudiantes: <span className='font-extrabold'>{studentsCount}</span></p>
-              <p className=''>Fecha: <span className='font-extrabold'>{formattedDate(selectedDate!)}</span></p>
-              <p className=''>Hora: <span className='font-extrabold'>{`${scheduledTime?.start?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime?.end?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}`} hs</span></p>
+              <p className=''>Fecha: <span className='font-extrabold'>{formattedDate}</span></p>
+              <p className=''>Hora: <span className='font-extrabold'>{`${formattedStartTime} - ${formattedEndTime}`} hs</span></p>
               <p className=''>Precio: <span className='font-extrabold'>${price}</span></p>
               {
                 text && text != '' &&
@@ -53,15 +97,13 @@ const PreCompraPage = () => {
             </div>
             <br />
             <div className='w-full text-center -mt-2'>
-              {/* <Button onClick={() => simulateSuccessPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price })} className=' bg-highlight tracking-wider text-xs xl:text-sm 2xl:text-sm'>Confirmar ...</Button> */}
-              <Button onClick={() => processMpPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price, setIsConfirm })} className=' bg-highlight tracking-wider text-xs xl:text-sm 2xl:text-sm'>Confirmar ...</Button>
+              <Button
+                onClick={() => processMpPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price, setIsConfirm })}
+                className='inline-flex items-center justify-center bg-[#00A6FF] text-white font-semibold px-16 py-6 rounded-md shadow-md transition text-base hover:bg-[#0094e6] active:bg-[#007bbf]'>
+                <img src="/mp-logo-removebg-preview.png" className='size-8 bg-white rounded-full' />
+                Pagar con Mercado Pago
+              </Button>
             </div>
-            {
-              isConfirm && <div>
-                <p className='font-roboto text-center text-sm lg:text-base mb-1'>¡Perfecto! Ya podes abonar tu reserva!</p>
-                <div id="payment-brick" className='w-full'></div>
-              </div>
-            }
           </div>
 
         </Card>

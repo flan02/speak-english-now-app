@@ -194,9 +194,17 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
 
   setIsLoading(true);
 
+  const startDate = scheduledTime.start instanceof Date
+    ? scheduledTime.start
+    : new Date(scheduledTime.start);
+
+  const endDate = scheduledTime.end instanceof Date
+    ? scheduledTime.end
+    : new Date(scheduledTime.end);
+
   const toGoogleCalendarEvent = {
-    start: `${toGoogleDate(scheduledTime.start!)}`,
-    end: `${toGoogleDate(scheduledTime.end!)}`,
+    start: `${toGoogleDate(startDate)}`,
+    end: `${toGoogleDate(endDate)}`,
     isGroupClass,
     studentsCount,
     price,

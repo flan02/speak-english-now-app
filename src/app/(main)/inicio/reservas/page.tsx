@@ -30,7 +30,7 @@ const Reservas = (props: Props) => {
   const [isCalendarReady, setIsCalendarReady] = useState(false);
   const [open, setOpen] = useState(false);
   const { events, isLoading, refetch } = useCalendar()
-  // const { isGroupClass, setIsGroupClass, selectedDate, setSelectedDate, studentsCount, setStudentsCount, price, setPrice, scheduledTime, setScheduledTime, text, setText, classMetadata, setClassMetadata } = storePaymentData();
+
   const text = storePaymentData((state) => state.text);
   const setText = storePaymentData((state) => state.setText);
 
@@ -55,17 +55,19 @@ const Reservas = (props: Props) => {
   const [isMobile, setIsMobile] = useState(false)
 
   const fullCalendarEvents = useMemo(() => {
-    return upcomingClasses.map((meeting) => ({
-      id: `#${cutId(meeting.id)}`,
-      title: meeting.classType,
-      start: meeting.startTime,
-      end: meeting.endTime,
-      color: meeting.status === 'scheduled' ? '#F0ED90' : '',
-      extendedProps: {
-        participants: meeting.maxParticipants,
-        status: meeting.status === 'scheduled' ? 'Reservada' : meeting.status === 'completed' ? 'Completada' : 'Cancelada',
-      },
-    }))
+    return upcomingClasses
+      .filter((meeting) => meeting.status !== "cancelled")
+      .map((meeting) => ({
+        id: `#${cutId(meeting.id)}`,
+        title: meeting.classType,
+        start: meeting.startTime,
+        end: meeting.endTime,
+        color: meeting.status === 'scheduled' ? '#F0ED90' : '',
+        extendedProps: {
+          participants: meeting.maxParticipants,
+          status: meeting.status === 'scheduled' ? 'Reservada' : meeting.status === 'completed' ? 'Completada' : 'Cancelada',
+        },
+      }))
   }, [upcomingClasses]);
 
   const fullCalendarContent = useCallback((arg: any) => {
@@ -309,7 +311,20 @@ const Reservas = (props: Props) => {
               </p>
               <p className=''>
                 <span className='underline underline-offset-4 mr-1'>Horario:</span>
-                {selectedDate && (scheduledTime.start && scheduledTime.end) ? `${scheduledTime.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}` : " no hay horario seleccionado"}
+                {/* {selectedDate && (scheduledTime.start && scheduledTime.end) ? `${scheduledTime.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} - ${scheduledTime.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}` : " no hay horario seleccionado"} */}
+                {selectedDate && scheduledTime.start && scheduledTime.end ? (
+                  `${new Date(scheduledTime.start).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })} - ${new Date(scheduledTime.end).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })}`
+                ) : (
+                  " no hay horario seleccionado"
+                )}
               </p>
               <div className='flex space-x-4 flex-col lg:flex-row space-y-2 lg:space-y-0'>
                 <div className='flex space-x-2'>

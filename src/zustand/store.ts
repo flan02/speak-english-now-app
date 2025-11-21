@@ -1,5 +1,6 @@
 import { ClassMedatadataProps } from "@/lib/types"
 import { create } from "zustand"
+import { persist } from "zustand/middleware"
 import pricing from "@/config/pricing.json"
 
 interface PremiumModalState {
@@ -50,22 +51,37 @@ interface ScheduleTimeProps {
 
 const initialScheduledTime: ScheduleTimeProps = { start: null, end: null }
 
-export const storePaymentData = create<PaymentData>((set) => ({
-  payment: false,
-  setPayment: (payment: boolean) => set({ payment }),
-  isGroupClass: false,
-  setIsGroupClass: (isGroup: boolean) => set({ isGroupClass: isGroup }),
-  selectedDate: null,
-  setSelectedDate: (date: string | null) => set({ selectedDate: date }),
-  studentsCount: 1,
-  setStudentsCount: (count: number) => set({ studentsCount: count }),
-  price: Number(pricing.basePrice),
-  setPrice: (price: number) => set({ price }),
-  scheduledTime: initialScheduledTime,
-  setScheduledTime: (time: ScheduleTimeProps) => set({ scheduledTime: time }),
-  text: "",
-  setText: (text: string) => set({ text }),
-  classMetadata: initData,
-  setClassMetadata: (metadata: ClassMedatadataProps) => set({ classMetadata: metadata }),
-}))
+export const storePaymentData = create<PaymentData>()(
+  persist(
+    (set) => ({
+      payment: false,
+      setPayment: (payment: boolean) => set({ payment }),
+      isGroupClass: false,
+      setIsGroupClass: (isGroup: boolean) => set({ isGroupClass: isGroup }),
+      selectedDate: null,
+      setSelectedDate: (date: string | null) => set({ selectedDate: date }),
+      studentsCount: 1,
+      setStudentsCount: (count: number) => set({ studentsCount: count }),
+      price: Number(pricing.basePrice),
+      setPrice: (price: number) => set({ price }),
+      scheduledTime: initialScheduledTime,
+      setScheduledTime: (time: ScheduleTimeProps) => set({ scheduledTime: time }),
+      text: "",
+      setText: (text: string) => set({ text }),
+      classMetadata: initData,
+      setClassMetadata: (metadata: ClassMedatadataProps) => set({ classMetadata: metadata }),
+    }), {
+    name: "payment-data-storage", // unique name
+    partialize: (state) => ({
+      // 🔥 Solo guardás lo que realmente querés persistir
+      isGroupClass: state.isGroupClass,
+      selectedDate: state.selectedDate,
+      studentsCount: state.studentsCount,
+      price: state.price,
+      scheduledTime: state.scheduledTime,
+      text: state.text,
+      classMetadata: state.classMetadata,
+    }),
+  })
+);
 

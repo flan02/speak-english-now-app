@@ -1,8 +1,7 @@
 "use server"
-
 import { getNextClass } from "@/app/(main)/inicio/actions"
 import { calcularTiempoRestante, customDate, toArgentinaTZ } from "@/lib/utils"
-import { parse } from "path"
+
 
 type Props = {}
 
@@ -11,6 +10,7 @@ export async function NextClass(props: Props) {
 
   const argStart = toArgentinaTZ(new Date(nextClass?.startTime!));
 
+  //console.log('THIS IS THE NEXT CLASS', nextClass);
   return (
     <article className='flex justify-between mb-2 lg:mb-0 xl:mb-0'>
       {
@@ -27,7 +27,8 @@ export async function NextClass(props: Props) {
             </div>
             <div className='flex items-center space-x-2 text-sm'>
               <h2 className='py-2 underline underline-offset-2 font-bold xl:font-normal 2xl:font-normal'>Comienza en:</h2>
-              <p className='font-roboto'>{calcularTiempoRestante(nextClass.startTime)}</p>
+              {/* <p className='font-roboto'>{calcularTiempoRestante(nextClass.startTime)}</p> */}
+              <p className='font-roboto'>{calcularTiempoRestante(new Date(nextClass.startTime))}</p>
             </div>
           </div>
           :

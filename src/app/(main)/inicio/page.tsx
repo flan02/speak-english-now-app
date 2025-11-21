@@ -48,9 +48,7 @@ const Principal = async (props: Props) => {
                     </div>
                   </div>
                 </div>
-
                 <NextClass />
-
               </section>
             </Card>
 
@@ -70,7 +68,6 @@ const Principal = async (props: Props) => {
               </div>
             </Card>
           </div>
-
           <TotalClasses />
         </Card>
         <br /><br /><br />

@@ -21,28 +21,56 @@ export const getTotalClass = cache(async () => {
   }
 })
 
+// export const getNextClass = cache(async () => {
+//   const session = await auth()
+
+//   try {
+//     const today = new Date();
+//     const response = await db.virtualClass.findFirst({
+//       where: {
+//         bookedById: session?.user.id,
+//         startTime: {
+//           gte: today
+//         }
+//       },
+//       orderBy: {
+//         // createdAt: 'desc'
+//         startTime: 'asc'
+//       }
+//     })
+//     return response
+//   } catch (error) {
+//     console.error("We could not retrieve last class for this user", error)
+//   }
+// })
+
 export const getNextClass = cache(async () => {
-  const session = await auth()
+  const session = await auth();
 
   try {
     const today = new Date();
+
     const response = await db.virtualClass.findFirst({
       where: {
-        bookedById: session?.user.id,
         startTime: {
           gte: today
-        }
+        },
+        OR: [
+          { bookedById: session?.user.id },             // anfitrión
+          { participantsIds: { has: session?.user.id } } // invitado
+        ]
       },
       orderBy: {
-        // createdAt: 'desc'
-        startTime: 'asc'
+        startTime: "asc"
       }
-    })
-    return response
+    });
+
+    return response;
   } catch (error) {
-    console.error("We could not retrieve last class for this user", error)
+    console.error("We could not retrieve next class for this user", error);
   }
-})
+});
+
 
 
 export async function subscribeUser(prevState: { message: string }, formData: FormData) {

@@ -6,6 +6,10 @@ Estimated time to complete 16/12 - 31/12
 
 Make it free for all and other paid version using Stripe
 
+## Image editor and compressor
+
+[website](https://squoosh.app/)
+
 ## Stripe docs
 
 [website](docs.stripe.com/testing)
