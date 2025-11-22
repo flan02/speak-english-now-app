@@ -4,7 +4,7 @@ import type { NextRequest } from 'next/server';
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://speak-english-now-da644jw21-flan02s-projects.vercel.app',
+  'https://speak-english-now-app-git-test-prod-flan02s-projects.vercel.app',
   'https://hablainglesya.xyz'
 ];
 
