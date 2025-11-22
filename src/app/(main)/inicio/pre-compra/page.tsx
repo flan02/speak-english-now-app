@@ -99,8 +99,8 @@ const PreCompraPage = () => {
             <div className='w-full text-center -mt-2'>
               <Button
                 onClick={() => processMpPayment({ setIsLoading, scheduledTime, isGroupClass, studentsCount, text, price, setIsConfirm })}
-                className='inline-flex items-center justify-center bg-[#00A6FF] text-white font-semibold px-16 py-6 rounded-md shadow-md transition text-base hover:bg-[#0094e6] active:bg-[#007bbf]'>
-                <img src="/mp-logo-removebg-preview.png" className='size-8 bg-white rounded-full' />
+                className='inline-flex items-center justify-center bg-[#00A6FF] text-white font-semibold px-16 py-6 rounded-md shadow-md transition text-sm lg:text-base hover:bg-[#0094e6] active:bg-[#007bbf]'>
+                <img src="/mp-logo-removebg-preview.png" className='size-6 lg:size-8 bg-white rounded-full' />
                 Pagar con Mercado Pago
               </Button>
             </div>

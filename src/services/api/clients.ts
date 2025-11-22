@@ -272,7 +272,8 @@ export async function fetchData(isEditing: formUserData, setIsEditing: React.Dis
 
 export const fetchEvents = async (setEvents: React.Dispatch<React.SetStateAction<calendarEvent[]>>, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
-    const response = await KY(Method.GET, `${process.env.NEXT_PUBLIC_BASE_URL}${API_ROUTES.CALENDAR}`)
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '');
+    const response = await KY(Method.GET, `${baseUrl}${API_ROUTES.CALENDAR}`)
     setEvents(response)
   } catch (error) {
     console.error("Error fetching calendar events from frontend:", error);
