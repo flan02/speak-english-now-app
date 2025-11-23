@@ -37,7 +37,7 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-
+    --selected-slot-bg: lightyellow;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -80,7 +80,7 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-
+    --selected-slot-bg: #333;
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
     --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -355,8 +355,8 @@ body {
 .dark .fc-scrollgrid,
 .dark .fc-scrollgrid-liquid,
 .dark .fc-timegrid,
-.dark .fc-timegrid-slot,
-.dark .fc-timegrid-col-frame,
+/* .dark .fc-timegrid-slot, */
+/* .dark .fc-timegrid-col-frame, */
 .dark .fc-timegrid-col-events,
 .dark .fc-timegrid-event-harness {
   border-color: #222 !important;
@@ -403,6 +403,11 @@ body {
   background-color: #eeeeee !important;
 }
 
+.dark .fc-highlight {
+  background-color: oklch(0.205 0 0) !important;
+  border: 1px solid white !important;
+}
+
 /* ! MEDIA QUERIES STYLES */
 
 @media (max-width: 768px) {
@@ -419,6 +424,17 @@ body {
 }
 
 @media (max-width: 540px) {
+  .selected-slot {
+    background-color: var(--selected-slot-bg) !important;
+    border: 1px solid yellow !important;
+    color: white !important;
+    transition: 0.15s;
+  }
+
+  .dark .fc-highlight {
+    background-color: oklch(0.205 0 0) !important;
+    border: 1px solid white !important;
+  }
   .bg-modal {
     height: 320px !important;
   }

@@ -19,6 +19,8 @@ import { KY, Method } from '@/services/api'
 import { cutId, formattedDate, scheduleClass } from '@/lib/utils'
 import pricing from '@/config/pricing.json'
 import { API_ROUTES, URL_ROUTES } from '@/services/api/routes'
+import { set } from 'date-fns'
+import { fetchMeeting } from '@/services/api/clients'
 
 
 type Props = {}
@@ -34,8 +36,6 @@ const Reservas = (props: Props) => {
   const text = storePaymentData((state) => state.text);
   const setText = storePaymentData((state) => state.setText);
 
-  const price = storePaymentData((state) => state.price);
-  const setPrice = storePaymentData((state) => state.setPrice);
 
   const studentsCount = storePaymentData((state) => state.studentsCount);
   const setStudentsCount = storePaymentData((state) => state.setStudentsCount);
@@ -47,8 +47,17 @@ const Reservas = (props: Props) => {
   const setSelectedDate = storePaymentData((state) => state.setSelectedDate);
   const setScheduledTime = storePaymentData((state) => state.setScheduledTime);
   const scheduledTime = storePaymentData((state) => state.scheduledTime);
+  const price = storePaymentData((state) => state.price);
+  const setPrice = storePaymentData((state) => state.setPrice);
 
-  // const [price, setPrice] = storePaymentData((s) => [s.price, s.setPrice]);
+  // ! it causes -> “The result of getSnapshot should be cached to avoid an infinite loop”
+  // const [text, setText] = storePaymentData((state) => [state.text, state.setText]);
+  // const [price, setPrice] = storePaymentData((state) => [state.price, state.setPrice]);
+  // const [studentsCount, setStudentsCount] = storePaymentData((state) => [state.studentsCount, state.setStudentsCount]);
+  // const [isGroupClass, setIsGroupClass] = storePaymentData((state) => [state.isGroupClass, state.setIsGroupClass]);
+  // const [classMetadata, setClassMetadata] = storePaymentData((state) => [state.classMetadata, state.setClassMetadata]);
+  // const [selectedDate, setSelectedDate] = storePaymentData((state) => [state.selectedDate, state.setSelectedDate]);
+  // const [scheduledTime, setScheduledTime] = storePaymentData((state) => [state.scheduledTime, state.setScheduledTime]);
 
 
   const [localText, setLocalText] = useState(text);
@@ -56,7 +65,7 @@ const Reservas = (props: Props) => {
 
   const fullCalendarEvents = useMemo(() => {
     return upcomingClasses
-      .filter((meeting) => meeting.status !== "cancelled")
+      .filter((meeting) => meeting.status !== "pending")
       .map((meeting) => ({
         id: `#${cutId(meeting.id)}`,
         title: meeting.classType,
@@ -72,13 +81,10 @@ const Reservas = (props: Props) => {
 
   const fullCalendarContent = useCallback((arg: any) => {
     const { title, extendedProps } = arg.event;
-
-
-
     return (
       <>
         {
-          extendedProps.status != 'Cancelada'
+          extendedProps.status != 'pending'
             ? <div className="text-xs px-0 py-0 xl:px-2 xl:py-2 2xl:px-2 2xl:py-2 text-gray-500 dark:bg-white dark:-mx-1.5 dark:px-2 dark:py-1 dark:-mt-0.5 dark:rounded-lg xl:dark:py-2 xl:dark:-mt-0.5">
               <p className="font-roboto capitalize">Tipo: {title}</p>
               <p className="font-roboto capitalize">Participantes: {extendedProps.participants}</p>
@@ -102,12 +108,6 @@ const Reservas = (props: Props) => {
     })
   }, [setIsGroupClass, setClassMetadata, classMetadata])
 
-
-  // const handlePayment = useCallback(() => {
-  //   //setPayment(true);
-  //   setText(localText);
-  //   router.push(`${process.env.NEXT_PUBLIC_BASE_URL}${URL_ROUTES.PRE_COMPRA}`);
-  // }, [localText, setText, router])
 
   const handlePayment = () => {
     setText(localText);
@@ -136,19 +136,10 @@ const Reservas = (props: Props) => {
     return [];
   }, []);
 
-  async function fetchMeeting() {
-    try {
-      const response = await KY(Method.GET, `${API_ROUTES.UPCOMING_CLASSES}`);
-      const data = await response.response;
-      //console.log("Data", data);
-      setUpcomingClasses(data);
-    } catch (error) {
-      console.error("We couldn't retrieve any class for this calendar", error)
-    }
-  }
+
 
   useEffect(() => {
-    fetchMeeting()
+    fetchMeeting(setUpcomingClasses);
   }, [])
 
   useEffect(() => {
@@ -185,18 +176,26 @@ const Reservas = (props: Props) => {
                 }}
                 dateClick={(info) => {
                   scheduleClass({ info, setOpen, setSelectedDate })
+                  // Pintar slot seleccionado
+                  const target = info.jsEvent?.target as HTMLElement | null;
+                  const slot = target?.closest(".fc-timegrid-slot") ?? null;
+                  if (slot) {
+                    document.querySelectorAll(".fc-timegrid-slot").forEach((el) => {
+                      el.classList.remove("selected-slot");
+                    });
+                    (slot as HTMLElement).classList.add("selected-slot");
+
+                  }
                   const start = new Date(info.date);
                   const end = new Date(start.getTime() + 60 * 60 * 1000); // +1h
                   //console.log("Seleccionaste (auto 1h):", start, "→", end);
                   setScheduledTime({ start: start, end: end });
                 }}
-                // dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
                 dayCellClassNames={removePastDays}
                 datesSet={() => setIsCalendarReady(true)}
                 dayHeaderFormat={{
                   weekday: isMobile ? "long" : "short",
                 }}
-
                 eventDidMount={(info) => {
                   if (info.event.extendedProps?.status === 'confirmed') {
                     info.el.style.border = '1px solid #000';
@@ -234,7 +233,6 @@ const Reservas = (props: Props) => {
                 }}
                 select={(info) => {
                   console.log("Seleccionaste:", info.start, "→", info.end)
-                  //setScheduledTime({ start: info.start, end: info.end })
                 }}
                 validRange={{
                   start: new Date().toISOString().split("T")[0],
@@ -392,7 +390,11 @@ const Reservas = (props: Props) => {
             </div>
 
             <div className=''>
-              <Button disabled={!localText || !selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)} className='btn-dark bg-black text-white text-xs' onClick={handlePayment}>Agendar clase</Button>
+              <Button disabled={!localText || !selectedDate || !scheduledTime.start || !scheduledTime.end || (isGroupClass && studentsCount == 0)}
+                className='bg-highlight text-xs'
+                onClick={handlePayment}>
+                Agendar clase
+              </Button>
             </div>
 
           </article>

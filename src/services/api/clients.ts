@@ -30,7 +30,7 @@ interface PaymentSimulationParams {
   setIsLoading: (loading: boolean) => void;
   scheduledTime: any;
   isGroupClass: boolean;
-  setIsConfirm: (confirm: boolean) => void; // remove when we are using similated payment Fc
+  //setIsConfirm: (confirm: boolean) => void; // remove when we are using similated payment Fc
   studentsCount: number;
   text: string;
   price: number; // could be optional in simulated payment
@@ -190,7 +190,7 @@ export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupCla
 */
 
 // * IMPROVED CHECKOUT PRO WAY
-export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupClass, setIsConfirm, studentsCount, price, text }: PaymentSimulationParams) => {
+export const processMpPayment = async ({ setIsLoading, scheduledTime, isGroupClass, studentsCount, price, text }: PaymentSimulationParams) => {
 
   setIsLoading(true);
 
@@ -279,5 +279,17 @@ export const fetchEvents = async (setEvents: React.Dispatch<React.SetStateAction
     console.error("Error fetching calendar events from frontend:", error);
   } finally {
     setIsLoading(false)
+  }
+}
+
+
+export async function fetchMeeting(setUpcomingClasses: React.Dispatch<React.SetStateAction<any[]>>) {
+  try {
+    const response = await KY(Method.GET, `${API_ROUTES.UPCOMING_CLASSES}`);
+    const data = await response.response;
+    //console.log("Data", data);
+    setUpcomingClasses(data);
+  } catch (error) {
+    console.error("We couldn't retrieve any class for this calendar", error)
   }
 }
