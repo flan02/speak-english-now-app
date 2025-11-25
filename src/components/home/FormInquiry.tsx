@@ -20,6 +20,11 @@ const FormInquiry = (props: Props) => {
               <FieldLabel className="font-bold font-roboto text-xs lg:text-sm text-left">Escribemos nuestro asistente IA se pondra en contacto contigo a la brevedad:</FieldLabel>
               <Input name="contacto" type="text" placeholder="Email/Teléfono" className="text-xs lg:text-sm text-black dark:text-white" required />
             </Field>
+            {/* Honeypot field */}
+            <div className="hidden" aria-hidden="true">
+              <FieldLabel>Website URL</FieldLabel>
+              <Input name="website_url" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
             <Field className='w-full lg:w-[500px]'>
               <FieldLabel className="font-bold font-roboto text-xs lg:text-sm">Consulta:</FieldLabel>
               <Textarea name="textarea" rows={4} placeholder="Escribí tu mensaje aqui..." className="text-xs lg:text-sm text-black dark:text-white mt-1" required />

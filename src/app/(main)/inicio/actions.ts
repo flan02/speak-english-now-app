@@ -116,6 +116,12 @@ export async function supportUser(prevState: { message: string }, formData: Form
   try {
     const contacto = formData.get("contacto") as string
     const message = formData.get("textarea") as string
+    const honey = formData.get("website_url") as string
+
+    // Honeypot check
+    if (honey) {
+      return { message: "Tu consulta ha sido enviada. Te responderemos a la brevedad." }
+    }
 
     if (!contacto || !message) {
       return { message: "Todos los campos son obligatorios." }
