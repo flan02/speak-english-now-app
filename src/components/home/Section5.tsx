@@ -1,18 +1,19 @@
 import React from 'react'
 import MaxWidthWrapper from '../reutilizable/MaxWidthWrapper'
 import Image from 'next/image'
-import Yo from '../../../public/yo.jpg'
 import { GitHubButton, LinkedInButton, MyWebsiteButton } from '../reutilizable/ButtonsCustom'
+// import Yo from '../../../public/yo.jpg'
 
 type Props = {}
 
 const Section5 = (props: Props) => {
+  const Yo = 'https://res.cloudinary.com/dhbig9jt8/image/upload/v1764260098/yo-gemini-ai_eoni48.jpg'
   return (
     <MaxWidthWrapper className='lg:space-y-16'>
       <h2 className="mb-0 text-3xl pt-16 pb-8 lg:text-5xl font-bold lg:mb-16 lg:py-0 text-center tracking-wider" id="about">Nuestra Misión</h2>
       <section className='px-1 lg:px-6'>
         <div className="flex flex-col space-y-4 lg:flex-row lg:justify-between">
-          <Image src={Yo} alt="Foto Perfil" className='rounded-full mx-auto lg:mx-0 size-20 lg:size-28 border-2 border-black' />
+          <Image src={Yo} alt="Foto Perfil" className='rounded-full mx-auto lg:mx-0 size-20 lg:size-28 border-2 border-black' width={112} height={112} />
           <p className='font-orbitron text-xs leading-4.5 lg:pt-1 lg:leading-6 lg:text-lg text-left tracking-wide md:w-[86%]'>Soy Dan Chanivet un programador web argentino con más de 7 años de experiencia en el desarrollo de aplicaciones y sitios web modernos.
             He trabajado durante 3 años de forma remota para empresas de Estados Unidos, y me comunico tanto en español como en inglés de manera fluida.</p>
         </div>
