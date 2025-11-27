@@ -120,6 +120,7 @@ export async function supportUser(prevState: { message: string }, formData: Form
 
     // Honeypot check
     if (honey) {
+      console.log("👮 Bot atrapado en honeypot")
       return { message: "Tu consulta ha sido enviada. Te responderemos a la brevedad." }
     }
 
