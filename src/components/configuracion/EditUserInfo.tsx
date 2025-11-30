@@ -14,6 +14,7 @@ type Props = {}
 
 const EditUserInfo = (props: Props) => {
   const [formUpdated, setFormUpdated] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(true)
 
   const initData: formUserData = {
     status: false,
@@ -53,16 +54,39 @@ const EditUserInfo = (props: Props) => {
 
 
   useEffect(() => {
-    fetchData(isEditing, setIsEditing);
+    const loadData = async () => {
+      setIsLoading(true);
+      await fetchData(isEditing, setIsEditing);
+      setIsLoading(false);
+    }
+    loadData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className='space-y-3'>
+        <Skeleton className="h-5 w-[300px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+        <Skeleton className="h-5 w-[300px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+        <Skeleton className="h-5 w-[300px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+        <Skeleton className="h-5 w-[300px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark mb-12 xl:mb-4 2xl:mb-4" />
+        <div className='flex flex-col lg:flex-row lg:space-x-1'>
+          <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+          <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark mt-3 lg:mt-0" />
+        </div>
+        <div className='w-full flex justify-center'>
+          <Skeleton className="h-9 w-full lg:w-[70px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <form onSubmit={handleSaveBtn} className='space-y-3'>
-      <div className='flex space-x-2 items-end'>
+      <div className='flex space-x-2 items-end h-5'>
         <p className='font-roboto underline font-bold uppercase text-xs'>localidad:</p>
         {
           !isEditing.status ?
-            <div className='!no-underline !lowercase text-xs font-roboto'>{isEditing.localidad || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
+            <div className='!no-underline !lowercase text-xs font-roboto'>{isEditing.localidad}</div>
             :
             <input
               type="text" className='input-text !px-1 !text-xs !h-5 border border-gray-400 border-card rounded-md'
@@ -72,11 +96,11 @@ const EditUserInfo = (props: Props) => {
             />
         }
       </div>
-      <div className='flex space-x-2 items-end'>
+      <div className='flex space-x-2 items-end h-5'>
         <p className='font-roboto underline font-bold uppercase text-xs'>nivel de ingles:</p>
         {
           !isEditing.status ?
-            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.nivel || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.nivel}</div>
             :
             <select className='text-xs font-roboto border border-gray-400 border-card rounded-md !p-1 dark:bg-black' value={isEditing.nivel} onChange={(e) => setIsEditing({ ...isEditing, nivel: (e.target.value as NivelIngles) })}>
               <option value="basico" >basico</option>
@@ -85,22 +109,22 @@ const EditUserInfo = (props: Props) => {
             </select>
         }
       </div>
-      <div className='flex space-x-2 items-end'>
+      <div className='flex space-x-2 items-end h-5'>
         <p className='font-roboto underline font-bold uppercase text-xs mt-2'>telefono de contacto:</p>
         {
           !isEditing.status ?
-            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{String(isEditing.telefono) || <Skeleton className="h-4 w-[80px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{String(isEditing.telefono)}</div>
             :
             <input
               type="number" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' placeholder='ingresa tu nro celular' value={Number(isEditing.telefono)} onChange={(e) => setIsEditing({ ...isEditing, telefono: Number(e.target.value) })}
             />
         }
       </div>
-      <div className='flex space-x-2 items-end mb-12 xl:mb-4 2xl:mb-4'>
+      <div className='flex space-x-2 items-end mb-12 xl:mb-4 2xl:mb-4 h-5'>
         <p className='font-roboto underline font-bold uppercase text-xs mt-2'>¿Recibir boletin?</p>
         {
           !isEditing.status ?
-            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.newsletter || <Skeleton className="h-4 w-[15px] rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />}</div>
+            <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{isEditing.newsletter}</div>
             :
             <input
               type="checkbox" className='input-text !p-1 !text-xs !h-5 border border-gray-400 border-card rounded-md' checked={isEditing.newsletter === 'si'} onChange={(e) => setIsEditing({ ...isEditing, newsletter: e.target.checked ? 'si' : 'no' })}
@@ -109,9 +133,14 @@ const EditUserInfo = (props: Props) => {
       </div>
 
 
-      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs'>
+      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1'>
         <Link href={URL_ROUTES.FACTURACION}>
           ver facturacion
+        </Link>
+      </Button>
+      <Button asChild variant='default' className='w-full lg:w-auto text-xs mt-2 lg:mt-0 bg-highlight'>
+        <Link href={URL_ROUTES.SOPORTE}>
+          Soporte y Ayuda
         </Link>
       </Button>
       <div className='w-full text-center space-x-2'>
@@ -120,9 +149,7 @@ const EditUserInfo = (props: Props) => {
         </Button>
         {
           isEditing.status &&
-          <Button type="submit" className='w-full lg:w-auto btn-green text-xs bg-green-600 hover:bg-green-600/80 mt-1 text-white'>
-            Guardar
-          </Button>
+          <Button type="submit" className='w-full lg:w-auto btn-green text-xs bg-green-600 hover:bg-green-600/80 mt-1 text-white'>Guardar</Button>
         }
 
       </div>

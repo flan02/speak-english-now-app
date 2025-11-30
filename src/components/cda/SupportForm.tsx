@@ -1,0 +1,52 @@
+'use client'
+import { useActionForm } from '@/hooks/useActionForm'
+import { supportUser } from '@/app/(main)/inicio/actions'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
+import { HeadsetIcon } from 'lucide-react'
+
+type Props = {}
+
+const SupportForm = (props: Props) => {
+  const { formAction: query, message: queryMessage, pending: queryPending } = useActionForm(supportUser)
+  return (
+    <>
+      <div className='font-bold text-xs lg:text-sm font-roboto flex space-x-2'>
+        <HeadsetIcon />
+        <p className='mt-1 lg:mt-0.5'>Contacta con el soporte para que te generemos un ticket y podamos ayudarte</p>
+      </div>
+      <div className='flex flex-col items-center space-y-4 font-roboto'>
+        <form action={query} className="flex flex-col gap-4 text-sm items-center justify-center w-full lg:w-[500px]">
+          <FieldGroup className=''>
+            {/* <Field className='w-full lg:w-[500px]'>
+              <FieldLabel className="font-bold font-roboto text-xs lg:text-sm text-left">Escribemos nuestro asistente IA se pondra en contacto contigo a la brevedad:</FieldLabel>
+              <Input name="contacto" type="text" placeholder="Email/Teléfono" className="text-xs lg:text-sm text-black dark:text-white" required />
+            </Field> */}
+
+            {/* Honeypot field */}
+            <div className="hidden" aria-hidden="true">
+              <FieldLabel>Website URL</FieldLabel>
+              <Input name="website_url" type="text" tabIndex={-1} autoComplete="off" />
+            </div>
+            <Field className='w-full lg:w-[500px]'>
+              <FieldLabel className="font-bold font-roboto text-xs lg:text-sm"></FieldLabel>
+              <Textarea name="textarea" rows={4} placeholder="Describenos tu situacion..." className="text-xs lg:text-sm text-black dark:text-white mt-1" required />
+            </Field>
+            <Field className="flex justify-center -mt-4 w-full lg:w-[500px]">
+              <Button disabled={queryPending} type="submit" className="bg-highlight rounded-md py-1 font-bold cursor-pointer tracking-wider" variant={'destructive'}>Generar ticket</Button>
+            </Field>
+            <div className="min-h-[1.5rem]">
+              <p className={`text-xs font-bold text-black dark:text-white transition-opacity duration-300 ${queryMessage ? "opacity-100" : "opacity-0"}`}>
+                {queryMessage || "‎"} {/* el carácter invisible evita colapsar el contenedor */}
+              </p>
+            </div>
+          </FieldGroup>
+        </form>
+      </div>
+    </>
+  )
+}
+
+export default SupportForm

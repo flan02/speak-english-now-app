@@ -62,10 +62,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        <script
-          src="https://sdk.mercadopago.com/js/v2"
-          async
-        ></script>
+        <script src="https://sdk.mercadopago.com/js/v2" async ></script>
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} ${orbitron.variable} antialiased`} >
         <ThemeProvider

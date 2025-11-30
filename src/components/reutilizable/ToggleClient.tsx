@@ -3,6 +3,7 @@ import { ToggleLeftIcon, ToggleRightIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 export default function ToggleClient() {
   const { setTheme, theme } = useTheme();
@@ -22,12 +23,12 @@ export default function ToggleClient() {
     }
   }, [theme]);
 
-  if (!mounted) return null; // avoid blinking
+  if (!mounted) return <Skeleton className="w-[300px] h-7 lg:h-7 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" /> //null; // avoid blinking
 
   const isDark = currentTheme === "dark"
 
   return (
-    <div className="flex space-x-1 items-center mb-1">
+    <div className="flex space-x-1 items-center mb-1 lg:h-10">
       <p className="font-roboto underline font-bold uppercase text-xs">modo oscuro:</p>
       <div>
         {

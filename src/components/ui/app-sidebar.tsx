@@ -57,7 +57,7 @@ export async function AppSidebar() {
           <CardContent className="flex items-center relative">
             <Dot color="green" size={52} fill="" className="absolute top-1 left-0" />
             <Image src={session.user.image!} alt={session.user.name} width={32} height={32} className="rounded-full mr-2 border-2 border-black" />
-            <p className="font-orbitron font-bold">{session.user.name}</p>
+            <p className="font-orbitron font-bold text-xs lg:text-sm">{session.user.name}</p>
           </CardContent>
           <SignOut />
         </Card>

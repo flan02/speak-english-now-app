@@ -20,7 +20,7 @@ const Configuracion = async (props: Props) => {
         <H1 title='Configuracion' />
       </div>
       <section className='space-y-4 mx-1'>
-        <Card className='w-full border border-card py-8 space-y-4'>
+        <Card className='w-full border border-card py-8 space-y-4 h-[500px]'> {/* PAY ATTENTION ON HEIGHT FOR MOBILE DESIGN  */}
           <CardContent className='space-y-4'>
             <ToggleClient />
             <div className='flex space-x-2'>

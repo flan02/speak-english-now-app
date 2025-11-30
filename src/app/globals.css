@@ -98,6 +98,9 @@ body {
 .bg-highlight {
   background-color: var(--theme1);
   color: var(--sidebar);
+  &&:hover {
+    background-color: oklch(from var(--theme1) l c h / 0.8);
+  }
 }
 
 .border-card {
