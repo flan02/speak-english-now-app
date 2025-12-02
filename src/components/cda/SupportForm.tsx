@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { HeadsetIcon } from 'lucide-react'
+import { HeadsetIcon, Ticket } from 'lucide-react'
 import { generateTicket } from '@/app/(main)/inicio/cda/actions'
+import Link from 'next/link'
+import { URL_ROUTES } from '@/services/api/routes'
 
 type Props = {}
 
@@ -18,6 +20,12 @@ const SupportForm = (props: Props) => {
         <p className='mt-1 lg:mt-0.5'>Contacta con el soporte para que te generemos un ticket y podamos ayudarte</p>
       </div>
       <div className='flex flex-col items-center space-y-4 font-roboto'>
+        <Button asChild variant='default' className='w-[200px] lg:w-auto bg-highlight text-xs mr-1 self-center lg:self-end'>
+          <Link href={URL_ROUTES.TICKETS}>
+            <Ticket />
+            <span>ver tickets</span>
+          </Link>
+        </Button>
         <form action={query} className="flex flex-col gap-4 text-sm items-center justify-center w-full lg:w-[500px]">
           <FieldGroup className=''>
             {/* Honeypot field - CAZABOBOS */}

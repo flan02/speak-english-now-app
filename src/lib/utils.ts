@@ -251,3 +251,17 @@ export function generateTicketId() {
   return `${timestamp}${random}`;
 }
 
+export function translateTicketStatus(status: string): string {
+  switch (status) {
+    case 'OPEN':
+      return 'Abierto';
+    case 'IN_PROGRESS':
+      return 'En Progreso';
+    case 'RESOLVED':
+      return 'Resuelto';
+    case 'CLOSED':
+      return 'Cerrado';
+    default:
+      return status;
+  }
+}

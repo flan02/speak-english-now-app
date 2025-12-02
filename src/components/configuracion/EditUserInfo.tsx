@@ -30,7 +30,6 @@ const EditUserInfo = (props: Props) => {
         <div className='flex flex-col lg:flex-row lg:space-x-1'>
           <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
           <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark mt-3 lg:mt-0" />
-          <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark mt-3 lg:mt-0" />
         </div>
         <div className='w-full flex justify-center'>
           <Skeleton className="h-9 w-full lg:w-[70px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
@@ -90,12 +89,6 @@ const EditUserInfo = (props: Props) => {
             />
         }
       </div>
-
-      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1'>
-        <Link href={URL_ROUTES.TICKETS}>
-          ver tickets
-        </Link>
-      </Button>
       <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1'>
         <Link href={URL_ROUTES.FACTURACION}>
           ver facturacion

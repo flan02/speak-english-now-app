@@ -20,5 +20,6 @@ export const URL_ROUTES = {
   HISTORIAL: '/inicio/historial',
   FACTURACION: '/inicio/facturacion',
   SOPORTE: '/inicio/cda',
-  TICKETS: '/inicio/tickets'
+  TICKETS: '/inicio/tickets',
+  CDA: '/inicio/cda',
 }

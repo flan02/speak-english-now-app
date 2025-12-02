@@ -232,3 +232,32 @@ export type PaymentMP = {
   maxParticipants: number,
   status: 'pending' | 'approved' | 'rejected',
 }
+
+export type Message = {
+  id: number;
+  text: string;
+  timestamp: string;
+  sender: 'user' | 'support';
+};
+
+export type TicketNumber = {
+  ticketNumber: string;
+  status: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED";
+};
+
+export type MessageChat = {
+  role: 'USER' | 'ADMIN' | 'SUPPORT_BOT'; // Coincide con SenderRole de Prisma
+  content: string;
+  createdAt: Date;
+};
+/* 
+export type TicketData = {
+  id: string;
+  ticketNumber: string;
+  userName: string;
+  userAvatar: string;
+  lastMessage: string;
+  timestamp: string;
+  messages: Message[];
+};
+*/
