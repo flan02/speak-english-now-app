@@ -77,15 +77,36 @@ enum Newsletter {
   no
 }
 
-model VisitorInquiry {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  medioContacto String
-  mensaje       String
-  response      String? // admin response
-  respondedAt   DateTime? // null until responded
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+// Definimos los estados posibles
+enum TicketStatus {
+  OPEN // Recién creado
+  IN_PROGRESS // Ya lo estás revisando
+  RESOLVED // Solucionado
+  CLOSED // Cerrado definitivamente
 }
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum SenderRole {
+  USER
+  ADMIN
+  SUPPORT_BOT // Por si a futuro pones una IA a responder sola ;)
+}
+
+// Este es un "Embed" (sub-documento), no una tabla aparte. 
+// Ideal para MongoDB.
+type TicketMessage {
+  content   String
+  role      SenderRole // Quién escribió: ¿El usuario o tú?
+  createdAt DateTime   @default(now())
+}
+
+// * DATABASE MODELS * //
 
 model User {
   id                 String               @id @default(auto()) @map("_id") @db.ObjectId
@@ -100,6 +121,7 @@ model User {
   totalClasses       Int                  @default(0)
   UserActivity       UserActivity[]
   PaymentMercadoPago PaymentMercadoPago[]
+  SupportTicket      SupportTicket[]
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
 }
@@ -167,4 +189,28 @@ model PaymentMercadoPago {
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
+}
+
+model VisitorInquiry {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  medioContacto String
+  mensaje       String
+  response      String? // admin response
+  respondedAt   DateTime? // null until responded
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model SupportTicket {
+  id           String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String          @db.ObjectId
+  ticketNumber String          @unique
+  description  String // "Me sale error 500 cuando hago click..."
+  category     String // "BUG", "PAGOS", "CUENTA"
+  status       TicketStatus    @default(OPEN)
+  priority     TicketPriority  @default(MEDIUM)
+  messages     TicketMessage[]
+  user         User            @relation(fields: [userId], references: [id])
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
 }

@@ -270,6 +270,40 @@ export async function fetchData(isEditing: formUserData, setIsEditing: React.Dis
   }
 }
 
+export const handleSaveUserData = async (
+  e: React.FormEvent<HTMLFormElement>,
+  isEditing: formUserData,
+  setIsEditing: React.Dispatch<React.SetStateAction<formUserData>>,
+  setFormUpdated: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  e.preventDefault();
+  const data = {
+    localidad: isEditing.localidad,
+    nivel: isEditing.nivel,
+    telefono: Number(isEditing.telefono),
+    newsletter: isEditing.newsletter,
+  };
+  setIsEditing({ ...isEditing, status: false });
+  setFormUpdated(true);
+  setTimeout(() => {
+    setFormUpdated(false);
+  }, 2000);
+  try {
+    await KY(Method.POST, `${API_ROUTES.USER_DATA}`, { json: data });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const handleEditUserData = (
+  e: React.MouseEvent<HTMLButtonElement>,
+  isEditing: formUserData,
+  setIsEditing: React.Dispatch<React.SetStateAction<formUserData>>
+) => {
+  e.preventDefault();
+  setIsEditing({ ...isEditing, status: true });
+};
+
 export const fetchEvents = async (setEvents: React.Dispatch<React.SetStateAction<calendarEvent[]>>, setIsLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '');

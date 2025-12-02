@@ -1,7 +1,8 @@
-import { auth } from '@/auth'
+"use server"
 import SupportForm from '@/components/cda/SupportForm'
 import H1 from '@/components/html/h1'
 import { Card } from '@/components/ui/card'
+import { URL_ROUTES } from '@/services/api/routes'
 import { ArrowLeftCircle, HelpCircle } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
@@ -9,11 +10,7 @@ import React from 'react'
 type Props = {}
 
 const CentroDeAyuda = async (props: Props) => {
-  const session = await auth()
 
-  if (!session) {
-    return null
-  }
 
   return (
     <>
@@ -22,7 +19,7 @@ const CentroDeAyuda = async (props: Props) => {
           <HelpCircle className='mb-1' />
           <H1 title='Centro de Ayuda' />
         </div>
-        <Link href='/inicio/configuracion' className='underline'>
+        <Link href={`${URL_ROUTES.CONFIG}`} className='underline'>
           <ArrowLeftCircle />
         </Link>
       </div>
@@ -31,6 +28,7 @@ const CentroDeAyuda = async (props: Props) => {
         <article className='flex flex-col space-y-6 px-2 lg:px-4'>
           <SupportForm />
         </article>
+
         <article>
           ** ZONA DE TUTORIALES
         </article>

@@ -1,66 +1,24 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { KY, Method } from '@/services/api'
-import { NivelIngles } from '@prisma/client'
 import { Skeleton } from '../ui/skeleton'
-import { formUserData } from '@/lib/types'
-import { fetchData } from '@/services/api/clients'
-import { API_ROUTES, URL_ROUTES } from '@/services/api/routes'
+import { NivelIngles } from '@prisma/client'
+import { URL_ROUTES } from '@/services/api/routes'
+import { useUserDataForm } from '@/hooks/useUserDataForm'
 
 
 type Props = {}
 
 const EditUserInfo = (props: Props) => {
-  const [formUpdated, setFormUpdated] = React.useState(false)
-  const [isLoading, setIsLoading] = React.useState(true)
-
-  const initData: formUserData = {
-    status: false,
-    localidad: '',
-    nivel: '',
-    telefono: '',
-    newsletter: ''
-  }
-  const [isEditing, setIsEditing] = React.useState<formUserData>(initData)
-
-
-  const handleSaveBtn = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const data = {
-      localidad: isEditing.localidad,
-      nivel: isEditing.nivel,
-      telefono: Number(isEditing.telefono),
-      newsletter: isEditing.newsletter
-    }
-    setIsEditing({ ...isEditing, status: false })
-    setFormUpdated(true)
-    setTimeout(() => {
-      setFormUpdated(false)
-    }, 2000);
-    try {
-      const res = await KY(Method.POST, `${API_ROUTES.USER_DATA}`, { json: data });
-      //console.log('response after send user data:', res);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  const handleEditButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    setIsEditing({ ...isEditing, status: true })
-  }
-
-
-  useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      await fetchData(isEditing, setIsEditing);
-      setIsLoading(false);
-    }
-    loadData();
-  }, []);
+  const {
+    formUpdated,
+    isLoading,
+    isEditing,
+    setIsEditing,
+    handleSave,
+    handleEdit,
+  } = useUserDataForm();
 
   if (isLoading) {
     return (
@@ -72,6 +30,7 @@ const EditUserInfo = (props: Props) => {
         <div className='flex flex-col lg:flex-row lg:space-x-1'>
           <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
           <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark mt-3 lg:mt-0" />
+          <Skeleton className="h-9 w-full lg:w-[110px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark mt-3 lg:mt-0" />
         </div>
         <div className='w-full flex justify-center'>
           <Skeleton className="h-9 w-full lg:w-[70px] lg:px-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
@@ -81,7 +40,7 @@ const EditUserInfo = (props: Props) => {
   }
 
   return (
-    <form onSubmit={handleSaveBtn} className='space-y-3'>
+    <form onSubmit={handleSave} className='space-y-3'>
       <div className='flex space-x-2 items-end h-5'>
         <p className='font-roboto underline font-bold uppercase text-xs'>localidad:</p>
         {
@@ -110,7 +69,7 @@ const EditUserInfo = (props: Props) => {
         }
       </div>
       <div className='flex space-x-2 items-end h-5'>
-        <p className='font-roboto underline font-bold uppercase text-xs mt-2'>telefono de contacto:</p>
+        <p className='font-roboto underline font-bold uppercase text-xs mt-2'>telefono:</p>
         {
           !isEditing.status ?
             <div className='!no-underline !lowercase text-xs font-roboto mt-0.25'>{String(isEditing.telefono)}</div>
@@ -132,7 +91,11 @@ const EditUserInfo = (props: Props) => {
         }
       </div>
 
-
+      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1'>
+        <Link href={URL_ROUTES.TICKETS}>
+          ver tickets
+        </Link>
+      </Button>
       <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1'>
         <Link href={URL_ROUTES.FACTURACION}>
           ver facturacion
@@ -144,7 +107,7 @@ const EditUserInfo = (props: Props) => {
         </Link>
       </Button>
       <div className='w-full text-center space-x-2'>
-        <Button onClick={handleEditButton} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-xs bg-gray-400 hover:bg-gray-400/80'>
+        <Button onClick={handleEdit} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-xs bg-gray-400 hover:bg-gray-400/80'>
           editar
         </Button>
         {

@@ -19,5 +19,6 @@ export const URL_ROUTES = {
   INFO: '/inicio/informacion',
   HISTORIAL: '/inicio/historial',
   FACTURACION: '/inicio/facturacion',
-  SOPORTE: '/inicio/cda'
+  SOPORTE: '/inicio/cda',
+  TICKETS: '/inicio/tickets'
 }
