@@ -7,10 +7,17 @@ import { URL_ROUTES } from '@/services/api/routes';
 import { ArrowLeftCircle } from 'lucide-react';
 import TicketSelectorMobile from '@/components/tickets/TicketSelectorMobile';
 
+// type TicketsPageProps = {
+//   searchParams: {
+//     ticketId?: Promise<string>
+//   }
+// }
+
 type TicketsPageProps = {
-  searchParams: {
-    ticketId?: Promise<string>
-  }
+  // CORRECCIÓN: La Promesa envuelve a todo el objeto
+  searchParams: Promise<{
+    ticketId?: string
+  }>
 }
 
 export default async function TicketsPage({ searchParams }: TicketsPageProps) {
