@@ -16,10 +16,10 @@ const CentroDeAyuda = async (props: Props) => {
     <>
       <div className='flex justify-between mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end xl:justify-between 2xl:justify-between'>
         <div className='flex items-end space-x-2 px-2 lg:px-0'>
-          <HelpCircle className='mb-0.5' />
+          <HelpCircle className='mb-0.5 md:mb-1' />
           <H1 title='Centro de Ayuda' />
         </div>
-        <Link href={`${URL_ROUTES.CONFIG}`} className='underline px-2 lg:px-0'>
+        <Link href={`${URL_ROUTES.CONFIG}`} className='underline px-2 lg:px-0 mb-0.5 md:mb-0'>
           <ArrowLeftCircle />
         </Link>
       </div>

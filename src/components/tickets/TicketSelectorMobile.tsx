@@ -33,21 +33,18 @@ export default function TicketSelectorMobile({ tickets, currentTicketId }: Ticke
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Elige un ticket para ver el chat..." className="text-[10px]" />
         </SelectTrigger>
-        <SelectContent className="">
-          {openTickets.length > 0 ? (
-            openTickets.map((ticket) => (
-              <SelectItem key={ticket.ticketNumber} value={ticket.ticketNumber} className="border-b dark:border-[#333] border-gray-200 py-2">
-                <span className="text-sm mr-2 font-bold">
-                  #{ticket.ticketNumber}
-                </span>
-                <span className="text-xs">
-                  ({translateTicketStatus(ticket.status)})
-                </span>
-              </SelectItem>
-            ))
-          ) : (
-            <div className="p-4 text-sm text-muted-foreground">No hay tickets abiertos.</div>
-          )}
+        <SelectContent className="bg-gray-100 dark:bg-black -ml-1.5">
+          {
+            openTickets.length > 0 ? (
+              openTickets.map((ticket) => (
+                <SelectItem key={ticket.ticketNumber} value={ticket.ticketNumber} className="border-b dark:border-[#333] border-gray-200 py-2 bg-gray-100 dark:bg-black">
+                  <span className="text-sm mr-2 font-bold">#{ticket.ticketNumber}</span>
+                  <span className="text-xs">({translateTicketStatus(ticket.status)})</span>
+                </SelectItem>
+              ))
+            ) : (
+              <div className="p-4 text-sm text-muted-foreground">No hay tickets abiertos.</div>
+            )}
         </SelectContent>
       </Select>
     </div>

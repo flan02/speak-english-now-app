@@ -7,14 +7,7 @@ import { URL_ROUTES } from '@/services/api/routes';
 import { ArrowLeftCircle } from 'lucide-react';
 import TicketSelectorMobile from '@/components/tickets/TicketSelectorMobile';
 
-// type TicketsPageProps = {
-//   searchParams: {
-//     ticketId?: Promise<string>
-//   }
-// }
-
 type TicketsPageProps = {
-  // CORRECCIÓN: La Promesa envuelve a todo el objeto
   searchParams: Promise<{
     ticketId?: string
   }>
@@ -36,7 +29,7 @@ export default async function TicketsPage({ searchParams }: TicketsPageProps) {
             <ChatView ticketId={ticketId} />
           ) : (
             <div className="relative h-full">
-              <Link href={`${URL_ROUTES.CDA}`} className='underline absolute top-2 right-2'>
+              <Link href={`${URL_ROUTES.CDA}`} className='underline absolute top-6 right-6'>
                 <ArrowLeftCircle />
               </Link>
               <NoTicketSelected />
@@ -48,7 +41,7 @@ export default async function TicketsPage({ searchParams }: TicketsPageProps) {
       {/* Mobile View */}
       <div className="md:hidden px-1 py-4 space-y-4">
         <div className='flex justify-end'>
-          <Link href={`${URL_ROUTES.CDA}`} className='underline'>
+          <Link href={`${URL_ROUTES.CDA}`} className='underline mr-1'>
             <ArrowLeftCircle />
           </Link>
         </div>

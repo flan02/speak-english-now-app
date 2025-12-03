@@ -30,15 +30,13 @@ const ChatView = async ({ ticketId }: ChatViewProps) => {
   }
 
   return (
-    <div className="flex flex-col h-full px-1 lg:px-4 border border-red-400">
+    <div className="flex flex-col h-full px-1 lg:px-4">
       <header className="flex justify-between p-4 space-x-2 text-center text-lg font-bold bg-black dark:bg-white dark:text-black text-white rounded-md my-1 border-b border-gray-200 dark:border-[#222] tracking-wide">
-        <div className='space-x-2'>
-          <span>
-            Ticket #{ticketData.ticketNumber}
-          </span>
+        <div className='space-x-2 flex flex-col items-center w-full md:block'>
+          <span className='text-base lg:text-lg'>Ticket #{ticketData.ticketNumber}</span>
           <span className='font-normal text-[11px]'>{`(estado: ${translateTicketStatus(ticketData.status)})`}</span>
         </div>
-        <Link href={`${URL_ROUTES.CDA}`} className='underline'>
+        <Link href={`${URL_ROUTES.CDA}`} className='underline hidden md:block'>
           <ArrowLeftCircle />
         </Link>
       </header>
