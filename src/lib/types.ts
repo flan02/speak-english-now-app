@@ -250,14 +250,30 @@ export type MessageChat = {
   content: string;
   createdAt: Date;
 };
-/* 
-export type TicketData = {
-  id: string;
-  ticketNumber: string;
-  userName: string;
-  userAvatar: string;
-  lastMessage: string;
-  timestamp: string;
-  messages: Message[];
-};
-*/
+
+export const TUTORIAL_DATA = [
+  {
+    id: "1",
+    title: "Como realizar la reserva de una clase",
+    description: "Te mostramos paso a paso cómo reservar tu clase virtual individual o grupal a través de nuestra plataforma en línea.",
+    videoId: "dQw4w9WgXcQ", // Placeholder video ID
+  },
+  {
+    id: "2",
+    title: "Como realizar pagos",
+    description: "Te explicamos las formas de pago disponibles en nuestra plataforma. Podes gestionar tus pagos de manera segura y sencilla.",
+    videoId: "dQw4w9WgXcQ", // Placeholder video ID
+  },
+  {
+    id: "3",
+    title: "Como compartir el codigo de clase a un invitado",
+    description: "Aprende cómo funciona nuestro sistema de codigos y luego de reservar la clase compartelo con tus compañeros de clase.",
+    videoId: "o-YBDTqX_ZU", // Placeholder video ID
+  },
+  {
+    id: "4",
+    title: "Resuelve examenes y actividades",
+    description: "Te mostramos cómo acceder, resolver y consultar las respuestas dentro de la plataforma.",
+    videoId: "3tmd-ClpJxA", // Placeholder video ID
+  },
+];
