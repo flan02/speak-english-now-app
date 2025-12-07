@@ -159,29 +159,6 @@ export const validateMeetingDate = (date: string, startTime: string, endTime: st
   return now >= oneHourBefore && now < meetingEnd;
 };
 
-// export const validateMeetingDate = (date: string,startTime: string,endTime: string): boolean => {
-//   const [day, month, year] = date.split('/').map(Number);
-//   const [startHour, startMinute] = startTime.split(':').map(Number);
-//   const [endHour, endMinute] = endTime.split(':').map(Number);
-
-//   const meetingStart = new Date(year, month - 1, day, startHour, startMinute);
-//   const meetingEnd = new Date(year, month - 1, day, endHour, endMinute);
-//   const now = new Date();
-
-//   // ❌ Si la clase ya terminó → NO mostrar botón
-//   if (now >= meetingEnd) {
-//     return false;
-//   }
-
-//   // 🕒 Calcular el momento exacto en que falta 1 hora
-//   const oneHourBefore = new Date(meetingStart.getTime() - 60 * 60 * 1000);
-
-//   // ✔️ TRUE solo si estamos dentro del intervalo
-//   // [una hora antes del inicio, hasta antes de que termine la clase]
-//   return now >= oneHourBefore && now < meetingEnd;
-// };
-
-
 export const formatUTCDate = (dateString: string) => {
   const d = new Date(dateString);
   // Obtiene valores en UTC, no se desplaza según timezones
@@ -266,5 +243,25 @@ export function normalizeUrl(base: string, path: string) {
   return `${cleanBase}/${cleanPath}`;
 }
 
+export function generateTicketId() {
+  // Opción simple: Timestamp (ms) + 3 números random = 16 caracteres aprox
+  // Esto asegura que sea cronológico y único
+  const timestamp = Date.now().toString(); // ~13 caracteres
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  return `${timestamp}${random}`;
+}
 
-
+export function translateTicketStatus(status: string): string {
+  switch (status) {
+    case 'OPEN':
+      return 'Abierto';
+    case 'IN_PROGRESS':
+      return 'En Progreso';
+    case 'RESOLVED':
+      return 'Resuelto';
+    case 'CLOSED':
+      return 'Cerrado';
+    default:
+      return status;
+  }
+}

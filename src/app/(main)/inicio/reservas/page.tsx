@@ -7,7 +7,6 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction' // para permitir clicks
 import { metodos_pago } from '@/lib/types'
 import useCalendar from '@/hooks/useCalendar'
-import { Skeleton } from '@/components/ui/skeleton'
 import { MetodoDePagoBadge } from '@/components/reutilizable/MetodoDePagoBadge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -15,12 +14,11 @@ import esLocale from '@fullcalendar/core/locales/es';
 import { useRouter } from 'next/navigation'
 import { storePaymentData } from '@/zustand/store'
 import { Textarea } from '@/components/ui/textarea'
-import { KY, Method } from '@/services/api'
 import { cutId, formattedDate, scheduleClass } from '@/lib/utils'
 import pricing from '@/config/pricing.json'
-import { API_ROUTES, URL_ROUTES } from '@/services/api/routes'
-import { set } from 'date-fns'
+import { URL_ROUTES } from '@/services/api/routes'
 import { fetchMeeting } from '@/services/api/clients'
+import { Skeleton } from '@/components/ui/skeleton'
 
 
 type Props = {}
@@ -148,6 +146,12 @@ const Reservas = (props: Props) => {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+
+
+  console.log("Calendar ready", isCalendarReady);
+  console.log("Loading...", isLoading);
+
 
 
   return (

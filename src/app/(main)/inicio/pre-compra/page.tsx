@@ -79,7 +79,7 @@ const PreCompraPage = () => {
           <div className='space-y-4 py-4 lg:py-8'>
             <div className='space-y-6 xl:space-y-8 2xl:space-y-8 px-1 xl:px-8 2xl:px-8 font-roboto text-sm xl:text-3xl 2xl:text-3xl'>
               {
-                isGroupClass && scheduledTime ? <p className='h-4 lg:h-8'>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
+                scheduledTime ? <p className='h-4 lg:h-8'>Tipo de clase: <span className='font-extrabold capitalize'>{isGroupClass ? 'grupal' : 'individual'}</span></p>
                   : <Skeleton className='w-full h-4 lg:h-8 rounded-md animate-pulse bg-gray-200 skeleton-bg-dark' />
               }
               {

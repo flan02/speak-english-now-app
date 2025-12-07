@@ -6,6 +6,7 @@ import Link from 'next/link'
 import React from 'react'
 import { getBillingHistory } from './actions'
 import { toArgentinaTZ } from '@/lib/utils'
+import { URL_ROUTES } from '@/services/api/routes'
 
 type Props = {}
 
@@ -17,16 +18,14 @@ const Facturacion = async (props: Props) => {
   }
   const billingHistory = await getBillingHistory(session.user.id)
 
-  //console.log("All billingHistory", billingHistory);
   return (
     <>
-      {/* <div className='flex space-x-4 justify-between items-end'> */}
-      <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-center xl:justify-between 2xl:justify-between'>
-        <div className='flex items-end space-x-2'>
-          <CreditCard className='mb-1' />
+      <div className='flex mt-4 xl:mt-0 2xl:mt-0 space-x-2 xl:space-x-4 2xl:space-x-4 items-end justify-between xl:justify-between 2xl:justify-between'>
+        <div className='flex items-end space-x-2 px-2 lg:px-0'>
+          <CreditCard className='mb-0.5 md:mb-1' />
           <H1 title='Facturacion' />
         </div>
-        <Link href='/inicio/configuracion' className='underline'>
+        <Link href={`${URL_ROUTES.CONFIG}`} className='underline px-2 lg:px-0 mb-0.5'>
           <ArrowLeftCircle />
         </Link>
       </div>
@@ -39,7 +38,7 @@ const Facturacion = async (props: Props) => {
           <Card className='xl:w-full border border-card mx-1 py-4 px-1 lg:h-screen xl:h-[700px] 2xl:h-[700px]'>
             {
               billingHistory.map((bill, index) => (
-                <div key={index} className='flex flex-col space-y-2'>
+                <div key={index} className='flex flex-col space-y-2 text-xs lg:text-base'>
                   <p><span className='font-bold'>Fecha de pago:</span> { }</p>
                   <p><span className='font-bold'>Monto:</span> {`${toArgentinaTZ(bill.createdAt)}`}</p>
                   <p><span className='font-bold'>Metodo de pago:</span> mercadopago</p>
