@@ -10,7 +10,7 @@ type SessionProps = {
 }
 
 const AllClasses: React.FC<SessionProps> = async ({ session, type }) => {
-  let all_classes
+  let all_classes = [] as Awaited<ReturnType<typeof getPastClasses>>;
   if (type === "upcoming") {
     all_classes = await getUpcomingClasses(session.user.id)
   }
@@ -32,9 +32,11 @@ const AllClasses: React.FC<SessionProps> = async ({ session, type }) => {
       </div>
       <div className="space-y-2 xl:space-y-1 2xl:space-y-1">
         {
-          all_classes?.map((classItem, index) => (
-            <EachClass key={index} classItem={classItem.class!} index={index} />
-          ))
+          all_classes?.length! > 0
+            ? all_classes?.map((classItem, index) => (
+              <EachClass key={index} classItem={classItem.class!} index={index} />
+            ))
+            : <p className="text-center font-roboto font-bold mt-8">No hay clases por mostrar.</p>
         }
       </div>
     </>
