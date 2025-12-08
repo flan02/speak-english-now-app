@@ -122,6 +122,7 @@ model User {
   UserActivity       UserActivity[]
   PaymentMercadoPago PaymentMercadoPago[]
   SupportTicket      SupportTicket[]
+  googleRefreshToken String?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
 }

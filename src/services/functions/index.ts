@@ -6,7 +6,35 @@ import { $Enums } from "@prisma/client";
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
 
+export async function updateRefreshTokenInDb(userId: string, refreshToken: string) {
+  try {
+    const response = await db.user.update({
+      where: { id: userId },
+      data: {
+        googleRefreshToken: refreshToken
+      }
+    })
+    return response
+  } catch (error) {
+    console.log(error);
+    return error
+  }
+}
 
+export async function getRefreshTokenFromDb(userEmail: string) {
+  try {
+    const response = await db.user.findUnique({
+      where: { email: userEmail },
+      select: {
+        googleRefreshToken: true
+      }
+    })
+    return response?.googleRefreshToken
+  } catch (error) {
+    console.log(error);
+    return error
+  }
+}
 
 export async function getUserData({ id }: { id: string }) {
   try {

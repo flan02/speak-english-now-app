@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { KY, Method } from '@/services/api'
 import { calendarEvent } from "@/lib/types";
 import { google } from "googleapis";
-import { createGoogleCalendarEvent, findVirtualClass, listEvents, updateVirtualClass } from "@/services/functions";
+import { createGoogleCalendarEvent, findVirtualClass, getRefreshTokenFromDb, listEvents, updateVirtualClass } from "@/services/functions";
 
 
 export async function GET() {
@@ -45,7 +45,11 @@ export async function POST(request: NextRequest) {
       process.env.AUTH_GOOGLE_SECRET,
       process.env.GOOGLE_REDIRECT_URI
     )
-    auth.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+
+    const refreshToken = await getRefreshTokenFromDb(process.env.ADMIN_EMAIL!);
+
+
+    auth.setCredentials({ refresh_token: refreshToken as string });
 
     const body = await findVirtualClass(preferenceId)
     console.log("Retrieved data from fc findVirtualClass", body?.response);

@@ -6,6 +6,7 @@ import Google from 'next-auth/providers/google'
 import { createUser, loggedAsAdmin } from '@/server-actions/actions'
 import { db } from './db'
 import { User } from './lib/types'
+import { updateRefreshTokenInDb } from './services/functions'
 
 // ? To see the current providers
 // $ http://localhost:3000/api/auth/providers  
@@ -71,7 +72,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           //console.log('ACC REFRESH TOKEN', account.refresh_token);
           if (profile.email === process.env.ADMIN_EMAIL! && account.refresh_token) {
             token.refreshToken = account.refresh_token
-            console.log('THIS IS THE refresh_token', token.refreshToken);
+            console.log('THIS IS NEW THE refresh_token', token.refreshToken);
+            await updateRefreshTokenInDb(user.id, token.refreshToken as string)
           }
 
           // const now = Math.floor(Date.now() / 1000);
