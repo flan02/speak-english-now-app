@@ -5,6 +5,7 @@ import { google } from "googleapis";
 import { createGoogleCalendarEvent, findVirtualClass, getRefreshTokenFromDb, listEvents, updateVirtualClass } from "@/services/functions";
 
 
+//! CHECK ONE SOURCE OF TRUTH BECAUSE SOMETIMES IT SHOWS DUPLICATED EVENTS... QUERY TO OUR DB INSTEAD
 export async function GET() {
   const calendarId = process.env.CALENDAR_ID!;
   const apiKey = process.env.CALENDAR_API_KEY!;
@@ -16,11 +17,16 @@ export async function GET() {
 
     const data = response.items as calendarEvent[];
 
-    const cleanData: calendarEvent[] = data.map((ev) => ({
-      start: ev.start,
-      end: ev.end,
-      status: ev.status,
-    }))
+    //console.log('Data obtained', data);
+
+    const cleanData: calendarEvent[] = data
+      .map((ev) => ({
+        start: ev.start,
+        end: ev.end,
+        status: ev.status,
+      }));
+
+    //console.log('Booking calendar obtained', cleanData);
 
     return NextResponse.json(cleanData);
 

@@ -95,8 +95,15 @@ const Reservas = (props: Props) => {
     );
   }, []);
 
+  console.log('Students count', studentsCount);
+
   const handleClassTypeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const isGroup = e.target.value === "grupal";
+
+    if (e.target.value == "individual") {
+      setStudentsCount(1);
+      setPrice(pricing.basePrice);
+    }
     setIsGroupClass(isGroup)
     setClassMetadata({
       ...classMetadata,
@@ -162,138 +169,138 @@ const Reservas = (props: Props) => {
       </article>
       <section className="w-[350px] xl:w-full 2xl:w-full max-w-6xl mx-auto xl:px-4 2xl:px-4 py-2">
         {
-          // isCalendarReady && !isLoading
-          // ?
-          // isMobile ?
-          // <FullCalendar
-          //   allDaySlot={false}
-          //   aspectRatio={isMobile ? 0.8 : 1.35}
-          //   initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
-          //   headerToolbar={{
-          //     left: "prev,next today",
-          //     center: "title",
-          //     right: "",
-          //   }}
-          //   dateClick={(info) => {
-          //     scheduleClass({ info, setOpen, setSelectedDate })
-          //     // Pintar slot seleccionado
-          //     const target = info.jsEvent?.target as HTMLElement | null;
-          //     const slot = target?.closest(".fc-timegrid-slot") ?? null;
-          //     if (slot) {
-          //       document.querySelectorAll(".fc-timegrid-slot").forEach((el) => {
-          //         el.classList.remove("selected-slot");
-          //       });
-          //       (slot as HTMLElement).classList.add("selected-slot");
+          isCalendarReady && !isLoading
+            ?
+            isMobile ?
+              <FullCalendar
+                allDaySlot={false}
+                aspectRatio={isMobile ? 0.8 : 1.35}
+                initialView={isMobile ? "timeGridDay" : "timeGridWeek"}
+                headerToolbar={{
+                  left: "prev,next today",
+                  center: "title",
+                  right: "",
+                }}
+                dateClick={(info) => {
+                  scheduleClass({ info, setOpen, setSelectedDate })
+                  // Pintar slot seleccionado
+                  const target = info.jsEvent?.target as HTMLElement | null;
+                  const slot = target?.closest(".fc-timegrid-slot") ?? null;
+                  if (slot) {
+                    document.querySelectorAll(".fc-timegrid-slot").forEach((el) => {
+                      el.classList.remove("selected-slot");
+                    });
+                    (slot as HTMLElement).classList.add("selected-slot");
 
-          //     }
-          //     const start = new Date(info.date);
-          //     const end = new Date(start.getTime() + 60 * 60 * 1000); // +1h
-          //     //console.log("Seleccionaste (auto 1h):", start, "→", end);
-          //     setScheduledTime({ start: start, end: end });
-          //   }}
-          //   dayCellClassNames={removePastDays}
-          //   datesSet={() => setIsCalendarReady(true)}
-          //   dayHeaderFormat={{
-          //     weekday: isMobile ? "long" : "short",
-          //   }}
-          //   eventDidMount={(info) => {
-          //     if (info.event.extendedProps?.status === 'confirmed') {
-          //       info.el.style.border = '1px solid #000';
-          //     } else {
-          //       info.el.style.border = '1px solid #777';
-          //     }
-          //     setIsCalendarReady(true)
-          //   }}
-          //   events={fullCalendarEvents}
-          //   eventContent={fullCalendarContent}
-          //   eventTimeFormat={{
-          //     hour: "2-digit",
-          //     minute: "2-digit",
-          //     hour12: false,
-          //   }}
-          //   expandRows
-          //   height={isMobile ? "auto" : "auto"}
-          //   initialDate={new Date()}
-          //   locale={esLocale}
-          //   nowIndicator={true}
-          //   plugins={[timeGridPlugin, interactionPlugin]}
-          //   selectConstraint={{
-          //     start: "17:00:00",
-          //     end: "21:00:00",
-          //   }}
-          //   slotMinTime="17:00:00"
-          //   slotMaxTime="21:00:00"
-          //   slotDuration="01:00:00"
-          //   selectable={true}
-          //   slotLabelInterval="01:00"
-          //   slotLabelFormat={{
-          //     hour: "2-digit",
-          //     minute: "2-digit",
-          //     hour12: false,
-          //   }}
-          //   select={(info) => {
-          //     console.log("Seleccionaste:", info.start, "→", info.end)
-          //   }}
-          //   validRange={{
-          //     start: new Date().toISOString().split("T")[0],
-          //   }}
-          // />
-          // :
-          <FullCalendar
-            allDaySlot={false} // ocultar el "All day"
-            businessHours={{
-              startTime: '17:00', // hora de inicio
-              endTime: '21:00', // hora de fin
-              daysOfWeek: [1, 2, 3, 4, 5, 6], // lunes a sabado
-            }}
-            dayHeaderFormat={{ weekday: 'short', day: 'numeric' }} // formato tipo “F 3”, “Sat 4”, etc.
-            dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
-            dayCellClassNames={removePastDays}
-            datesSet={() => setIsCalendarReady(true)}
-            eventDidMount={(info) => {
-              if (info.event.extendedProps?.status === 'confirmed') {
-                info.el.style.border = '1px solid #000';
-              } else {
-                info.el.style.border = '1px solid #777';
-              }
-              setIsCalendarReady(true)
-            }}
-            events={fullCalendarEvents}
-            eventContent={fullCalendarContent}
-            expandRows={true}
-            // headerToolbar={false} // oculta los botones de navegación
-            headerToolbar={{
-              left: 'prev,next today',
-              center: 'title',
-              right: 'timeGridWeek' // timeGridDay
-            }}
-            height="200px"
-            // hiddenDays={[0, 1]}
-            initialView="timeGridWeek"
-            initialDate={new Date()}
-            locale={esLocale}
-            nowIndicator={true}
-            plugins={[timeGridPlugin, interactionPlugin]}
-            slotMinTime="17:00:00" // hora mínima visible
-            slotMaxTime="21:00:00" // hora máxima visible
-            slotDuration="01:00:00" // bloques de 1 hora
-            selectable={true}
-            // selectMirror={true}
-            slotLabelInterval="01:00"
-            slotLabelFormat={{
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false
-            }}
-            select={(info) => {
-              setScheduledTime({ start: info.start, end: info.end })
+                  }
+                  const start = new Date(info.date);
+                  const end = new Date(start.getTime() + 60 * 60 * 1000); // +1h
+                  //console.log("Seleccionaste (auto 1h):", start, "→", end);
+                  setScheduledTime({ start: start, end: end });
+                }}
+                dayCellClassNames={removePastDays}
+                datesSet={() => setIsCalendarReady(true)}
+                dayHeaderFormat={{
+                  weekday: isMobile ? "long" : "short",
+                }}
+                eventDidMount={(info) => {
+                  if (info.event.extendedProps?.status === 'confirmed') {
+                    info.el.style.border = '1px solid #000';
+                  } else {
+                    info.el.style.border = '1px solid #777';
+                  }
+                  setIsCalendarReady(true)
+                }}
+                events={fullCalendarEvents}
+                eventContent={fullCalendarContent}
+                eventTimeFormat={{
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                }}
+                expandRows
+                height={isMobile ? "auto" : "auto"}
+                initialDate={new Date()}
+                locale={esLocale}
+                nowIndicator={true}
+                plugins={[timeGridPlugin, interactionPlugin]}
+                selectConstraint={{
+                  start: "17:00:00",
+                  end: "21:00:00",
+                }}
+                slotMinTime="17:00:00"
+                slotMaxTime="21:00:00"
+                slotDuration="01:00:00"
+                selectable={true}
+                slotLabelInterval="01:00"
+                slotLabelFormat={{
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                }}
+                select={(info) => {
+                  console.log("Seleccionaste:", info.start, "→", info.end)
+                }}
+                validRange={{
+                  start: new Date().toISOString().split("T")[0],
+                }}
+              />
+              :
+              <FullCalendar
+                allDaySlot={false} // ocultar el "All day"
+                businessHours={{
+                  startTime: '17:00', // hora de inicio
+                  endTime: '21:00', // hora de fin
+                  daysOfWeek: [1, 2, 3, 4, 5, 6], // lunes a sabado
+                }}
+                dayHeaderFormat={{ weekday: 'short', day: 'numeric' }} // formato tipo “F 3”, “Sat 4”, etc.
+                dateClick={(info) => scheduleClass({ info, setOpen, setSelectedDate })}
+                dayCellClassNames={removePastDays}
+                datesSet={() => setIsCalendarReady(true)}
+                eventDidMount={(info) => {
+                  if (info.event.extendedProps?.status === 'confirmed') {
+                    info.el.style.border = '1px solid #000';
+                  } else {
+                    info.el.style.border = '1px solid #777';
+                  }
+                  setIsCalendarReady(true)
+                }}
+                events={fullCalendarEvents}
+                eventContent={fullCalendarContent}
+                expandRows={true}
+                // headerToolbar={false} // oculta los botones de navegación
+                headerToolbar={{
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'timeGridWeek' // timeGridDay
+                }}
+                height="200px"
+                // hiddenDays={[0, 1]}
+                initialView="timeGridWeek"
+                initialDate={new Date()}
+                locale={esLocale}
+                nowIndicator={true}
+                plugins={[timeGridPlugin, interactionPlugin]}
+                slotMinTime="17:00:00" // hora mínima visible
+                slotMaxTime="21:00:00" // hora máxima visible
+                slotDuration="01:00:00" // bloques de 1 hora
+                selectable={true}
+                // selectMirror={true}
+                slotLabelInterval="01:00"
+                slotLabelFormat={{
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                }}
+                select={(info) => {
+                  setScheduledTime({ start: info.start, end: info.end })
 
-            }}
-            validRange={{
-              start: new Date().toISOString().split("T")[0], // 🔒 bloquea días previos al actual
-            }}
-          />
-          // : <Skeleton className="h-[450px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
+                }}
+                validRange={{
+                  start: new Date().toISOString().split("T")[0], // 🔒 bloquea días previos al actual
+                }}
+              />
+            : <Skeleton className="h-[450px] w-full rounded-md animate-pulse bg-gray-200 skeleton-bg-dark" />
         }
       </section>
       <section className='space-y-2 mx-1'>

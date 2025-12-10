@@ -155,8 +155,9 @@ export async function AppSidebar() {
               height={32}
               className="rounded-full mr-2 border-2 border-black"
             />
-            <p className="font-orbitron font-bold text-xs lg:text-sm">
-              {session.user.name}
+            <p className="font-orbitron font-bold text-[10px] lg:text-xs">
+              {/* {session.user.name} */}
+              MODO TUTORIAL
             </p>
           </CardContent>
           <SignOut />

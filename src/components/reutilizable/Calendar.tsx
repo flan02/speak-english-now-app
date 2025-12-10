@@ -52,6 +52,8 @@ const Calendar = () => {
     return () => clearTimeout(timer);
   }, [events]);
 
+
+  console.log("Events obtained", events);
   return (
     <div className="lg:w-[800px] lg:mx-auto text-[10px] lg:text-xs">
       {
