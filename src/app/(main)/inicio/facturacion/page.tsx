@@ -1,12 +1,11 @@
 import { auth } from '@/auth'
 import H1 from '@/components/html/h1'
-import { Card } from '@/components/ui/card'
 import { ArrowLeftCircle, CreditCard } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { getBillingHistory } from './actions'
-import { toArgentinaTZ } from '@/lib/utils'
 import { URL_ROUTES } from '@/services/api/routes'
+import BillingHistory from '@/components/facturacion/BillingHistory'
 
 type Props = {}
 
@@ -35,24 +34,9 @@ const Facturacion = async (props: Props) => {
       {
         billingHistory && billingHistory.length != 0
           ?
-          <Card className='xl:w-full border border-card mx-1 py-4 px-1 lg:h-screen xl:h-[700px] 2xl:h-[700px]'>
-            {
-              billingHistory.map((bill, index) => (
-                <div key={index} className='flex flex-col space-y-2 text-xs lg:text-base'>
-                  <p><span className='font-bold'>Fecha de pago:</span> { }</p>
-                  <p><span className='font-bold'>Monto:</span> {`${toArgentinaTZ(bill.createdAt)}`}</p>
-                  <p><span className='font-bold'>Metodo de pago:</span> mercadopago</p>
-                  <p><span className='font-bold'>Nro. de orden:</span> {bill.preferenceId}</p>
-                  <p><span className='font-bold'>Precio:</span> {bill.preferenceId}</p>
-                  <p><span className='font-bold'>Cantidad de estudiantes:</span> {bill.maxParticipants}</p>
-                  <hr className='my-2' />
-                </div>
-              ))
-            }
-          </Card>
+          <BillingHistory billingHistory={billingHistory} />
           : <p>No se encontro ningun pago cargado en tu historial.</p>
       }
-
     </>
   )
 }
