@@ -4,7 +4,7 @@ import { Card } from '../ui/card'
 import JoinClass from './JoinClass'
 import { auth } from '@/auth'
 import AccessCodeClient from './AccessCodeClient'
-import { formatUTCDate, toArgentinaTZ, validateMeetingDate } from '@/lib/utils'
+import { formatUTCDate, localeString, toArgentinaTZ, validateMeetingDate } from '@/lib/utils'
 
 
 type Props = {
@@ -20,17 +20,19 @@ const EachClass = async ({ classItem, index }: Props) => {
   const argStart = toArgentinaTZ(new Date(classItem.startTime));
   const argEnd = toArgentinaTZ(new Date(classItem.endTime));
 
-  const parsedStartTime = argStart.toLocaleTimeString("es-AR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  });
+  const parsedStartTime = localeString(argStart);
+  const parsedEndTime = localeString(argEnd);
+  // const parsedStartTime = argStart.toLocaleTimeString("es-AR", {
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   hour12: false
+  // });
 
-  const parsedEndTime = argEnd.toLocaleTimeString("es-AR", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  });
+  // const parsedEndTime = argEnd.toLocaleTimeString("es-AR", {
+  //   hour: "2-digit",
+  //   minute: "2-digit",
+  //   hour12: false
+  // });
 
 
   // * Validate if the meeting can be joined (60 minutes before start time)

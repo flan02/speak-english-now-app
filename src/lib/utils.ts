@@ -24,6 +24,14 @@ export function toArgentinaTZ(date: Date) {
 //   return timezone
 // }
 
+export function localeString(fecha: Date) {
+  return fecha.toLocaleTimeString("es-AR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false
+  });
+}
+
 export function toGoogleDate(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");

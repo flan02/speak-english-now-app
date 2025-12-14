@@ -41,9 +41,7 @@ export default function BillingHistory({ billingHistory }: BillingHistoryProps) 
                     <Receipt className="w-4 h-4 text-primary" />
                     Factura # {index + 1}
                   </span>
-                  <span className="text-xs font-normal text-muted-foreground bg-white/50 px-2 py-1 rounded-full border border-blue-300">
-                    MercadoPago
-                  </span>
+                  <span className="text-xs font-normal text-muted-foreground bg-white/50 px-2 py-1 rounded-full border border-blue-300">MercadoPago</span>
                 </CardTitle>
               </CardHeader>
 

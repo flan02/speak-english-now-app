@@ -1,5 +1,4 @@
 "use server"
-
 import { getTotalClass } from "@/app/(main)/inicio/actions"
 import { Card } from "../ui/card"
 import { Trophy } from "lucide-react"
@@ -11,6 +10,8 @@ type Props = {}
 
 export async function TotalClasses(props: Props) {
   const response = await getTotalClass()
+  //console.log("Get total classes", response);
+
   return (
     <Card className='w-full border border-card py-4 space-y-4 px-4 flex flex-col space-x-4 mt-2 lg:mt-0 xl:mt-0'>
       <div className='flex space-x-2 justify-center'>

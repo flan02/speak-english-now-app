@@ -17,7 +17,6 @@ export async function getVirtualClass(classId: string) {
   }
 }
 
-
 export async function uploadExam(formData: FormData) {
 
   const classId = formData.get('classId') as string
@@ -31,15 +30,11 @@ export async function uploadExam(formData: FormData) {
   }
   try {
 
-
-
     // ? Nueva tarea
     const newTask = await db.task.create({ data })
     if (newTask) {
       console.log('Activity created successfully', newTask)
     }
-
-
 
     //  ? Clase a las que se asigna la tarea
     const classFound = await db.virtualClass.findUnique({
@@ -87,6 +82,32 @@ export async function uploadExam(formData: FormData) {
       }
     });
 
+    // ? Incrementar el total de clases para cada participante luego de entregar la actividad
+    const participantsId = await db.userActivity.findMany({
+      where: {
+        classId: classFound.id
+      },
+      select: {
+        userId: true
+      }
+    })
+
+    const userIds = participantsId.map(p => p.userId)
+
+    if (userIds.length > 0) {
+      await db.user.updateMany({
+        where: {
+          id: {
+            in: userIds
+          }
+        },
+        data: {
+          totalClasses: {
+            increment: 1
+          }
+        }
+      })
+    }
 
   } catch (error) {
     console.error('We could not create this activity', error)

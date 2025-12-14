@@ -24,7 +24,7 @@ const ExamMarkdown = ({ content }: Props) => {
       <ul className="min-w-[345px] list-disc list-inside my-2">{children}</ul>
     ),
     ol: ({ children }: any) => (
-      <ol className="w-min inline-block">{children}</ol>
+      <ol className="w-min inline-block min-w-max">{children}</ol>
     ),
     li: ({ children }: any) => (
       <li className="gap-2 leading-relaxed inline-block font-roboto text-sm xl:text-base 2xl:text-base">
@@ -38,7 +38,8 @@ const ExamMarkdown = ({ content }: Props) => {
         className="border-b border-gray-400 focus:outline-none focus:border-blue-500 px-1 mx-1 text-xs inline"
         placeholder="..."
       />
-    )
+    ),
+    br: ({ node, ...props }: any) => <br className="m-0 p-0" {...props} />,
   };
 
   return (

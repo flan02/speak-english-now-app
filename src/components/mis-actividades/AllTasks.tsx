@@ -23,7 +23,7 @@ const AllTasks = ({ all_tasks }: SessionProps) => {
                 <Card key={index} className='w-[300px] border border-task p-4 h-[500px] space-y-1 overflow-y-hidden'>
                   <h3 className='font-bold text-center'>{item.task?.title}</h3>
                   <div className='flex justify-between mt-2 mb-4'>
-                    <p className='text-xs'>Fecha: {item.class?.startTime.toLocaleDateString()}</p>
+                    <p className='text-xs'>Fecha: {item.class?.startTime.toLocaleDateString("es-AR", { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
                     <p className='text-xs'>Participantes: {item.class?.participantsIds.length}</p>
                   </div>
 

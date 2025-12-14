@@ -23,7 +23,6 @@ const Principal = async (props: Props) => {
             <Card className='border border-card w-full lg:w-full lg:px-0 xl:px-0 space-y-4 xl:h-[500px] 2xl:h-[500px]'>
               <div className='bg-highlight rounded-md py-1 xl:py-4 2xl:py-4 pl-6 font-bold text-base xl:text-lg 2xl:text-lg tracking-wider'>Proximos Eventos</div>
               <section className='font-roboto'>
-
                 <div className='h-full xl:h-[350px] 2xl:h-[350px] mb-4 px-1 xl:p-2 2xl:p-4 space-y-4'>
                   <h3 className='font-roboto text-sm xl:text-xl 2xl:text-2xl font-bold tracking-wider px-2 xl:px-0 2xl:px-0'>CLASES ABIERTAS A PARTIR DEL 15 DE DICIEMBRE</h3>
                   <div className='xl:px-2 2xl:px-2 text-xs xl:text-base 2xl:text-lg space-y-2'>
