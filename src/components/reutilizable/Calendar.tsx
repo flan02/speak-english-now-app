@@ -21,12 +21,33 @@ const Calendar = () => {
   const { events, isLoading, refetch } = useCalendar()
 
 
-  const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
-    title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
-    start: slot.start.dateTime,
-    end: slot.end.dateTime,
-    color: slot.status === 'confirmed' ? 'green' : 'red',
-  }))
+  // --- LA MAGIA ESTÁ AQUÍ 👇 ---
+  // Creamos un Set (un registro único) para anotar qué horarios ya vimos (evita repeticiones visuales molestas)
+  const seenStartTimes = new Set();
+  const fullCalendarEvents: FullCalendarProps[] = (events || [])
+    .filter((slot) => {
+      // Si ya tenemos esta fecha/hora guardada en nuestro Set, lo ignoramos (es duplicado)
+      if (seenStartTimes.has(slot.start.dateTime)) {
+        return false;
+      }
+      // Si es nuevo, lo registramos en el Set y lo dejamos pasar
+      seenStartTimes.add(slot.start.dateTime);
+      return true;
+    })
+    .map((slot) => ({
+      title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
+      start: slot.start.dateTime,
+      end: slot.end.dateTime,
+      color: slot.status === "confirmed" ? "green" : "red",
+    }));
+  // --- FIN DE LA MAGIA 👆 ---
+
+  // const fullCalendarEvents: FullCalendarProps[] = events?.map((slot) => ({
+  //   title: `${slot.start.dateTime} - ${slot.end.dateTime}`,
+  //   start: slot.start.dateTime,
+  //   end: slot.end.dateTime,
+  //   color: slot.status === 'confirmed' ? 'green' : 'red',
+  // }))
 
 
   const fullCalendarContent = (arg: any) => {
@@ -53,7 +74,7 @@ const Calendar = () => {
   }, [events]);
 
 
-  console.log("Events obtained", events);
+  // console.log("Events obtained", events);
   return (
     <div className="lg:w-[800px] lg:mx-auto text-[10px] lg:text-xs">
       {
