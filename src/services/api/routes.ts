@@ -23,3 +23,5 @@ export const URL_ROUTES = {
   TICKETS: '/inicio/tickets',
   CDA: '/inicio/cda'
 }
+
+

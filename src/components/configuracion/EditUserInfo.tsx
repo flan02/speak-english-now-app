@@ -89,23 +89,23 @@ const EditUserInfo = (props: Props) => {
             />
         }
       </div>
-      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1'>
+      <Button asChild variant='default' className='w-full lg:w-auto bg-highlight text-xs mr-1 text-[10px] uppercase'>
         <Link href={URL_ROUTES.FACTURACION}>
           Facturacion
         </Link>
       </Button>
-      <Button asChild variant='default' className='w-full lg:w-auto text-xs mt-2 lg:mt-0 bg-highlight'>
+      <Button asChild variant='default' className='w-full lg:w-auto text-xs mt-2 lg:mt-0 bg-highlight text-[10px] uppercase'>
         <Link href={URL_ROUTES.SOPORTE}>
           Soporte y Ayuda
         </Link>
       </Button>
       <div className='w-full text-center space-x-2'>
-        <Button onClick={handleEdit} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-xs bg-gray-400 hover:bg-gray-400/80'>
+        <Button onClick={handleEdit} disabled={isEditing.status} variant='destructive' className='w-full lg:w-auto text-[10px] uppercase dark:bg-pink-700 dark:hover:bg-pink-600/80 bg-pink-800 hover:bg-pink-700/80'>
           editar
         </Button>
         {
           isEditing.status &&
-          <Button type="submit" className='w-full lg:w-auto btn-green text-xs bg-green-600 hover:bg-green-600/80 mt-1 text-white'>Guardar</Button>
+          <Button type="submit" className='w-full lg:w-auto text-[10px] uppercase bg-green-600 hover:bg-green-600/80 mt-1 text-white'>Guardar</Button>
         }
 
       </div>

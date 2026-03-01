@@ -24,8 +24,8 @@ const Principal = async (props: Props) => {
               <div className='bg-highlight rounded-md py-1 xl:py-4 2xl:py-4 pl-6 font-bold text-base xl:text-lg 2xl:text-lg tracking-wider'>Proximos Eventos</div>
               <section className='font-roboto'>
                 <div className='h-full xl:h-[350px] 2xl:h-[350px] mb-4 px-1 xl:p-2 2xl:p-4 space-y-4'>
-                  <h3 className='font-roboto text-sm xl:text-xl 2xl:text-2xl font-bold tracking-wider px-2 xl:px-0 2xl:px-0'>CLASES ABIERTAS A PARTIR DEL 15 DE DICIEMBRE</h3>
-                  <div className='xl:px-2 2xl:px-2 text-xs xl:text-base 2xl:text-lg space-y-2'>
+                  <h3 className='font-roboto text-sm xl:text-xl 2xl:text-2xl font-bold tracking-wider px-2 xl:px-0 2xl:px-0'>CLASES ABIERTAS A PARTIR DEL 1 DE ABRIL</h3>
+                  <div className='xl:px-2 2xl:px-2 text-xs xl:text-sm 2xl:text-base space-y-2'>
                     <div className='flex items-center space-x-0 xl:space-x-2 2xl:space-x-2'>
                       <p className='font-roboto px-2 xl:px-0 2xl:px-0'>Los dias miercoles y sabados se dictaran clases virtuales de 90 minutos en un room para un grupo limitado de asistentes y luego recibiran un examen
                         en la seccion actividades para evaluar lo aprendido
@@ -35,15 +35,15 @@ const Principal = async (props: Props) => {
                     <p className='px-2 xl:px-0 2xl:px-0 mb-8 xl:mt-4 xl:mb-6 2xl:mt-0 2xl:mb-6'>Habra tres diferentes topicos segun el nivel de ingles de cada usuario:</p>
                     <div className='mb-8 xl:mb-0 2xl:mb-0 space-x-2 space-y-3 xl:space-y-4 2xl:space-y-4 flex flex-col items-center xl:flex-row 2xl:flex-row xl:items-start 2xl:items-start'>
                       <p className='bg-highlight whitespace-nowrap text-base font-bold px-3 py-1.5 xl:py-1 xl:px-2 2xl:py-2 2xl:px-4 rounded-md'>Gramatica (inicial)</p>
-                      <span className='font-roboto px-2 xl:px-0 2xl:px-0 xl:text-sm 2xl:text-base'>Se enfoca en la estructura basica, avanzada del idioma, desgloce de frases reales en ingles y la composicion de texto.</span>
+                      <span className='font-roboto px-2 xl:px-0 2xl:px-0 xl:text-sm 2xl:text-sm'>Se enfoca en la estructura basica, avanzada del idioma, desgloce de frases reales en ingles y la composicion de texto.</span>
                     </div>
                     <div className='mb-8 xl:mb-0 2xl:mb-0 space-x-2 space-y-3 xl:space-y-4 2xl:space-y-4 flex flex-col items-center xl:flex-row 2xl:flex-row xl:items-start 2xl:items-start'>
                       <p className='bg-highlight whitespace-nowrap text-base font-bold px-3 py-1.5 xl:py-1 xl:px-2 2xl:py-2 2xl:px-4 rounded-md'>Auditivo (intermedio)</p>
-                      <span className='font-roboto px-2 xl:px-0 2xl:px-0 xl:text-sm 2xl:text-base'>El punto de aprendizaje sera la comprension auditiva, el entendimiento de peliculas, conversaciones y la capacidad lectora.</span>
+                      <span className='font-roboto px-2 xl:px-0 2xl:px-0 xl:text-sm 2xl:text-sm'>El punto de aprendizaje sera la comprension auditiva, el entendimiento de peliculas, conversaciones y la capacidad lectora.</span>
                     </div>
                     <div className='mb-8 xl:mb-0 2xl:mb-0 space-x-2 space-y-3 xl:space-y-4 2xl:space-y-4 flex flex-col xl:flex-row 2xl:flex-row items-center xl:items-start 2xl:items-start'>
                       <p className='bg-highlight whitespace-nowrap text-base font-bold px-3 py-1.5 xl:py-1 xl:px-2 2xl:py-2 2xl:px-4 rounded-md'>Conversacional (avanzado)</p>
-                      <span className='font-roboto px-2 xl:px-0 2xl:px-0 xl:text-sm 2xl:text-base'>La importancia estara enfocada en la fluidez al hablar y la expresion oral con contracciones comunes.</span>
+                      <span className='font-roboto px-2 xl:px-0 2xl:px-0 xl:text-sm 2xl:text-sm'>La importancia estara enfocada en la fluidez al hablar y la expresion oral con contracciones comunes.</span>
                     </div>
                   </div>
                 </div>
