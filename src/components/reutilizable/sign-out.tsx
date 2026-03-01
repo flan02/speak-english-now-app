@@ -1,4 +1,5 @@
 import { signOut } from "@/auth"
+import { LogOut } from "lucide-react"
 
 const SignOut = () => {
   const REDIRECT_TO_HOME = process.env.BASE_URL
@@ -13,6 +14,7 @@ const SignOut = () => {
         <span className="mt-0.5 text-[10px]">
           Cerrar sesion
         </span>
+        <LogOut size={12} />
       </button>
 
     </form>
