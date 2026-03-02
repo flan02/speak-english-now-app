@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Preference } from 'mercadopago';
-import pricing from "@/config/pricing.json";
+// import pricing from "@/config/pricing.json";
 import { auth } from '@/auth';
 import { createPayment } from '@/services/functions';
 import { PaymentMP } from '@/lib/types';
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
           id: `${session.user.id}-${Date.now()}`,
           title: `HablaInglesYa - Clase virtual para ${studentsCount} persona(s)`,
           quantity: 1,
-          unit_price: 10, // price // * const price (sent by frontend body json)
+          unit_price: price, // testing value -> 10
           currency_id: "ARS",
         }
       ],

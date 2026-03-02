@@ -1,8 +1,8 @@
 # HABLAINGLESYA 101
 
-Design your dream resume easily with AI-powered tools
+## Learn English from zero to hero
 
-Estimated time to complete 16/12 - 31/12
+![HABLAINGLESYA](./public/hablainglesya-gemini-thumbnail.png)
 
 Useful external websites and tools
 
@@ -44,23 +44,8 @@ Useful external websites and tools
 
 ### Utility types in Typescript
 
-- `Partial<Type>`: Make all properties in T optional
-- `Required<Type>`: Make all properties in T required
-- `Readonly<Type>`: Make all properties in T readonly
-- `Record<Keys, Type>`: Construct an object type whose property keys are Keys and whose property values are Type
-- `Pick<T,K>`: From T, pick a set of properties whose keys are in the union K
-- `Omit<T,K>`: From T, pick a set of properties whose keys are not in the union K
-- `Exclude<T,U>`: Exclude from T those types that are assignable to U
-- `Extract<T,U>`: Extract from T those types that are assignable to U
-- `NonNullable<T>`: Exclude null and undefined from T
-- `Parameters<T>`: Obtain the parameters of a function type in a tuple
-- `ConstructorParameters<T>`: Obtain the parameters of a constructor function type in a tuple
-- `ReturnType<T>`: Obtain the return type of a function type
-- `InstanceType<T>`: Obtain the instance type of a constructor function type
-- `ThisParameterType<T>`: Obtain the `this` parameter type of a function type
-- `OmitThisParameter<T>`: Obtain the return type of a function type with a `this` parameter
-- `ThisType<T>`: ThisType is used to specify the type of `this` in the body of a function
-
-### Falta agregar lecturas para practicar en distintos niveles de ingles (depende del vocabulario)
-
 ### Test on chrome the mobile dev responsive using measure 350x660
+
+#### Visit our website scanning this QR code
+
+![QR code](./public/qr-hablainglesya.png)
