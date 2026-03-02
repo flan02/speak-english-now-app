@@ -10,9 +10,9 @@ Useful external websites and tools
 
 [website](https://squoosh.app/)
 
-## Stripe docs
+## Mercadopago checkout platform
 
-[website](docs.stripe.com/testing)
+[website](https://www.mercadopago.com.ar/developers/panel/app)
 
 ## Unit converter website
 
