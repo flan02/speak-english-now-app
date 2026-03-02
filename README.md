@@ -1,10 +1,10 @@
-# ai-resume-builder
+# HABLAINGLESYA 101
 
 Design your dream resume easily with AI-powered tools
 
 Estimated time to complete 16/12 - 31/12
 
-Make it free for all and other paid version using Stripe
+Useful external websites and tools
 
 ## Image editor and compressor
 
@@ -63,4 +63,4 @@ Make it free for all and other paid version using Stripe
 
 ### Falta agregar lecturas para practicar en distintos niveles de ingles (depende del vocabulario)
 
-### Mobile dev responsive measure 350x660
+### Test on chrome the mobile dev responsive using measure 350x660
